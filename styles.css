@@ -1789,6 +1789,11 @@ h2 {
   background: var(--ink);
 }
 
+.legal-page .site-header,
+.review-page .site-header {
+  color: var(--text);
+}
+
 .legal-hero {
   padding: calc(var(--header-height) + 6.5rem) clamp(1.5rem, 8vw, 9rem) 5rem;
   border-bottom: 1px solid rgba(201, 154, 61, 0.28);
