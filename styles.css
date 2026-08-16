@@ -1779,6 +1779,175 @@ h2 {
   transform: translateY(0);
 }
 
+/* Legal pages */
+.legal-page {
+  background: var(--ivory);
+  color: var(--text-dark);
+}
+
+.legal-page .site-header:not(.is-scrolled) {
+  background: var(--ink);
+}
+
+.legal-hero {
+  padding: calc(var(--header-height) + 6.5rem) clamp(1.5rem, 8vw, 9rem) 5rem;
+  border-bottom: 1px solid rgba(201, 154, 61, 0.28);
+  background:
+    radial-gradient(circle at 80% 10%, rgba(201, 154, 61, 0.13), transparent 34%),
+    linear-gradient(135deg, #090b0b, #111414);
+  color: var(--text);
+}
+
+.legal-hero > div {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.legal-hero h1 {
+  margin-bottom: 1rem;
+  font-size: clamp(3.4rem, 8vw, 8.5rem);
+  line-height: 0.9;
+}
+
+.legal-hero p:last-child {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.legal-layout {
+  max-width: 1240px;
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: clamp(3rem, 8vw, 8rem);
+  align-items: start;
+  margin: 0 auto;
+  padding: var(--section-pad) clamp(1.5rem, 5vw, 5rem);
+}
+
+.legal-index {
+  position: sticky;
+  top: calc(var(--header-height) + 2rem);
+  display: grid;
+  border-top: 1px solid var(--line-light);
+}
+
+.legal-index p {
+  margin: 0;
+  padding: 1rem 0;
+  color: var(--gold);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.legal-index a {
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--line-light);
+  color: var(--muted-dark);
+  font-size: 0.68rem;
+  line-height: 1.35;
+  transition: color 0.2s ease, padding-left 0.25s var(--ease);
+}
+
+.legal-index a:hover,
+.legal-index a:focus-visible {
+  padding-left: 0.35rem;
+  color: var(--gold);
+}
+
+.legal-content {
+  max-width: 810px;
+}
+
+.legal-content section {
+  padding: 2.4rem 0;
+  border-top: 1px solid var(--line-light);
+  scroll-margin-top: calc(var(--header-height) + 2rem);
+}
+
+.legal-content section:first-of-type {
+  border-top: 0;
+}
+
+.legal-content h2 {
+  margin-bottom: 1.25rem;
+  font-size: clamp(2rem, 3.4vw, 3.25rem);
+  line-height: 1.02;
+}
+
+.legal-content h3 {
+  margin: 1.8rem 0 0.65rem;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.legal-content p,
+.legal-content li {
+  color: #404643;
+  font-size: 0.94rem;
+  line-height: 1.8;
+}
+
+.legal-content p:last-child {
+  margin-bottom: 0;
+}
+
+.legal-content ul {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1.25rem 0;
+  padding-left: 1.2rem;
+}
+
+.legal-content a {
+  color: #8b5e17;
+  text-decoration: underline;
+  text-decoration-color: rgba(139, 94, 23, 0.35);
+  text-underline-offset: 3px;
+}
+
+.legal-content a:hover,
+.legal-content a:focus-visible {
+  color: #5d3b07;
+  text-decoration-color: currentColor;
+}
+
+.legal-notice {
+  margin-bottom: 2rem;
+  padding: clamp(1.4rem, 3vw, 2rem);
+  border: 1px solid rgba(201, 154, 61, 0.46);
+  border-left: 4px solid var(--gold);
+  background: rgba(255, 255, 255, 0.46);
+}
+
+.legal-notice b {
+  display: block;
+  margin-bottom: 0.45rem;
+  font: 1.3rem var(--serif);
+}
+
+.legal-notice p {
+  margin: 0;
+  font-size: 0.83rem;
+}
+
+.legal-warning {
+  border-color: rgba(155, 62, 53, 0.42);
+  border-left-color: var(--danger);
+  background: rgba(155, 62, 53, 0.055);
+}
+
+.legal-warning b {
+  color: #7f3029;
+}
+
 /* Weekly review page */
 .review-page {
   background: var(--ivory);
@@ -2232,6 +2401,20 @@ h2 {
   .review-card-wide {
     grid-column: auto;
   }
+
+  .legal-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .legal-index {
+    position: static;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 1rem;
+  }
+
+  .legal-index p {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 620px) {
@@ -2444,6 +2627,20 @@ h2 {
   }
 
   .bias-options {
+    grid-template-columns: 1fr;
+  }
+
+  .legal-hero {
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+  }
+
+  .legal-layout {
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+  }
+
+  .legal-index {
     grid-template-columns: 1fr;
   }
 }
