@@ -18,6 +18,10 @@ const prepareFullPageCapture = async (page) => {
       await new Promise((resolve) => setTimeout(resolve, 60));
     }
     window.scrollTo(0, 0);
+    document.querySelectorAll(".reveal").forEach((element) => element.classList.add("is-visible"));
+    const captureStyle = document.createElement("style");
+    captureStyle.textContent = ".site-header{position:absolute!important;top:0!important}.skip-link{display:none!important}";
+    document.head.appendChild(captureStyle);
     if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
   });
   await page.waitForTimeout(200);
