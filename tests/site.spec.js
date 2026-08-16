@@ -10,6 +10,19 @@ const captureErrors = (page) => {
   return errors;
 };
 
+const prepareFullPageCapture = async (page) => {
+  await page.evaluate(async () => {
+    const step = Math.max(500, Math.floor(window.innerHeight * 0.75));
+    for (let position = 0; position < document.body.scrollHeight; position += step) {
+      window.scrollTo(0, position);
+      await new Promise((resolve) => setTimeout(resolve, 60));
+    }
+    window.scrollTo(0, 0);
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+  });
+  await page.waitForTimeout(200);
+};
+
 test("homepage interactions remain functional", async ({ page }, testInfo) => {
   const errors = captureErrors(page);
   await page.goto("/");
@@ -40,6 +53,7 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   await page.locator(".founder-story summary").click();
   await expect(page.locator(".founder-story")).toHaveAttribute("open", "");
 
+  await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("homepage-full.png"), fullPage: true });
   expect(errors).toEqual([]);
 });
@@ -52,6 +66,9 @@ test("mobile navigation and responsive controls work", async ({ page }, testInfo
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-expanded", "true");
   await expect(page.locator("#site-nav")).toHaveClass(/is-open/);
+  await page.screenshot({ path: testInfo.outputPath("mobile-navigation.png") });
+  await toggle.click();
+  await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("homepage-mobile.png"), fullPage: true });
   expect(errors).toEqual([]);
 });
@@ -68,6 +85,7 @@ test("Weekly Capital Review saves locally and restores", async ({ page }, testIn
   await expect(page.locator("#market-regime")).toHaveValue("Expansion");
   await expect(page.getByLabel("Bullish")).toBeChecked();
   await expect(page.locator("#lessons-learned")).toHaveValue("Wait for authorized displacement before committing capital.");
+  await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("weekly-capital-review.png"), fullPage: true });
   expect(errors).toEqual([]);
 });
@@ -86,6 +104,7 @@ test("legal routes are reachable and linked", async ({ page }, testInfo) => {
     await expect(page.locator("footer nav a")).toHaveCount(3);
   }
 
+  await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("risk-disclosure.png"), fullPage: true });
   expect(errors).toEqual([]);
 });
