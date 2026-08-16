@@ -272,10 +272,11 @@
   });
 
   const resourceTrack = $("#resource-track");
-  const resourceCards = $$(".resource-card", resourceTrack);
+  const resourceCards = resourceTrack ? $$(".resource-card", resourceTrack) : [];
   let activeResource = 0;
 
   const renderResource = () => {
+    if (!resourceTrack || !resourceCards.length) return;
     resourceCards.forEach((card, index) => card.classList.toggle("is-featured", index === activeResource));
     $("#resources-count").textContent = `${String(activeResource + 1).padStart(2, "0")} / ${String(resourceCards.length).padStart(2, "0")}`;
 
