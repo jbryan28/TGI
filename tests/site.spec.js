@@ -135,5 +135,12 @@ test("glossary search and discipline filters work", async ({ page }, testInfo) =
   await page.locator('[data-glossary-filter="all"]').click();
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("glossary.png"), fullPage: true });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  await page.locator('[data-glossary-filter="framework"]').click();
+  await expect(page.locator("#glossary-result-count")).toHaveText("Showing 7 of 45 terms");
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("glossary-mobile.png"), fullPage: true });
   expect(errors).toEqual([]);
 });
