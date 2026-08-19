@@ -56,6 +56,8 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
 
   await page.locator(".founder-story summary").click();
   await expect(page.locator(".founder-story")).toHaveAttribute("open", "");
+  await expect(page.locator(".resource-card")).toHaveCount(4);
+  await expect(page.locator('a[href="glossary/"]')).not.toHaveCount(0);
 
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("homepage-full.png"), fullPage: true });
@@ -105,10 +107,33 @@ test("legal routes are reachable and linked", async ({ page }, testInfo) => {
   for (const [route, heading] of routes) {
     await page.goto(route);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(heading);
-    await expect(page.locator("footer nav a")).toHaveCount(3);
+    await expect(page.locator("footer nav a")).toHaveCount(4);
   }
 
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("risk-disclosure.png"), fullPage: true });
+  expect(errors).toEqual([]);
+});
+
+test("glossary search and discipline filters work", async ({ page }, testInfo) => {
+  const errors = captureErrors(page);
+  await page.goto("/glossary/");
+  await expect(page).toHaveTitle(/Trading Glossary/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Trading Glossary");
+  await expect(page.locator(".glossary-term")).toHaveCount(45);
+
+  await page.locator("#glossary-search").fill("Daily Zone Command");
+  await expect(page.locator("#daily-zone-command")).toBeVisible();
+  await expect(page.locator("#accumulation")).toBeHidden();
+
+  await page.locator("#glossary-clear").click();
+  await page.locator('[data-glossary-filter="risk"]').click();
+  await expect(page.locator("#glossary-result-count")).toHaveText("Showing 7 of 45 terms");
+  await expect(page.locator("#risk-mandate")).toBeVisible();
+  await expect(page.locator("#weekly-bias")).toBeHidden();
+
+  await page.locator('[data-glossary-filter="all"]').click();
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("glossary.png"), fullPage: true });
   expect(errors).toEqual([]);
 });

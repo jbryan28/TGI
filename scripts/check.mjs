@@ -6,11 +6,12 @@ const pages = [
   "privacy/index.html",
   "terms/index.html",
   "risk-disclosure/index.html",
+  "glossary/index.html",
 ];
 
 const html = pages.map((path) => fs.readFileSync(path, "utf8")).join("\n");
 const ids = new Set([...html.matchAll(/id="([^"]+)"/g)].map((match) => match[1]));
-const javascript = ["app.js", "weekly-capital-review/review.js"]
+const javascript = ["app.js", "weekly-capital-review/review.js", "glossary/glossary.js"]
   .map((path) => fs.readFileSync(path, "utf8"))
   .join("\n");
 const referencedIds = [...javascript.matchAll(/\$\("#([A-Za-z0-9_-]+)"\)/g)].map((match) => match[1]);
