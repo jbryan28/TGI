@@ -56,7 +56,8 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
 
   await page.locator(".founder-story summary").click();
   await expect(page.locator(".founder-story")).toHaveAttribute("open", "");
-  await expect(page.locator(".resource-card")).toHaveCount(4);
+  await expect(page.locator(".resource-card")).toHaveCount(5);
+  await expect(page.locator('a[href="cdza/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="glossary/"]')).not.toHaveCount(0);
 
   await prepareFullPageCapture(page);
@@ -107,7 +108,7 @@ test("legal routes are reachable and linked", async ({ page }, testInfo) => {
   for (const [route, heading] of routes) {
     await page.goto(route);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(heading);
-    await expect(page.locator("footer nav a")).toHaveCount(4);
+    await expect(page.locator("footer nav a")).toHaveCount(5);
   }
 
   await prepareFullPageCapture(page);
@@ -120,7 +121,7 @@ test("glossary search and discipline filters work", async ({ page }, testInfo) =
   await page.goto("/glossary/");
   await expect(page).toHaveTitle(/Trading Glossary/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Trading Glossary");
-  await expect(page.locator(".glossary-term")).toHaveCount(45);
+  await expect(page.locator(".glossary-term")).toHaveCount(46);
 
   await page.locator("#glossary-search").fill("Daily Zone Command");
   await expect(page.locator("#daily-zone-command")).toBeVisible();
@@ -128,7 +129,7 @@ test("glossary search and discipline filters work", async ({ page }, testInfo) =
 
   await page.locator("#glossary-clear").click();
   await page.locator('[data-glossary-filter="risk"]').click();
-  await expect(page.locator("#glossary-result-count")).toHaveText("Showing 7 of 45 terms");
+  await expect(page.locator("#glossary-result-count")).toHaveText("Showing 7 of 46 terms");
   await expect(page.locator("#risk-mandate")).toBeVisible();
   await expect(page.locator("#weekly-bias")).toBeHidden();
 
@@ -139,8 +140,54 @@ test("glossary search and discipline filters work", async ({ page }, testInfo) =
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
   await page.locator('[data-glossary-filter="framework"]').click();
-  await expect(page.locator("#glossary-result-count")).toHaveText("Showing 7 of 45 terms");
+  await expect(page.locator("#glossary-result-count")).toHaveText("Showing 8 of 46 terms");
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("glossary-mobile.png"), fullPage: true });
+  expect(errors).toEqual([]);
+});
+
+test("CDZA standard presents the chapter doctrine and interactive sequence", async ({ page }, testInfo) => {
+  const errors = captureErrors(page);
+  await page.goto("/cdza/");
+  await expect(page).toHaveTitle(/CDZA Execution Standard/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Verifiable Competence");
+  await expect(page.locator("[data-certification-domain]")).toHaveCount(4);
+  await expect(page.locator(".scorecard article")).toHaveCount(5);
+  await expect(page.locator(".reset-track span")).toHaveCount(20);
+
+  await page.locator('[data-certification-domain="3"]').click();
+  await expect(page.locator("#domain-title")).toHaveText("Authorization");
+  await expect(page.locator("#domain-current")).toHaveText("A");
+  await expect(page.locator('a[href="journal/"]')).not.toHaveCount(0);
+
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("cdza-standard.png"), fullPage: true });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  await page.locator('[data-certification-domain="1"]').click();
+  await expect(page.locator("#domain-title")).toHaveText("Displacement");
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("cdza-standard-mobile.png"), fullPage: true });
+  expect(errors).toEqual([]);
+});
+
+test("CDZA journal saves and restores the certification record", async ({ page }, testInfo) => {
+  const errors = captureErrors(page);
+  await page.goto("/cdza/journal/");
+  await expect(page).toHaveTitle(/CDZA Certification Journal/);
+  await page.locator('[name="candidate_name"]').fill("Certification Candidate");
+  await page.locator('[name="trade_01_instrument"]').fill("DXY");
+  await page.locator('[name="trade_01_grade"]').selectOption("A");
+  await page.locator('[name="trade_01_verified"]').check();
+  await page.waitForTimeout(450);
+  await page.reload();
+
+  await expect(page.locator('[name="candidate_name"]')).toHaveValue("Certification Candidate");
+  await expect(page.locator('[name="trade_01_instrument"]')).toHaveValue("DXY");
+  await expect(page.locator('[name="trade_01_grade"]')).toHaveValue("A");
+  await expect(page.locator('[name="trade_01_verified"]')).toBeChecked();
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("cdza-journal.png"), fullPage: true });
   expect(errors).toEqual([]);
 });

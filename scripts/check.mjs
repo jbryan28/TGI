@@ -7,11 +7,13 @@ const pages = [
   "terms/index.html",
   "risk-disclosure/index.html",
   "glossary/index.html",
+  "cdza/index.html",
+  "cdza/journal/index.html",
 ];
 
 const html = pages.map((path) => fs.readFileSync(path, "utf8")).join("\n");
 const ids = new Set([...html.matchAll(/id="([^"]+)"/g)].map((match) => match[1]));
-const javascript = ["app.js", "weekly-capital-review/review.js", "glossary/glossary.js"]
+const javascript = ["app.js", "weekly-capital-review/review.js", "glossary/glossary.js", "cdza/cdza.js", "cdza/journal/journal.js"]
   .map((path) => fs.readFileSync(path, "utf8"))
   .join("\n");
 const referencedIds = [...javascript.matchAll(/\$\("#([A-Za-z0-9_-]+)"\)/g)].map((match) => match[1]);

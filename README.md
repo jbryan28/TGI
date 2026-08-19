@@ -12,6 +12,9 @@ Institutional market-intelligence homepage and interactive capital-review tools 
 - USDJPY base-to-displacement comparison slider
 - Responsive resource carousel
 - Weekly Capital Review at `/weekly-capital-review/` with autosave, export, print, and reset controls
+- CDZA™ Execution Standard at `/cdza/`, grounded in Chapter 24 of *The Daily Zone Command*, with an interactive Compression → Displacement → Zone → Authorization sequence
+- Official CDZA™ Certification Journal at `/cdza/journal/` with a 20-trade ledger, Grade A–F scorecard controls, browser-local autosave, and print/PDF support
+- Interactive trading glossary at `/glossary/`
 - Privacy Policy, Terms of Use, and Trading Risk Disclosure routes
 - Automated interaction and screenshot QA in Chromium, Firefox, and WebKit
 
