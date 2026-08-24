@@ -11,6 +11,7 @@
     <title>Trader Growth Institute Membership | Capital Operator Program</title>
     <link rel="stylesheet" href="../styles.css" />
     <script defer src="../app.js"></script>
+    <script defer src="config.js"></script>
     <script defer src="membership.js"></script>
   </head>
   <body class="membership-page">
@@ -238,8 +239,8 @@
           <p><span>Delivery calendar</span><b class="status-ready">Locked</b></p>
           <p><span>Price and billing terms</span><b class="status-ready">Locked</b></p>
           <p><span>Access rules</span><b class="status-ready">Locked</b></p>
-          <p><span>Thinkific configuration</span><b>Pending</b></p>
-          <button class="button button-outline" type="button" disabled>Enrollment remains closed</button>
+          <p><span>Thinkific configuration</span><b id="thinkific-status">Pending</b></p>
+          <button class="button button-outline" id="membership-enroll-cta" type="button" disabled>Enrollment remains closed</button>
           <a class="text-link" href="../newsletter/">Join the free briefing while you wait <span aria-hidden="true">→</span></a>
         </div>
       </section>

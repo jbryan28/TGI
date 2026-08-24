@@ -4,6 +4,34 @@
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
 
+  const configureEnrollment = () => {
+    const config = window.TGI_MEMBERSHIP_CONFIG || {};
+    const closedButton = $("#membership-enroll-cta");
+    const status = $("#thinkific-status");
+    if (!closedButton || !status || config.enrollmentOpen !== true) return;
+
+    let checkoutUrl;
+    try {
+      checkoutUrl = new URL(config.checkoutUrl);
+    } catch {
+      return;
+    }
+
+    if (checkoutUrl.protocol !== "https:") return;
+
+    const checkoutLink = document.createElement("a");
+    checkoutLink.className = closedButton.className;
+    checkoutLink.id = closedButton.id;
+    checkoutLink.href = checkoutUrl.href;
+    checkoutLink.rel = "noopener";
+    checkoutLink.textContent = "Enroll in TGI Membership";
+    closedButton.replaceWith(checkoutLink);
+    status.textContent = "Open";
+    status.classList.add("status-ready");
+  };
+
+  configureEnrollment();
+
   const layers = [
     {
       kicker: "Layer 01 / Core curriculum",

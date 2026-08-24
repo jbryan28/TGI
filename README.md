@@ -73,6 +73,8 @@ The paid offer is intentionally distinct from the free **TGI Intelligence Briefi
 
 The governing curriculum inventory, delivery calendar, $99 monthly launch price, cadence-gated $990 annual price, billing terms, access rules, and release gate are documented in `membership/THINKIFIC_PRODUCT_SPEC.md`. Enrollment remains disabled until the Thinkific build and end-to-end payment/access tests match that specification. Do not route paid traffic to the legacy Thinkific sales page while it contains an expired June 28, 2026 promise, uses the paid **Intelligence Briefing** name, or claims unsupported deliverables.
 
+The public enrollment button is controlled by `membership/config.js` and fails closed. Leave `enrollmentOpen` set to `false` until every item in `membership/THINKIFIC_LAUNCH_CHECKLIST.md` passes. When the verified Thinkific checkout is ready, set `checkoutUrl` to its final HTTPS URL and set `enrollmentOpen` to `true` in the same reviewed commit.
+
 ## Publishing
 
 The repository is already configured for GitHub Pages at `www.tradergrowth.com`. The pull-request quality gate must pass before any production publishing workflow is enabled. Production deployment remains a separate, explicit release decision because this domain is live-facing rather than a staging URL.
