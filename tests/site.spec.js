@@ -27,9 +27,17 @@ const prepareFullPageCapture = async (page) => {
   await page.waitForTimeout(200);
 };
 
+const expectStylesApplied = async (page) => {
+  await expect(page.locator('link[rel="stylesheet"]')).toHaveCount(1);
+  await expect
+    .poll(() => page.evaluate(() => getComputedStyle(document.body).backgroundColor))
+    .toBe("rgb(8, 10, 10)");
+};
+
 test("homepage interactions remain functional", async ({ page }, testInfo) => {
   const errors = captureErrors(page);
   await page.goto("/");
+  await expectStylesApplied(page);
   await expect(page).toHaveTitle(/Trader Growth Institute/);
 
   await page.locator('[data-hero-market="NAS100"]').click();
@@ -124,6 +132,7 @@ test("newsletter welcome route completes the conversion path", async ({ page }, 
 test("membership separates curriculum, operating desk, and certification", async ({ page }, testInfo) => {
   const errors = captureErrors(page);
   await page.goto("/membership/");
+  await expectStylesApplied(page);
   await expect(page).toHaveTitle(/Trader Growth Institute Membership/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Think Like Capital");
   await expect(page.locator(".membership-hero")).toContainText("46-item implementation path");
