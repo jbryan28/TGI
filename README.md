@@ -9,7 +9,8 @@ Institutional market-intelligence homepage and interactive capital-review tools 
 - Five-stage TGI Operating System explorer
 - Switchable Intelligence Briefing instruments
 - Dedicated `/newsletter/` conversion route with a three-desk issue explorer, one canonical signup location, Beehiiv-safe embed configuration, and a `/newsletter/welcome/` confirmation route
-- Dedicated `/membership/` route that separates the finite Capital Operator curriculum, recurring operating desk, and independent CDZA™ certification standard
+- Dedicated `/membership/` route that separates the 46-item Capital Operator Core, recurring operating desk, and independent CDZA™ certification standard
+- Legacy `/member/` redirect for the route printed in *The Daily Zone Command*
 - Interactive Institutional Market Cycle scrubber
 - USDJPY base-to-displacement comparison slider
 - Responsive resource carousel
@@ -67,10 +68,10 @@ The paid offer is intentionally distinct from the free **TGI Intelligence Briefi
 
 - **Free:** TGI Intelligence Briefing
 - **Paid:** Trader Growth Institute Membership
-- **Inside paid:** finite Capital Operator curriculum plus a recurring operating desk
+- **Inside paid:** 46-item Capital Operator Core plus a governed recurring operating desk
 - **Separate standard:** CDZA™ Certification
 
-Enrollment remains disabled in the draft until the Thinkific course inventory, recurring delivery calendar, current price/billing terms, and member access rules are verified. Do not route paid traffic to the legacy Thinkific sales page while it contains an expired June 28, 2026 promise or unsupported deliverables.
+The governing curriculum inventory, delivery calendar, $99 monthly launch price, cadence-gated $990 annual price, billing terms, access rules, and release gate are documented in `membership/THINKIFIC_PRODUCT_SPEC.md`. Enrollment remains disabled until the Thinkific build and end-to-end payment/access tests match that specification. Do not route paid traffic to the legacy Thinkific sales page while it contains an expired June 28, 2026 promise, uses the paid **Intelligence Briefing** name, or claims unsupported deliverables.
 
 ## Publishing
 

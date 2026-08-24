@@ -126,19 +126,27 @@ test("membership separates curriculum, operating desk, and certification", async
   await page.goto("/membership/");
   await expect(page).toHaveTitle(/Trader Growth Institute Membership/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Think Like Capital");
+  await expect(page.locator(".membership-hero")).toContainText("46-item implementation path");
   await expect(page.locator(".offer-architecture-grid > *")).toHaveCount(3);
   await expect(page.locator("[data-membership-layer]")).toHaveCount(3);
   await expect(page.locator("[data-program-phase]")).toHaveCount(7);
+  await expect(page.locator(".release-timeline li")).toHaveCount(8);
+  await expect(page.locator(".desk-calendar > div")).toHaveCount(4);
+  await expect(page.locator(".access-rule-grid article")).toHaveCount(4);
+  await expect(page.locator(".membership-price-grid")).toContainText("$99");
+  await expect(page.locator(".membership-price-grid")).toContainText("$990");
 
   await page.locator('[data-membership-layer="1"]').click();
   await expect(page.locator("#layer-title")).toHaveText("Apply the doctrine to current markets.");
   await expect(page.locator("#layer-points li")).toHaveCount(3);
 
   await page.locator('[data-program-phase="6"]').click();
-  await expect(page.locator("#phase-title")).toHaveText("Capital Operator framework");
-  await expect(page.locator("#phase-outcomes li")).toHaveCount(3);
+  await expect(page.locator("#phase-title")).toHaveText("Capital Operator qualification");
+  await expect(page.locator("#phase-outcomes li")).toHaveCount(4);
+  await expect(page.locator("#phase-proof")).toContainText("90% final examination");
   await expect(page.locator("#enrollment button")).toBeDisabled();
-  await expect(page.locator("#enrollment")).toContainText("Verification required");
+  await expect(page.locator("#enrollment")).toContainText("Thinkific configuration");
+  await expect(page.locator("#enrollment")).toContainText("Pending");
 
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("membership.png"), fullPage: true });
@@ -150,6 +158,12 @@ test("membership separates curriculum, operating desk, and certification", async
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("membership-mobile.png"), fullPage: true });
   expect(errors).toEqual([]);
+});
+
+test("legacy member route reaches the canonical membership page", async ({ page }) => {
+  await page.goto("/member/");
+  await page.waitForURL(/\/membership\/$/);
+  await expect(page).toHaveTitle(/Trader Growth Institute Membership/);
 });
 
 test("mobile navigation and responsive controls work", async ({ page }, testInfo) => {

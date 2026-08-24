@@ -8,34 +8,76 @@
     {
       kicker: "Layer 01 / Core curriculum",
       title: "Build the Capital Operator foundation.",
-      summary: "A finite learning path establishes the doctrine before live market commentary adds complexity.",
-      points: ["Market structure and higher-timeframe authority", "Daily Zones, liquidity, and institutional inventory", "Risk architecture and authorized execution"],
+      summary: "A finite, fully produced learning path establishes the doctrine before current-market commentary adds complexity.",
+      points: ["26 doctrine lessons across seven phases", "Seven labs and seven 90% checkpoints", "Capstone, final examination, and completion certificate"],
       pulse: "18%",
     },
     {
       kicker: "Layer 02 / Operating desk",
       title: "Apply the doctrine to current markets.",
-      summary: "The recurring layer connects structured education to preparation without turning commentary into signals.",
-      points: ["Weekly market briefing and drivers", "Institutional watchlist and Daily Zone context", "Scenario conditions, invalidation, and no-trade logic"],
+      summary: "A scheduled desk connects education to preparation without turning commentary into signals or manufactured activity.",
+      points: ["Sunday Weekly Capital Brief", "Weekday Daily Desk Status", "Friday review and monthly Operator Clinic"],
       pulse: "50%",
     },
     {
       kicker: "Layer 03 / Review loop",
       title: "Convert decisions into evidence.",
       summary: "Review closes the gap between understanding the doctrine and consistently executing it under risk.",
-      points: ["Weekly Capital Review", "Trade reviews and process grading", "Member updates and documented lessons"],
+      points: ["Weekly Capital Review", "Trade compliance and process grading", "Separate CDZA™ readiness pathway"],
       pulse: "82%",
     },
   ];
 
   const phases = [
-    { kicker: "Phase 01", title: "Institutional foundation", description: "Replace prediction, excitement, and isolated setups with mandate, probability, and structured decision-making.", outcomes: ["Capital Operator identity", "Role clarity and operating mandate", "Preparation over prediction"] },
-    { kicker: "Phase 02", title: "Market structure", description: "Read higher-timeframe authority, market regime, liquidity, and the institutional cycle before evaluating a setup.", outcomes: ["Monthly–Weekly–Daily hierarchy", "Regime classification", "Liquidity and institutional intent"] },
-    { kicker: "Phase 03", title: "Daily Zones", description: "Locate the institutional inventory that gives lower-timeframe execution a defensible decision point.", outcomes: ["Supply and demand qualification", "Base and displacement", "Zone freshness and structural context"] },
-    { kicker: "Phase 04", title: "Risk architecture", description: "Define loss, concentration, drawdown, and payoff requirements before capital receives permission.", outcomes: ["The 1% Law™", "Correlation and exposure control", "Risk–reward engineering"] },
-    { kicker: "Phase 05", title: "Authorized execution", description: "Require the complete evidence sequence before converting a location into a trade decision.", outcomes: ["Compression break", "Controlled retest", "Impulse and invalidation"] },
-    { kicker: "Phase 06", title: "Portfolio thinking", description: "Assign each account a job and govern positions as connected capital exposures rather than isolated trades.", outcomes: ["Investor versus Cash Flow Desk", "Account mandate", "Portfolio-level capital allocation"] },
-    { kicker: "Phase 07", title: "Capital Operator framework", description: "Integrate preparation, execution, management, review, and preservation into one repeatable operating cycle.", outcomes: ["Weekly operating rhythm", "Capital preservation decisions", "Evidence-based scaling readiness"] },
+    {
+      kicker: "Phase 01 / Chapters 1–5",
+      title: "Institutional foundation",
+      description: "Replace prediction and reactive retail language with institutional evidence, Daily authority, and capital-based decision-making.",
+      outcomes: ["The Market Is Not Random", "Liquidity Governs Expansion", "Institutions vs. Retail Behavior", "The Clean Chart Doctrine", "The Law of Capital Footprints"],
+      proof: "Ten-chart evidence archive plus seven observation-only days.",
+    },
+    {
+      kicker: "Phase 02 / Chapters 6–9",
+      title: "Market structure",
+      description: "Learn to distinguish institutional inventory and unfinished business from ordinary chart movement.",
+      outcomes: ["Base and Institutional Inventory", "Displacement", "Inefficiency", "Fresh vs. Tested Inventory"],
+      proof: "Twenty-five-chart Institutional Footprint Archive.",
+    },
+    {
+      kicker: "Phase 03 / Chapters 10–11",
+      title: "Daily Zone architecture",
+      description: "Replace subjective rectangles with a repeatable grading and mapping process grounded in observable institutional evidence.",
+      outcomes: ["Zone Strength Grading™", "TGI Zone Score™", "Daily Zone Blueprint Method™"],
+      proof: "Grade 50 zones and build inventory maps for five markets.",
+    },
+    {
+      kicker: "Phase 04 / Chapters 16–20",
+      title: "Risk architecture",
+      description: "Define invalidation, position size, payoff, management, drawdown, and recovery before learning to deploy capital.",
+      outcomes: ["Structural Stop Placement", "The 1% Law", "Risk-to-Reward Engineering", "Trade Management Phases", "The Recovery Doctrine"],
+      proof: "Personal risk model, circuit breakers, and five-loss recovery audit.",
+    },
+    {
+      kicker: "Phase 05 / Chapters 12–15",
+      title: "Authorized execution",
+      description: "Require location, liquidity, compression, timing, and the full authorization sequence before converting evidence into action.",
+      outcomes: ["The Control Window™", "Liquidity Harvesting", "Compression Before Expansion", "The Expansion Trigger™"],
+      proof: "Twenty simulated authorized opportunities plus an Unauthorized Trade Log.",
+    },
+    {
+      kicker: "Phase 06 / Chapters 21–24",
+      title: "Capital operations",
+      description: "Govern preparation, watchlists, exposure, review, and cross-market application as one connected operating system.",
+      outcomes: ["Institutional Operating System™", "Capital Governance™", "Institutional Watchlist Construction", "Bitcoin and Cross-Market Application"],
+      proof: "Governance dashboard, four Weekly Capital Reviews, and twenty-session preservation log.",
+    },
+    {
+      kicker: "Phase 07 / Chapters 25–26",
+      title: "Capital Operator qualification",
+      description: "Convert doctrine into documented operating identity while keeping course completion separate from CDZA™ Certification.",
+      outcomes: ["CDZA™ Execution Standard", "Capital Operator Identity™", "Playbook and 50-trade Process Audit", "Capital Operator Constitution"],
+      proof: "Capstone, teach-back, 90% final examination, and CDZA™ readiness plan.",
+    },
   ];
 
   const layerButtons = $$('[data-membership-layer]');
@@ -72,6 +114,7 @@
       $("#phase-title").textContent = phase.title;
       $("#phase-description").textContent = phase.description;
       $("#phase-outcomes").innerHTML = phase.outcomes.map((outcome) => `<li>${outcome}</li>`).join("");
+      $("#phase-proof").textContent = phase.proof;
     });
   });
 })();

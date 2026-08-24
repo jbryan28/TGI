@@ -12,6 +12,7 @@ const pages = [
   "newsletter/index.html",
   "newsletter/welcome/index.html",
   "membership/index.html",
+  "member/index.html",
 ];
 
 const html = pages.map((path) => fs.readFileSync(path, "utf8")).join("\n");
