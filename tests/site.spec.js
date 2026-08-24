@@ -60,6 +60,7 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   await expect(page.locator('a[href="cdza/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="glossary/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="newsletter/"]')).not.toHaveCount(0);
+  await expect(page.locator('a[href="membership/"]')).not.toHaveCount(0);
 
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("homepage-full.png"), fullPage: true });
@@ -120,6 +121,37 @@ test("newsletter welcome route completes the conversion path", async ({ page }, 
   expect(errors).toEqual([]);
 });
 
+test("membership separates curriculum, operating desk, and certification", async ({ page }, testInfo) => {
+  const errors = captureErrors(page);
+  await page.goto("/membership/");
+  await expect(page).toHaveTitle(/Trader Growth Institute Membership/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Think Like Capital");
+  await expect(page.locator(".offer-architecture-grid > *")).toHaveCount(3);
+  await expect(page.locator("[data-membership-layer]")).toHaveCount(3);
+  await expect(page.locator("[data-program-phase]")).toHaveCount(7);
+
+  await page.locator('[data-membership-layer="1"]').click();
+  await expect(page.locator("#layer-title")).toHaveText("Apply the doctrine to current markets.");
+  await expect(page.locator("#layer-points li")).toHaveCount(3);
+
+  await page.locator('[data-program-phase="6"]').click();
+  await expect(page.locator("#phase-title")).toHaveText("Capital Operator framework");
+  await expect(page.locator("#phase-outcomes li")).toHaveCount(3);
+  await expect(page.locator("#enrollment button")).toBeDisabled();
+  await expect(page.locator("#enrollment")).toContainText("Verification required");
+
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("membership.png"), fullPage: true });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  await page.locator('[data-membership-layer="2"]').click();
+  await expect(page.locator("#layer-title")).toHaveText("Convert decisions into evidence.");
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("membership-mobile.png"), fullPage: true });
+  expect(errors).toEqual([]);
+});
+
 test("mobile navigation and responsive controls work", async ({ page }, testInfo) => {
   const errors = captureErrors(page);
   await page.setViewportSize({ width: 390, height: 844 });
@@ -163,7 +195,7 @@ test("legal routes are reachable and linked", async ({ page }, testInfo) => {
   for (const [route, heading] of routes) {
     await page.goto(route);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(heading);
-    await expect(page.locator("footer nav a")).toHaveCount(5);
+    await expect(page.locator("footer nav a")).toHaveCount(6);
   }
 
   await prepareFullPageCapture(page);

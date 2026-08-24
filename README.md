@@ -9,6 +9,7 @@ Institutional market-intelligence homepage and interactive capital-review tools 
 - Five-stage TGI Operating System explorer
 - Switchable Intelligence Briefing instruments
 - Dedicated `/newsletter/` conversion route with a three-desk issue explorer, one canonical signup location, Beehiiv-safe embed configuration, and a `/newsletter/welcome/` confirmation route
+- Dedicated `/membership/` route that separates the finite Capital Operator curriculum, recurring operating desk, and independent CDZA™ certification standard
 - Interactive Institutional Market Cycle scrubber
 - USDJPY base-to-displacement comparison slider
 - Responsive resource carousel
@@ -59,6 +60,17 @@ window.TGI_NEWSLETTER_CONFIG = Object.freeze({
 ```
 
 The integration accepts only HTTPS scripts hosted on a Beehiiv-owned domain and validates the form UUID before loading. Do not expose a private Beehiiv API key in client-side JavaScript. The attribution script forwards UTM acquisition context to Beehiiv.
+
+## Paid membership release gate
+
+The paid offer is intentionally distinct from the free **TGI Intelligence Briefing**:
+
+- **Free:** TGI Intelligence Briefing
+- **Paid:** Trader Growth Institute Membership
+- **Inside paid:** finite Capital Operator curriculum plus a recurring operating desk
+- **Separate standard:** CDZA™ Certification
+
+Enrollment remains disabled in the draft until the Thinkific course inventory, recurring delivery calendar, current price/billing terms, and member access rules are verified. Do not route paid traffic to the legacy Thinkific sales page while it contains an expired June 28, 2026 promise or unsupported deliverables.
 
 ## Publishing
 

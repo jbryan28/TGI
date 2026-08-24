@@ -11,11 +11,12 @@ const pages = [
   "cdza/journal/index.html",
   "newsletter/index.html",
   "newsletter/welcome/index.html",
+  "membership/index.html",
 ];
 
 const html = pages.map((path) => fs.readFileSync(path, "utf8")).join("\n");
 const ids = new Set([...html.matchAll(/id="([^"]+)"/g)].map((match) => match[1]));
-const javascript = ["app.js", "weekly-capital-review/review.js", "glossary/glossary.js", "cdza/cdza.js", "cdza/journal/journal.js", "newsletter/newsletter.js"]
+const javascript = ["app.js", "weekly-capital-review/review.js", "glossary/glossary.js", "cdza/cdza.js", "cdza/journal/journal.js", "newsletter/newsletter.js", "membership/membership.js"]
   .map((path) => fs.readFileSync(path, "utf8"))
   .join("\n");
 const referencedIds = [...javascript.matchAll(/\$\("#([A-Za-z0-9_-]+)"\)/g)].map((match) => match[1]);
