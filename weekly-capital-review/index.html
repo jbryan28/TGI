@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Use the Trader Growth Institute Weekly Capital Review to examine market regime, authorized opportunities, risk errors, emotional decisions, and lessons learned."
+    />
+    <meta name="theme-color" content="#080a0a" />
+    <title>Weekly Capital Review | Trader Growth Institute</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <script defer src="../app.js"></script>
+    <script defer src="review.js"></script>
+  </head>
+  <body class="review-page">
+    <a class="skip-link" href="#review-form">Skip to review</a>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="../" aria-label="Trader Growth Institute home">
+        <span class="brand-mark" aria-hidden="true">TGI</span>
+        <span class="brand-name">Trader Growth Institute</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span></span><span></span><span class="sr-only">Open navigation</span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="../newsletter/">Intelligence</a>
+        <a href="../membership/">Membership</a>
+        <a href="../#framework">Framework</a>
+        <a href="../#resources">Resources</a>
+        <a href="../cdza/">CDZA</a>
+        <a href="../glossary/">Glossary</a>
+      </nav>
+      <a class="button button-small button-outline header-cta" href="../newsletter/">Get the briefing</a>
+    </header>
+
+    <main>
+      <section class="review-hero">
+        <div class="review-hero-inner">
+          <div>
+            <p class="eyebrow">Trader Growth Institute</p>
+            <h1>Weekly Capital Review</h1>
+            <p>
+              Judge the quality of your decisions—not merely the result of your trades. Your answers save automatically in this browser.
+            </p>
+          </div>
+          <div class="review-week">
+            <label for="week-ending">Week ending</label>
+            <input id="week-ending" name="week_ending" type="date" form="review-form" />
+          </div>
+        </div>
+      </section>
+
+      <section class="review-shell" aria-label="Weekly capital review form">
+        <div class="review-toolbar" aria-label="Review actions">
+          <button type="button" id="print-review">Print / PDF</button>
+          <button type="button" id="export-review">Export review</button>
+          <button type="button" id="reset-review">Start over</button>
+        </div>
+
+        <form class="review-form" id="review-form">
+          <article class="review-card">
+            <div class="review-card-head">
+              <span class="review-number">01</span>
+              <div><h2>Market Regime</h2><p>Define the environment that governed price this week.</p></div>
+            </div>
+            <label class="sr-only" for="market-regime">Market regime</label>
+            <select id="market-regime" name="market_regime">
+              <option value="">Select the dominant regime</option>
+              <option>Accumulation</option>
+              <option>Liquidity Harvesting</option>
+              <option>Expansion</option>
+              <option>Capital Completion</option>
+              <option>Mixed / Transitional</option>
+            </select>
+          </article>
+
+          <article class="review-card">
+            <div class="review-card-head">
+              <span class="review-number">02</span>
+              <div><h2>Weekly Bias</h2><p>Record the authorized directional mandate.</p></div>
+            </div>
+            <div class="bias-options" role="radiogroup" aria-label="Weekly bias">
+              <label><input type="radio" name="weekly_bias" value="Bullish" /><span>Bullish</span></label>
+              <label><input type="radio" name="weekly_bias" value="Neutral" /><span>Neutral</span></label>
+              <label><input type="radio" name="weekly_bias" value="Bearish" /><span>Bearish</span></label>
+            </div>
+          </article>
+
+          <article class="review-card review-card-wide">
+            <div class="review-card-head">
+              <span class="review-number">03</span>
+              <div><h2>Authorized Opportunities</h2><p>Which opportunities satisfied your framework and capital mandate?</p></div>
+            </div>
+            <label class="sr-only" for="authorized-opportunities">Authorized opportunities</label>
+            <textarea id="authorized-opportunities" name="authorized_opportunities" placeholder="Instrument, regime, zone, confirmation, risk and outcome…"></textarea>
+          </article>
+
+          <article class="review-card">
+            <div class="review-card-head">
+              <span class="review-number">04</span>
+              <div><h2>Unauthorized Trades</h2><p>Document every trade that violated authority or mandate.</p></div>
+            </div>
+            <label class="sr-only" for="unauthorized-trades">Unauthorized trades</label>
+            <textarea id="unauthorized-trades" name="unauthorized_trades" placeholder="What rule was violated, and why did you proceed?"></textarea>
+          </article>
+
+          <article class="review-card">
+            <div class="review-card-head">
+              <span class="review-number">05</span>
+              <div><h2>Emotional Decisions</h2><p>Identify where emotion overruled process.</p></div>
+            </div>
+            <label class="sr-only" for="emotional-decisions">Emotional decisions</label>
+            <textarea id="emotional-decisions" name="emotional_decisions" placeholder="FOMO, revenge, hesitation, overconfidence or premature exits…"></textarea>
+          </article>
+
+          <article class="review-card">
+            <div class="review-card-head">
+              <span class="review-number">06</span>
+              <div><h2>Risk Management Errors</h2><p>Expose sizing, stop, correlation and management failures.</p></div>
+            </div>
+            <label class="sr-only" for="risk-errors">Risk management errors</label>
+            <textarea id="risk-errors" name="risk_management_errors" placeholder="Where did actual risk diverge from planned risk?"></textarea>
+          </article>
+
+          <article class="review-card">
+            <div class="review-card-head">
+              <span class="review-number">07</span>
+              <div><h2>Capital Preservation Decisions</h2><p>Credit decisions that protected capital, even without profit.</p></div>
+            </div>
+            <label class="sr-only" for="capital-preservation">Capital preservation decisions</label>
+            <textarea id="capital-preservation" name="capital_preservation_decisions" placeholder="Trades declined, risk reduced, profit secured or exposure avoided…"></textarea>
+          </article>
+
+          <article class="review-card review-card-wide">
+            <div class="review-card-head">
+              <span class="review-number">08</span>
+              <div><h2>Lessons Learned</h2><p>Convert this week into one specific operating improvement.</p></div>
+            </div>
+            <label class="sr-only" for="lessons-learned">Lessons learned</label>
+            <textarea id="lessons-learned" name="lessons_learned" placeholder="What will you repeat, stop or change next week?"></textarea>
+          </article>
+
+          <p class="save-status" id="save-status" role="status" aria-live="polite">Ready. Changes save automatically.</p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand" href="../"><span class="brand-mark" aria-hidden="true">TGI</span><span class="sr-only">Trader Growth Institute home</span></a>
+      <p>TraderGrowth.com</p>
+      <p class="footer-promise">Review the decision. Preserve the capital. Improve the operator.</p>
+      <nav aria-label="Footer navigation"><a href="../membership/">Membership</a><a href="../cdza/">CDZA</a><a href="../glossary/">Glossary</a><a href="../privacy/">Privacy</a><a href="../terms/">Terms</a><a href="../risk-disclosure/">Risk disclosure</a></nav>
+    </footer>
+  </body>
+</html>

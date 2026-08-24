@@ -1,2 +1,82 @@
-# TGI
-TGI Website
+# Trader Growth Institute
+
+Institutional market-intelligence homepage and interactive capital-review tools for TraderGrowth.com.
+
+## Included
+
+- Interactive Market Pulse for DXY, NAS100, and Gold
+- Expandable founder story and selectable authority principles
+- Five-stage TGI Operating System explorer
+- Switchable Intelligence Briefing instruments
+- Dedicated `/newsletter/` conversion route with a three-desk issue explorer, one canonical signup location, Beehiiv-safe embed configuration, and a `/newsletter/welcome/` confirmation route
+- Dedicated `/membership/` route that separates the 46-item Capital Operator Core, recurring operating desk, and independent CDZA™ certification standard
+- Legacy `/member/` redirect for the route printed in *The Daily Zone Command*
+- Interactive Institutional Market Cycle scrubber
+- USDJPY base-to-displacement comparison slider
+- Responsive resource carousel
+- Weekly Capital Review at `/weekly-capital-review/` with autosave, export, print, and reset controls
+- CDZA™ Execution Standard at `/cdza/`, grounded in Chapter 24 of *The Daily Zone Command*, with an interactive Compression → Displacement → Zone → Authorization sequence
+- Official CDZA™ Certification Journal at `/cdza/journal/` with a 20-trade ledger, Grade A–F scorecard controls, browser-local autosave, and print/PDF support
+- Interactive trading glossary at `/glossary/`
+- Privacy Policy, Terms of Use, and Trading Risk Disclosure routes
+- Automated interaction and screenshot QA in Chromium, Firefox, and WebKit
+
+## Run locally
+
+This is a dependency-free static site. Serve the project root with any local HTTP server:
+
+```bash
+python3 -m http.server 8080
+```
+
+Then open `http://localhost:8080`.
+
+## Quality checks
+
+The pull-request workflow runs static structure checks and the complete interaction suite in Chromium, Firefox, and WebKit. Browser reports, failure traces, and full-page screenshots are retained as GitHub Actions artifacts.
+
+```bash
+npm install
+npx playwright install chromium firefox webkit
+npm run check
+npm run test:e2e
+```
+
+## Newsletter and lead-capture configuration
+
+The briefing funnel deliberately refuses to imply that an email was captured until a real Beehiiv form exists. In Beehiiv, create and publish one **Regular / Inline** subscribe form for external websites, configure double opt-in as required, and set the successful-submission redirect to:
+
+```text
+https://www.tradergrowth.com/newsletter/welcome/
+```
+
+The live Beehiiv form and attribution scripts are configured in `newsletter/config.js`:
+
+```js
+window.TGI_NEWSLETTER_CONFIG = Object.freeze({
+  beehiivEmbedScriptUrl: "https://subscribe-forms.beehiiv.com/v3/loader.js",
+  beehiivFormId: "11ce4844-7014-4245-ae48-50f9805170b0",
+  beehiivAttributionScriptUrl: "https://subscribe-forms.beehiiv.com/attribution.js",
+});
+```
+
+The integration accepts only HTTPS scripts hosted on a Beehiiv-owned domain and validates the form UUID before loading. Do not expose a private Beehiiv API key in client-side JavaScript. The attribution script forwards UTM acquisition context to Beehiiv.
+
+## Paid membership release gate
+
+The paid offer is intentionally distinct from the free **TGI Intelligence Briefing**:
+
+- **Free:** TGI Intelligence Briefing
+- **Paid:** Trader Growth Institute Membership
+- **Inside paid:** 46-item Capital Operator Core plus a governed recurring operating desk
+- **Separate standard:** CDZA™ Certification
+
+The governing curriculum inventory, delivery calendar, $99 monthly launch price, cadence-gated $990 annual price, billing terms, access rules, and release gate are documented in `membership/THINKIFIC_PRODUCT_SPEC.md`. Enrollment remains disabled until the Thinkific build and end-to-end payment/access tests match that specification. Do not route paid traffic to the legacy Thinkific sales page while it contains an expired June 28, 2026 promise, uses the paid **Intelligence Briefing** name, or claims unsupported deliverables.
+
+The public enrollment button is controlled by `membership/config.js` and fails closed. Leave `enrollmentOpen` set to `false` until every item in `membership/THINKIFIC_LAUNCH_CHECKLIST.md` passes. When the verified Thinkific checkout is ready, set `checkoutUrl` to its final HTTPS URL and set `enrollmentOpen` to `true` in the same reviewed commit.
+
+## Publishing
+
+The repository is already configured for GitHub Pages at `www.tradergrowth.com`. The pull-request quality gate must pass before any production publishing workflow is enabled. Production deployment remains a separate, explicit release decision because this domain is live-facing rather than a staging URL.
+
+The legal pages are an operational draft grounded in current regulator guidance. Qualified counsel should approve the final policies before paid acquisition or broad public launch.
