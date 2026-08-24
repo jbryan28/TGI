@@ -66,8 +66,21 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   expect(errors).toEqual([]);
 });
 
-test("Intelligence Briefing presents one funnel and fails safely until Beehiiv is connected", async ({ page }, testInfo) => {
+test("Intelligence Briefing loads the configured Beehiiv form and attribution", async ({ page }, testInfo) => {
   const errors = captureErrors(page);
+  await page.route("https://subscribe-forms.beehiiv.com/v3/loader.js", async (route) => {
+    await route.fulfill({
+      contentType: "application/javascript",
+      body: `const source = document.currentScript;
+        const frame = document.createElement("iframe");
+        frame.title = "TGI Intelligence Briefing subscription form";
+        frame.dataset.beehiivForm = source.dataset.beehiivForm;
+        source.insertAdjacentElement("afterend", frame);`,
+    });
+  });
+  await page.route("https://subscribe-forms.beehiiv.com/attribution.js", async (route) => {
+    await route.fulfill({ contentType: "application/javascript", body: "window.beehiivAttributionLoaded = true;" });
+  });
   await page.goto("/newsletter/");
   await expect(page).toHaveTitle(/TGI Intelligence Briefing/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Enter the Trading Week");
@@ -77,9 +90,11 @@ test("Intelligence Briefing presents one funnel and fails safely until Beehiiv i
   await expect(page.locator("#desk-title")).toHaveText("Define where capital earns permission.");
   await expect(page.locator("#desk-points li")).toHaveCount(3);
 
-  await page.locator("#newsletter-email").fill("operator@example.com");
-  await page.locator("#newsletter-preview-form button").click();
-  await expect(page.locator("#newsletter-form-message")).toContainText("Beehiiv connection required");
+  await expect(page.locator('#beehiiv-embed-host script[data-beehiiv-form="11ce4844-7014-4245-ae48-50f9805170b0"]')).toHaveCount(1);
+  await expect(page.locator('#beehiiv-embed-host iframe[data-beehiiv-form="11ce4844-7014-4245-ae48-50f9805170b0"]')).toHaveCount(1);
+  await expect(page.locator("#newsletter-preview-form")).toBeHidden();
+  await expect(page.locator('script[data-newsletter-attribution="beehiiv"]')).toHaveCount(1);
+  await expect.poll(() => page.evaluate(() => window.beehiivAttributionLoaded)).toBe(true);
 
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("newsletter.png"), fullPage: true });

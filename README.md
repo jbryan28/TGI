@@ -48,15 +48,17 @@ The briefing funnel deliberately refuses to imply that an email was captured unt
 https://www.tradergrowth.com/newsletter/welcome/
 ```
 
-Copy the `src` URL from Beehiiv's generated one-line embed script into `newsletter/config.js`:
+The live Beehiiv form and attribution scripts are configured in `newsletter/config.js`:
 
 ```js
 window.TGI_NEWSLETTER_CONFIG = Object.freeze({
-  beehiivEmbedScriptUrl: "https://embeds.beehiiv.com/your-published-form.js",
+  beehiivEmbedScriptUrl: "https://subscribe-forms.beehiiv.com/v3/loader.js",
+  beehiivFormId: "11ce4844-7014-4245-ae48-50f9805170b0",
+  beehiivAttributionScriptUrl: "https://subscribe-forms.beehiiv.com/attribution.js",
 });
 ```
 
-The configured URL must use HTTPS and a Beehiiv-owned domain. Do not expose a private Beehiiv API key in client-side JavaScript. Use Beehiiv's approved embedded subscribe form and its optional attribution script for UTM forwarding.
+The integration accepts only HTTPS scripts hosted on a Beehiiv-owned domain and validates the form UUID before loading. Do not expose a private Beehiiv API key in client-side JavaScript. The attribution script forwards UTM acquisition context to Beehiiv.
 
 ## Publishing
 

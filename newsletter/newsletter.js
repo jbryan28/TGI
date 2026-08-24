@@ -66,7 +66,10 @@
   const fallbackForm = $("#newsletter-preview-form");
   const fallbackMessage = $("#newsletter-form-message");
   const embedHost = $("#beehiiv-embed-host");
-  const configuredUrl = window.TGI_NEWSLETTER_CONFIG?.beehiivEmbedScriptUrl?.trim();
+  const newsletterConfig = window.TGI_NEWSLETTER_CONFIG || {};
+  const configuredUrl = newsletterConfig.beehiivEmbedScriptUrl?.trim();
+  const configuredFormId = newsletterConfig.beehiivFormId?.trim();
+  const attributionUrl = newsletterConfig.beehiivAttributionScriptUrl?.trim();
 
   const isApprovedBeehiivUrl = (value) => {
     if (!value) return false;
@@ -78,20 +81,32 @@
     }
   };
 
-  if (isApprovedBeehiivUrl(configuredUrl) && embedHost && fallbackForm) {
+  const isValidFormId = (value) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value || "");
+
+  if (isApprovedBeehiivUrl(configuredUrl) && isValidFormId(configuredFormId) && embedHost && fallbackForm) {
     const script = document.createElement("script");
     script.src = configuredUrl;
     script.async = true;
     script.dataset.cfasync = "false";
+    script.dataset.beehiivForm = configuredFormId;
     script.addEventListener("load", () => {
       fallbackForm.hidden = true;
-      track("newsletter_embed_loaded", { provider: "beehiiv" });
+      track("newsletter_embed_loaded", { provider: "beehiiv", form_id: configuredFormId });
     });
     script.addEventListener("error", () => {
       fallbackMessage.textContent = "The secure signup form could not load. Please refresh and try again.";
       fallbackMessage.className = "form-message is-error";
     });
     embedHost.appendChild(script);
+  }
+
+  if (isApprovedBeehiivUrl(attributionUrl)) {
+    const attributionScript = document.createElement("script");
+    attributionScript.src = attributionUrl;
+    attributionScript.type = "text/javascript";
+    attributionScript.async = true;
+    attributionScript.dataset.newsletterAttribution = "beehiiv";
+    document.body.appendChild(attributionScript);
   }
 
   fallbackForm?.addEventListener("submit", (event) => {
@@ -106,7 +121,7 @@
       return;
     }
 
-    fallbackMessage.textContent = "Beehiiv connection required before this preview can capture your email.";
+    fallbackMessage.textContent = "The secure signup form is unavailable. Please refresh and try again.";
     fallbackMessage.classList.add("is-error");
   });
 })();
