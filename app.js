@@ -299,40 +299,4 @@
   });
   window.addEventListener("resize", renderResource);
 
-  const signupForm = $("#signup-form");
-  signupForm?.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const emailInput = $("#email");
-    const message = $("#form-message");
-    const endpoint = signupForm.dataset.endpoint;
-
-    message.className = "form-message";
-    if (!emailInput.validity.valid) {
-      message.textContent = "Enter a valid email address.";
-      message.classList.add("is-error");
-      emailInput.focus();
-      return;
-    }
-
-    if (!endpoint) {
-      message.textContent = "Briefing signup is awaiting the Beehiiv endpoint.";
-      message.classList.add("is-error");
-      return;
-    }
-
-    try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: emailInput.value.trim() }),
-      });
-      if (!response.ok) throw new Error("Subscription failed");
-      message.textContent = "You’re on the list. Watch your inbox for the next briefing.";
-      message.classList.add("is-success");
-      signupForm.reset();
-    } catch {
-      message.textContent = "We could not complete the signup. Please try again.";
-      message.classList.add("is-error");
-    }
-  });
 })();

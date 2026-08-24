@@ -59,9 +59,49 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   await expect(page.locator(".resource-card")).toHaveCount(5);
   await expect(page.locator('a[href="cdza/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="glossary/"]')).not.toHaveCount(0);
+  await expect(page.locator('a[href="newsletter/"]')).not.toHaveCount(0);
 
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("homepage-full.png"), fullPage: true });
+  expect(errors).toEqual([]);
+});
+
+test("Intelligence Briefing presents one funnel and fails safely until Beehiiv is connected", async ({ page }, testInfo) => {
+  const errors = captureErrors(page);
+  await page.goto("/newsletter/");
+  await expect(page).toHaveTitle(/TGI Intelligence Briefing/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Enter the Trading Week");
+  await expect(page.locator("[data-briefing-desk]")).toHaveCount(3);
+
+  await page.locator('[data-briefing-desk="1"]').click();
+  await expect(page.locator("#desk-title")).toHaveText("Define where capital earns permission.");
+  await expect(page.locator("#desk-points li")).toHaveCount(3);
+
+  await page.locator("#newsletter-email").fill("operator@example.com");
+  await page.locator("#newsletter-preview-form button").click();
+  await expect(page.locator("#newsletter-form-message")).toContainText("Beehiiv connection required");
+
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("newsletter.png"), fullPage: true });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  await page.locator('[data-briefing-desk="2"]').click();
+  await expect(page.locator("#desk-title")).toHaveText("Know when participation is unauthorized.");
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("newsletter-mobile.png"), fullPage: true });
+  expect(errors).toEqual([]);
+});
+
+test("newsletter welcome route completes the conversion path", async ({ page }, testInfo) => {
+  const errors = captureErrors(page);
+  await page.goto("/newsletter/welcome/");
+  await expect(page).toHaveTitle(/Welcome to the Briefing/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("You are inside the briefing.");
+  await expect(page.locator(".welcome-next article")).toHaveCount(3);
+  await expect(page.locator('a[href="../../weekly-capital-review/"]')).not.toHaveCount(0);
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("newsletter-welcome.png"), fullPage: true });
   expect(errors).toEqual([]);
 });
 

@@ -8,6 +8,7 @@ Institutional market-intelligence homepage and interactive capital-review tools 
 - Expandable founder story and selectable authority principles
 - Five-stage TGI Operating System explorer
 - Switchable Intelligence Briefing instruments
+- Dedicated `/newsletter/` conversion route with a three-desk issue explorer, one canonical signup location, Beehiiv-safe embed configuration, and a `/newsletter/welcome/` confirmation route
 - Interactive Institutional Market Cycle scrubber
 - USDJPY base-to-displacement comparison slider
 - Responsive resource carousel
@@ -39,17 +40,23 @@ npm run check
 npm run test:e2e
 ```
 
-## Lead-capture configuration
+## Newsletter and lead-capture configuration
 
-The briefing form deliberately refuses to imply that an email was captured until a real endpoint exists. Add the Beehiiv or first-party subscription endpoint to the form as a `data-endpoint` attribute:
+The briefing funnel deliberately refuses to imply that an email was captured until a real Beehiiv form exists. In Beehiiv, create and publish one **Regular / Inline** subscribe form for external websites, configure double opt-in as required, and set the successful-submission redirect to:
 
-```html
-<form id="signup-form" data-endpoint="https://your-secure-subscription-endpoint.example">
+```text
+https://www.tradergrowth.com/newsletter/welcome/
 ```
 
-The endpoint must accept a JSON `POST` body containing `{ "email": "..." }` and return a successful HTTP status.
+Copy the `src` URL from Beehiiv's generated one-line embed script into `newsletter/config.js`:
 
-Do not expose a private Beehiiv API key in client-side JavaScript. Use a serverless function or Beehiiv's approved embedded subscription form.
+```js
+window.TGI_NEWSLETTER_CONFIG = Object.freeze({
+  beehiivEmbedScriptUrl: "https://embeds.beehiiv.com/your-published-form.js",
+});
+```
+
+The configured URL must use HTTPS and a Beehiiv-owned domain. Do not expose a private Beehiiv API key in client-side JavaScript. Use Beehiiv's approved embedded subscribe form and its optional attribution script for UTM forwarding.
 
 ## Publishing
 
