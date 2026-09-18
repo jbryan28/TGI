@@ -38,7 +38,7 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   const errors = captureErrors(page);
   await page.goto("/");
   await expectStylesApplied(page);
-  await expect(page).toHaveTitle(/Trader Growth Institute/);
+  await expect(page).toHaveTitle(/TGI Intelligence Briefing/);
 
   await page.locator('[data-hero-market="NAS100"]').click();
   await expect(page.locator("#hero-symbol")).toHaveText("NAS100");
