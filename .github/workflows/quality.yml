@@ -1,0 +1,36 @@
+name: Cross-browser quality
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  playwright:
+    name: Chromium, Firefox and WebKit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+      - name: Install test dependency
+        run: npm install --no-audit --no-fund
+      - name: Install browser engines
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Run static checks
+        run: npm run check
+      - name: Run cross-browser tests
+        run: npm run test:e2e
+      - name: Upload browser report and screenshots
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 30
