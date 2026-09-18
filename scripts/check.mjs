@@ -12,6 +12,7 @@ const pages = [
   "cdza/journal/index.html",
   "newsletter/index.html",
   "newsletter/welcome/index.html",
+  "daily-zone-command/index.html",
   "membership/index.html",
   "member/index.html",
 ];

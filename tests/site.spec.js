@@ -64,7 +64,8 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
 
   await page.locator(".founder-story summary").click();
   await expect(page.locator(".founder-story")).toHaveAttribute("open", "");
-  await expect(page.locator(".resource-card")).toHaveCount(5);
+  await expect(page.locator(".resource-card")).toHaveCount(6);
+  await expect(page.locator('a[href="daily-zone-command/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="cdza/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="glossary/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="newsletter/"]')).not.toHaveCount(0);
@@ -126,6 +127,28 @@ test("newsletter welcome route completes the conversion path", async ({ page }, 
   await expect(page.locator('a[href="../../weekly-capital-review/"]')).not.toHaveCount(0);
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("newsletter-welcome.png"), fullPage: true });
+  expect(errors).toEqual([]);
+});
+
+test("Daily Zone Command presents the book without displacing the newsletter path", async ({ page }, testInfo) => {
+  const errors = captureErrors(page);
+  await page.goto("/daily-zone-command/");
+  await expectStylesApplied(page);
+  await expect(page).toHaveTitle(/Daily Zone Command/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("The Daily Zone Command");
+  await expect(page.locator('[data-amazon-cta="hero"]')).toHaveAttribute("href", "https://www.amazon.com/dp/B0HDRCR2JS");
+  await expect(page.locator('[data-amazon-cta="final"]')).toHaveAttribute("href", "https://www.amazon.com/dp/B0HDRCR2JS");
+  await expect(page.locator('.book-page a[href="../newsletter/"]')).not.toHaveCount(0);
+  await expect(page.locator(".book-doctrine-card")).toHaveCount(4);
+  await expect(page.locator(".book-sequence li")).toHaveCount(5);
+
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("daily-zone-command.png"), fullPage: true });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("daily-zone-command-mobile.png"), fullPage: true });
   expect(errors).toEqual([]);
 });
 
