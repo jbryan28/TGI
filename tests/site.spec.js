@@ -68,7 +68,7 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   await expect(page.locator('a[href="cdza/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="glossary/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="newsletter/"]')).not.toHaveCount(0);
-  await expect(page.locator('a[href="membership/"]')).not.toHaveCount(0);
+  await expect(page.locator('a[href="membership/"]')).toHaveCount(0);
 
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("homepage-full.png"), fullPage: true });
@@ -198,10 +198,10 @@ test("membership checkout opens only through the reviewed configuration switch",
   await expect(page.locator("#thinkific-status")).toHaveText("Open");
 });
 
-test("legacy member route reaches the canonical membership page", async ({ page }) => {
+test("legacy member route feeds the newsletter-first launch", async ({ page }) => {
   await page.goto("/member/");
-  await page.waitForURL(/\/membership\/$/);
-  await expect(page).toHaveTitle(/Trader Growth Institute Membership/);
+  await page.waitForURL(/\/newsletter\/$/);
+  await expect(page).toHaveTitle(/TGI Intelligence Briefing/);
 });
 
 test("mobile navigation and responsive controls work", async ({ page }, testInfo) => {

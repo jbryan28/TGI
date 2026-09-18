@@ -81,4 +81,22 @@ if (missingLinks.length) {
   throw new Error(`Broken local references:\n${missingLinks.join("\n")}`);
 }
 
-console.log(`Static checks passed for ${pages.length} routes, ${new Set(referencedIds).size} interactive DOM references, ${openingBraces} CSS blocks, and all local links.`);
+const newsletterFirstPages = pages.filter((page) => page !== "membership/index.html");
+const exposedMembershipLinks = newsletterFirstPages.filter((page) =>
+  /href="(?:\.\.\/)*membership\//.test(fs.readFileSync(page, "utf8")),
+);
+
+if (exposedMembershipLinks.length) {
+  throw new Error(`Newsletter-first release exposes membership links on: ${exposedMembershipLinks.join(", ")}`);
+}
+
+const homepage = fs.readFileSync("index.html", "utf8");
+const newsletterPage = fs.readFileSync("newsletter/index.html", "utf8");
+for (const requiredPhrase of ["Economic context", "Technical context", "Risk discipline"]) {
+  if (!homepage.includes(requiredPhrase)) throw new Error(`Homepage is missing newsletter promise: ${requiredPhrase}`);
+}
+for (const requiredPhrase of ["Economic regime", "Technical structure", "High-impact calendar", "Scenarios &amp; invalidation"]) {
+  if (!newsletterPage.includes(requiredPhrase)) throw new Error(`Newsletter page is missing issue component: ${requiredPhrase}`);
+}
+
+console.log(`Static checks passed for ${pages.length} routes, ${new Set(referencedIds).size} interactive DOM references, ${openingBraces} CSS blocks, all local links, and the newsletter-first release gate.`);

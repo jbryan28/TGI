@@ -79,4 +79,15 @@ The public enrollment button is controlled by `membership/config.js` and fails c
 
 The repository is already configured for GitHub Pages at `www.tradergrowth.com`. The pull-request quality gate must pass before any production publishing workflow is enabled. Production deployment remains a separate, explicit release decision because this domain is live-facing rather than a staging URL.
 
+### Current public release mode
+
+The public site is newsletter-first while the paid course is produced:
+
+- Every public acquisition path leads to the free TGI Intelligence Briefing.
+- The briefing promises weekly economic context, technical structure, high-impact risk events, and conditional scenarios.
+- `/membership/` is excluded from search indexing and enrollment remains fail-closed.
+- The legacy `/member/` route sends book readers to the newsletter until the complete member experience is ready.
+
+Restore public membership navigation only in the same reviewed release that activates a verified checkout and completed Day 0 experience.
+
 The legal pages are an operational draft grounded in current regulator guidance. Qualified counsel should approve the final policies before paid acquisition or broad public launch.
