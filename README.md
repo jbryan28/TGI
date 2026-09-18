@@ -77,7 +77,7 @@ The public enrollment button is controlled by `membership/config.js` and fails c
 
 ## Publishing
 
-The repository is already configured for GitHub Pages at `www.tradergrowth.com`. The pull-request quality gate must pass before any production publishing workflow is enabled. Production deployment remains a separate, explicit release decision because this domain is live-facing rather than a staging URL.
+The repository publishes the verified `main` branch to GitHub Pages at `www.tradergrowth.com`. Every production push must pass the static release gate and the complete Chromium, Firefox, and WebKit interaction suite before the deployment job can run.
 
 ### Current public release mode
 
