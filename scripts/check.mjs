@@ -12,6 +12,7 @@ const pages = [
   "cdza/journal/index.html",
   "newsletter/index.html",
   "newsletter/welcome/index.html",
+  "dzc/index.html",
   "daily-zone-command/index.html",
   "membership/index.html",
   "member/index.html",
@@ -55,7 +56,9 @@ const resolveLocalTarget = (page, reference) => {
   const [targetPath, fragment] = reference.split("#", 2);
   if (!targetPath) return { file: page, fragment };
 
-  const resolved = path.normalize(path.join(path.dirname(page), targetPath));
+  const resolved = targetPath.startsWith("/")
+    ? path.normalize(targetPath.slice(1))
+    : path.normalize(path.join(path.dirname(page), targetPath));
   if (path.extname(resolved)) return { file: resolved, fragment };
   return { file: path.join(resolved, "index.html"), fragment };
 };
@@ -93,6 +96,33 @@ if (exposedMembershipLinks.length) {
 
 const homepage = fs.readFileSync("index.html", "utf8");
 const newsletterPage = fs.readFileSync("newsletter/index.html", "utf8");
+const bookPage = fs.readFileSync("dzc/index.html", "utf8");
+const legacyBookPage = fs.readFileSync("daily-zone-command/index.html", "utf8");
+
+if (/Series\s*(?:7|66)|7\s*(?:&amp;|&)\s*66/i.test(html)) {
+  throw new Error("Former Series 7/66 language remains in the published site.");
+}
+
+const incorrectBrandLinks = pages.filter((page) => {
+  const content = fs.readFileSync(page, "utf8");
+  return [...content.matchAll(/<a class="brand" href="([^"]+)"/g)].some((match) => match[1] !== "/");
+});
+
+if (incorrectBrandLinks.length) {
+  throw new Error(`Brand logos do not point to the homepage on: ${incorrectBrandLinks.join(", ")}`);
+}
+
+if (!homepage.includes('<nav class="site-nav" id="site-nav" aria-label="Primary navigation">') || !homepage.includes('<a href="dzc/">Book</a>')) {
+  throw new Error("Homepage primary navigation is missing the DZC book link.");
+}
+
+if (!bookPage.includes('href="https://www.tradergrowth.com/dzc/"') || !bookPage.includes('src="../assets/jay-bryan-dzc-author.webp"')) {
+  throw new Error("The DZC page is missing its canonical URL or new author image.");
+}
+
+if (!legacyBookPage.includes('url=/dzc/') || !legacyBookPage.includes('window.location.replace("/dzc/"')) {
+  throw new Error("The legacy book route does not redirect to /dzc/.");
+}
 for (const requiredPhrase of ["Economic context", "Technical context", "Risk discipline"]) {
   if (!homepage.includes(requiredPhrase)) throw new Error(`Homepage is missing newsletter promise: ${requiredPhrase}`);
 }
