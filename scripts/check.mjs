@@ -120,8 +120,12 @@ if (!bookPage.includes('href="https://www.tradergrowth.com/dzc/"') || !bookPage.
   throw new Error("The DZC page is missing its canonical URL, author image, or current book image.");
 }
 
-if (!css.includes("body.nav-open .site-header.is-scrolled") || !css.includes("height: 100dvh") || !css.includes("background: var(--ink)")) {
+if (!css.includes("body.nav-open .site-header.is-scrolled") || !css.includes("min-height: 100dvh") || !css.includes("background: var(--ink)")) {
   throw new Error("The mobile navigation does not enforce an opaque, viewport-height scrolled state.");
+}
+
+if (!javascript.includes("document.body.appendChild(siteNav)") || !javascript.includes("restoreNavigation")) {
+  throw new Error("The mobile navigation is not portaled outside the scrolled header containing block.");
 }
 
 if (!legacyBookPage.includes('url=/dzc/') || !legacyBookPage.includes('window.location.replace("/dzc/"')) {

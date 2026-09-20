@@ -7,6 +7,19 @@
   const header = $("[data-header]");
   const navToggle = $(".nav-toggle");
   const siteNav = $("#site-nav");
+  const navHome = siteNav ? { parent: siteNav.parentNode, nextSibling: siteNav.nextSibling } : null;
+
+  const restoreNavigation = () => {
+    if (!siteNav || !navHome || siteNav.parentNode === navHome.parent) return;
+    navHome.parent.insertBefore(siteNav, navHome.nextSibling);
+  };
+
+  const closeNavigation = () => {
+    navToggle?.setAttribute("aria-expanded", "false");
+    siteNav?.classList.remove("is-open");
+    document.body.classList.remove("nav-open");
+    restoreNavigation();
+  };
 
   const setHeaderState = () => header?.classList.toggle("is-scrolled", window.scrollY > 24);
   setHeaderState();
@@ -14,17 +27,25 @@
 
   navToggle?.addEventListener("click", () => {
     const isOpen = navToggle.getAttribute("aria-expanded") === "true";
+    if (!isOpen && siteNav) document.body.appendChild(siteNav);
     navToggle.setAttribute("aria-expanded", String(!isOpen));
     siteNav?.classList.toggle("is-open", !isOpen);
     document.body.classList.toggle("nav-open", !isOpen);
+    if (isOpen) restoreNavigation();
   });
 
   $$("a", siteNav).forEach((link) => {
     link.addEventListener("click", () => {
-      navToggle?.setAttribute("aria-expanded", "false");
-      siteNav?.classList.remove("is-open");
-      document.body.classList.remove("nav-open");
+      closeNavigation();
     });
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeNavigation();
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 900) closeNavigation();
   });
 
   const revealItems = $$(".reveal");

@@ -255,6 +255,8 @@ test("mobile navigation and responsive controls work", async ({ page }, testInfo
   await expect(page.locator("[data-header]")).toHaveClass(/is-scrolled/);
   const scrolledToggle = page.locator(".nav-toggle");
   await scrolledToggle.click();
+  await expect(page.locator("body > #site-nav")).toHaveClass(/is-open/);
+  await page.waitForTimeout(400);
   const menuGeometry = await page.locator("#site-nav").evaluate((menu) => {
     const rect = menu.getBoundingClientRect();
     const links = [...menu.querySelectorAll("a")].map((link) => {

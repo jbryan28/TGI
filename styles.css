@@ -4292,10 +4292,12 @@ h2 {
 @media (max-width: 900px) {
   body.nav-open .site-header,
   body.nav-open .site-header.is-scrolled {
+    z-index: 103;
     border-color: var(--line-dark);
     background: var(--ink);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+    transition: none;
   }
 
   .site-header {
@@ -4344,7 +4346,7 @@ h2 {
     flex-direction: column;
     gap: 1.5rem;
     min-height: 100vh;
-    height: 100dvh;
+    min-height: 100dvh;
     padding: calc(var(--header-height) + 1.5rem) 1.5rem 2rem;
     overflow-y: auto;
     overscroll-behavior: contain;
