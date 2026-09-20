@@ -139,7 +139,7 @@ test("Daily Zone Command presents the book without displacing the newsletter pat
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("The Daily Zone Command");
   await expect(page.locator('[data-amazon-cta="hero"]')).toHaveAttribute("href", "https://www.amazon.com/dp/B0HDRCR2JS");
   await expect(page.locator('[data-amazon-cta="final"]')).toHaveAttribute("href", "https://www.amazon.com/dp/B0HDRCR2JS");
-  await expect(page.locator('.book-cover-crop img')).toHaveAttribute("src", "../assets/daily-zone-command-book.webp");
+  await expect(page.locator('.book-cover-crop img')).toHaveAttribute("src", "../assets/daily-zone-command-book-transparent.webp");
   await expect(page.locator('.book-page a[href="../newsletter/"]')).not.toHaveCount(0);
   await expect(page.locator('.book-author-image img')).toHaveAttribute("src", "../assets/jay-bryan-dzc-author.webp");
   await expect(page.locator("body")).not.toContainText(/Series 7|Series 66|7 & 66/);

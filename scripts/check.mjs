@@ -116,7 +116,7 @@ if (!homepage.includes('<nav class="site-nav" id="site-nav" aria-label="Primary 
   throw new Error("Homepage primary navigation is missing the DZC book link.");
 }
 
-if (!bookPage.includes('href="https://www.tradergrowth.com/dzc/"') || !bookPage.includes('src="../assets/jay-bryan-dzc-author.webp"') || !bookPage.includes('src="../assets/daily-zone-command-book.webp"')) {
+if (!bookPage.includes('href="https://www.tradergrowth.com/dzc/"') || !bookPage.includes('src="../assets/jay-bryan-dzc-author.webp"') || !bookPage.includes('src="../assets/daily-zone-command-book-transparent.webp"')) {
   throw new Error("The DZC page is missing its canonical URL, author image, or current book image.");
 }
 
