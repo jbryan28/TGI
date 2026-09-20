@@ -116,8 +116,16 @@ if (!homepage.includes('<nav class="site-nav" id="site-nav" aria-label="Primary 
   throw new Error("Homepage primary navigation is missing the DZC book link.");
 }
 
-if (!bookPage.includes('href="https://www.tradergrowth.com/dzc/"') || !bookPage.includes('src="../assets/jay-bryan-dzc-author.webp"')) {
-  throw new Error("The DZC page is missing its canonical URL or new author image.");
+if (!bookPage.includes('href="https://www.tradergrowth.com/dzc/"') || !bookPage.includes('src="../assets/jay-bryan-dzc-author.webp"') || !bookPage.includes('src="../assets/daily-zone-command-book.webp"')) {
+  throw new Error("The DZC page is missing its canonical URL, author image, or current book image.");
+}
+
+if (!css.includes("body.nav-open .site-header.is-scrolled") || !css.includes("min-height: 100dvh") || !css.includes("background: var(--ink)")) {
+  throw new Error("The mobile navigation does not enforce an opaque, viewport-height scrolled state.");
+}
+
+if (!javascript.includes("document.body.appendChild(siteNav)") || !javascript.includes("restoreNavigation")) {
+  throw new Error("The mobile navigation is not portaled outside the scrolled header containing block.");
 }
 
 if (!legacyBookPage.includes('url=/dzc/') || !legacyBookPage.includes('window.location.replace("/dzc/"')) {

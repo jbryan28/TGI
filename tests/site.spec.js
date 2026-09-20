@@ -139,6 +139,7 @@ test("Daily Zone Command presents the book without displacing the newsletter pat
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("The Daily Zone Command");
   await expect(page.locator('[data-amazon-cta="hero"]')).toHaveAttribute("href", "https://www.amazon.com/dp/B0HDRCR2JS");
   await expect(page.locator('[data-amazon-cta="final"]')).toHaveAttribute("href", "https://www.amazon.com/dp/B0HDRCR2JS");
+  await expect(page.locator('.book-cover-crop img')).toHaveAttribute("src", "../assets/daily-zone-command-book.webp");
   await expect(page.locator('.book-page a[href="../newsletter/"]')).not.toHaveCount(0);
   await expect(page.locator('.book-author-image img')).toHaveAttribute("src", "../assets/jay-bryan-dzc-author.webp");
   await expect(page.locator("body")).not.toContainText(/Series 7|Series 66|7 & 66/);
@@ -248,6 +249,33 @@ test("mobile navigation and responsive controls work", async ({ page }, testInfo
   await toggle.click();
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("homepage-mobile.png"), fullPage: true });
+
+  await page.goto("/terms/");
+  await page.evaluate(() => window.scrollTo(0, Math.floor(document.body.scrollHeight * 0.55)));
+  await expect(page.locator("[data-header]")).toHaveClass(/is-scrolled/);
+  const scrolledToggle = page.locator(".nav-toggle");
+  await scrolledToggle.click();
+  await expect(page.locator("body > #site-nav")).toHaveClass(/is-open/);
+  await page.waitForTimeout(400);
+  const menuGeometry = await page.locator("#site-nav").evaluate((menu) => {
+    const rect = menu.getBoundingClientRect();
+    const links = [...menu.querySelectorAll("a")].map((link) => {
+      const linkRect = link.getBoundingClientRect();
+      return { top: linkRect.top, bottom: linkRect.bottom };
+    });
+    return {
+      top: rect.top,
+      bottom: rect.bottom,
+      viewportHeight: window.innerHeight,
+      background: getComputedStyle(menu).backgroundColor,
+      links,
+    };
+  });
+  expect(menuGeometry.top).toBeLessThanOrEqual(1);
+  expect(menuGeometry.bottom).toBeGreaterThanOrEqual(menuGeometry.viewportHeight - 1);
+  expect(menuGeometry.background).toBe("rgb(8, 10, 10)");
+  expect(menuGeometry.links.every(({ top, bottom }) => top >= 0 && bottom <= menuGeometry.viewportHeight)).toBe(true);
+  await page.screenshot({ path: testInfo.outputPath("mobile-navigation-scrolled.png") });
   expect(errors).toEqual([]);
 });
 
