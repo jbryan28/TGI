@@ -158,7 +158,7 @@
 .book-cover-crop {
   position: relative;
   z-index: 2;
-  aspect-ratio: 0.73;
+  aspect-ratio: 2 / 3;
   overflow: hidden;
   border: 1px solid rgba(224, 180, 89, 0.55);
   background: #071008;
@@ -177,11 +177,10 @@
 
 .book-cover-crop img {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: auto;
-  max-width: none;
+  inset: 0;
+  width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 .book-cover-shadow {
@@ -4291,6 +4290,14 @@ h2 {
 }
 
 @media (max-width: 900px) {
+  body.nav-open .site-header,
+  body.nav-open .site-header.is-scrolled {
+    border-color: var(--line-dark);
+    background: var(--ink);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
   .site-header {
     grid-template-columns: 1fr auto;
   }
@@ -4336,7 +4343,12 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    background: rgba(8, 10, 10, 0.97);
+    min-height: 100vh;
+    height: 100dvh;
+    padding: calc(var(--header-height) + 1.5rem) 1.5rem 2rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--ink);
     opacity: 0;
     visibility: hidden;
     transform: translateY(-12px);
