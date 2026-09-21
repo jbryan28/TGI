@@ -138,4 +138,18 @@ for (const requiredPhrase of ["Economic regime", "Technical structure", "High-im
   if (!newsletterPage.includes(requiredPhrase)) throw new Error(`Newsletter page is missing issue component: ${requiredPhrase}`);
 }
 
-console.log(`Static checks passed for ${pages.length} routes, ${new Set(referencedIds).size} interactive DOM references, ${openingBraces} CSS blocks, all local links, and the newsletter-first release gate.`);
+const bimiLogo = fs.readFileSync("assets/bimi/tgi-logo.svg", "utf8");
+for (const requiredMarkup of ['version="1.2"', 'baseProfile="tiny-ps"', 'width="96"', 'height="96"', "<title>", "<desc>"]) {
+  if (!bimiLogo.includes(requiredMarkup)) throw new Error(`BIMI logo is missing required markup: ${requiredMarkup}`);
+}
+if (/<script\b|<image\b|\bhref=|\bxlink:href=/i.test(bimiLogo)) {
+  throw new Error("BIMI logo contains disallowed scripts or external references.");
+}
+if (fs.existsSync("assets/bimi/tgi-mark-certificate.pem")) {
+  const certificate = fs.readFileSync("assets/bimi/tgi-mark-certificate.pem", "utf8");
+  if (!certificate.includes("-----BEGIN CERTIFICATE-----") || !certificate.includes("-----END CERTIFICATE-----")) {
+    throw new Error("The BIMI mark certificate path contains an invalid PEM file.");
+  }
+}
+
+console.log(`Static checks passed for ${pages.length} routes, ${new Set(referencedIds).size} interactive DOM references, ${openingBraces} CSS blocks, all local links, the BIMI asset contract, and the newsletter-first release gate.`);

@@ -96,6 +96,8 @@ test("Intelligence Briefing loads the configured Beehiiv form and attribution", 
   await expect(page).toHaveTitle(/TGI Intelligence Briefing/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Enter the Trading Week");
   await expect(page.locator("[data-briefing-desk]")).toHaveCount(3);
+  await expect(page.locator(".newsletter-founder-image img")).toHaveAttribute("src", "../assets/jay-bryan-newsletter.webp");
+  await expect(page.locator('[data-newsletter-cta="founder"]')).toHaveAttribute("href", "#subscribe");
 
   await page.locator('[data-briefing-desk="1"]').click();
   await expect(page.locator("#desk-title")).toHaveText("Define where capital earns permission.");
