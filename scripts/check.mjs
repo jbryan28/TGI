@@ -102,6 +102,10 @@ const cotData = JSON.parse(fs.readFileSync("cot/data/cot.json", "utf8"));
 const bookPage = fs.readFileSync("dzc/index.html", "utf8");
 const legacyBookPage = fs.readFileSync("daily-zone-command/index.html", "utf8");
 const macroPage = fs.readFileSync("macro/index.html", "utf8");
+const macroNews = fs.readFileSync("macro/news.js", "utf8");
+const macroStyles = fs.readFileSync("macro/macro.css", "utf8");
+const macroUpdater = fs.readFileSync("scripts/update-macro-news.mjs", "utf8");
+const macroCache = JSON.parse(fs.readFileSync("macro/data/headlines.json", "utf8"));
 
 if (/Series\s*(?:7|66)|7\s*(?:&amp;|&)\s*66/i.test(html)) {
   throw new Error("Former Series 7/66 language remains in the published site.");
@@ -146,8 +150,14 @@ if (!Array.isArray(cotData.markets) || cotData.markets.length !== 15) {
   throw new Error(`COT dataset must contain 15 markets; found ${cotData.markets?.length ?? 0}.`);
 }
 
-for (const requiredPhrase of ["LIVE HEADLINE STREAM", "api.gdeltproject.org/api/v2/doc/doc", "refreshIntervalMs = 15 * 60 * 1000", "official sources", "This public aggregator is not a licensed real-time terminal", "Federal Reserve", "BLS schedule"]) {
-  if (!macroPage.includes(requiredPhrase) && !fs.readFileSync("macro/news.js", "utf8").includes(requiredPhrase)) throw new Error(`Macro Desk live portal is missing required integration/content: ${requiredPhrase}`);
+for (const requiredPhrase of ["LIVE HEADLINE STREAM", "./data/headlines.json", "refreshIntervalMs = 15 * 60 * 1000", "cached from verified sources", "not a licensed real-time terminal", "Federal Reserve", "BLS schedule"]) {
+  if (![macroPage, macroNews, macroUpdater].some((content) => content.includes(requiredPhrase))) throw new Error(`Macro Desk live portal is missing required integration/content: ${requiredPhrase}`);
+}
+if (!Array.isArray(macroCache.articles) || !Array.isArray(macroCache.sources)) {
+  throw new Error("The Macro Desk same-origin cache has an invalid schema.");
+}
+if (!macroStyles.includes("padding-top: var(--header-height)") || !macroStyles.includes("grid-template-columns: auto auto minmax(0, 1fr) auto")) {
+  throw new Error("The Macro Desk does not reserve fixed-header space or protect the headline banner layout.");
 }
 if (/September 28\s*–\s*October 2|CONCEPT PREVIEW|FEED CONNECTION: NOT CONFIGURED/.test(macroPage)) {
   throw new Error("The Macro Desk still includes stale preview labeling or a hard-coded sample week.");
