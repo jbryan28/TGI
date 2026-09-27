@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "check": "node scripts/check.mjs",
+    "update:macro": "node scripts/update-macro-news.mjs",
     "update:cot": "node scripts/update-cot.mjs",
     "test:e2e": "playwright test"
   },
