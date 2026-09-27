@@ -1,0 +1,42 @@
+name: Refresh CFTC positioning data
+
+on:
+  schedule:
+    - cron: "5 21 * * 5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cot-data-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Import and validate COT report
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Download official CFTC records
+        run: npm run update:cot
+      - name: Validate the complete site
+        run: npm run check
+      - name: Commit updated report
+        run: |
+          if git diff --quiet -- cot/data/cot.json; then
+            echo "COT dataset is already current."
+            exit 0
+          fi
+          git config user.name "TGI Data Desk"
+          git config user.email "actions@users.noreply.github.com"
+          git add cot/data/cot.json
+          git commit -m "Refresh weekly CFTC positioning data"
+          git push
