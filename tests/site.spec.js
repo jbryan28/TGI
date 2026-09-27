@@ -111,28 +111,47 @@ test("COT dashboard loads official data and updates market views", async ({ page
   expect(errors).toEqual([]);
 });
 
-test("separate Macro Desk preview stays clearly labeled and source linked", async ({ page }, testInfo) => {
+test("separate Macro Desk connects to the headline feed and preserves source links", async ({ page }, testInfo) => {
   const errors = captureErrors(page);
+  let feedRequests = 0;
+  await page.route("https://api.gdeltproject.org/api/v2/doc/doc**", async (route) => {
+    feedRequests += 1;
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        articles: [
+          { title: "Central bank keeps policy rate unchanged", url: "https://example.com/policy-update", domain: "example.com", seendate: "20260927T160000Z" },
+          { title: "Oil prices move after supply data", url: "https://markets.example.org/energy", domain: "markets.example.org", seendate: "20260927T151500Z" },
+        ],
+      }),
+    });
+  });
   await page.goto("/macro/");
   await expectStylesApplied(page);
-  await expect(page).toHaveTitle(/Macro Desk Preview/);
-  await expect(page.getByText("CONCEPT PREVIEW")).toBeVisible();
-  await expect(page.getByText("Automated or real-time news feeds are not connected")).toBeVisible();
+  await expect(page).toHaveTitle(/Macro Desk/);
+  await expect(page.getByText("LIVE HEADLINE STREAM", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Read the forces");
-  await expect(page.getByRole("heading", { name: /Personal Income & Outlays \/ PCE/ })).toBeVisible();
-  await expect(page.getByRole("link", { name: /BEA release schedule/ })).toHaveAttribute("href", "https://www.bea.gov/news/schedule");
-  await expect(page.getByRole("link", { name: /ISM release calendar/ })).toHaveAttribute("href", "https://www.ismworld.org/supply-management-news-and-reports/reports/rob-report-calendar/");
-  await expect(page.getByRole("link", { name: /BLS release schedule/ })).toHaveAttribute("href", "https://www.bls.gov/schedule/news_release/empsit.htm");
+  await expect(page.getByRole("link", { name: /BEA schedule/ })).toHaveAttribute("href", "https://www.bea.gov/news/schedule");
+  await expect(page.getByRole("link", { name: /ISM/ })).toHaveAttribute("href", "https://www.ismworld.org/supply-management-news-and-reports/reports/rob-report-calendar/");
+  await expect(page.getByRole("link", { name: /BLS schedule/ })).toHaveAttribute("href", "https://www.bls.gov/schedule/news_release/");
+  await expect(page.getByRole("heading", { name: "Central bank keeps policy rate unchanged" })).toBeVisible();
+  await expect(page.locator("#macro-headlines article")).toHaveCount(2);
+  await expect(page.locator("#macro-feed-status")).toHaveAttribute("data-state", "live");
+  await expect(page.getByRole("link", { name: "Central bank keeps policy rate unchanged" })).toHaveAttribute("href", "https://example.com/policy-update");
+  await expect(page.getByText(/not a licensed real-time terminal/)).toBeVisible();
   await expect(page.locator('a[href="../newsletter/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="../cot/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="../membership/"]')).toHaveCount(0);
+  await page.getByRole("button", { name: "Refresh now" }).click();
+  await expect.poll(() => feedRequests).toBe(2);
 
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("macro-desk-preview.png"), fullPage: true });
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
-  await expect(page.getByText("CONCEPT PREVIEW")).toBeVisible();
+  await expect(page.getByText("LIVE HEADLINE STREAM", { exact: true })).toBeVisible();
   await page.locator(".nav-toggle").click();
   await expect(page.locator("#site-nav")).toBeVisible();
   await expect(page.locator("#site-nav a")).toHaveCount(4);

@@ -7688,6 +7688,8 @@ h2 {
 .macro-preview-date { color: var(--gold-bright); font-size: 0.62rem; letter-spacing: 0.11em; }
 .macro-preview-date { margin-left: auto; color: #a8a294; }
 .macro-preview-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold-bright); box-shadow: 0 0 10px rgba(224, 180, 89, 0.6); }
+.macro-live-banner .macro-preview-dot { background: #69c78a; box-shadow: 0 0 10px rgba(105,199,138,.6); }
+.macro-live-banner strong { color: #9ce1af; }
 .macro-masthead { padding: 1.2rem clamp(1.25rem, 6vw, 7rem) clamp(3.5rem, 7vw, 6rem); color: var(--text); }
 .macro-masthead-top { display: flex; justify-content: space-between; gap: 1.5rem; padding: 0.9rem 0; border-bottom: 1px solid var(--line-dark); color: #a6aaa7; font-size: 0.62rem; letter-spacing: 0.13em; }
 .macro-masthead-top span:nth-child(2) { color: var(--gold-bright); }
@@ -7757,14 +7759,25 @@ h2 {
 .macro-map-path b { color: #a6aaa7; }
 .macro-map-small h3 { font-size: 1.7rem; }
 .macro-feed .macro-section-heading { align-items: center; }
+.macro-feed-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
 .macro-feed-status { display: inline-flex; align-items: center; gap: .55rem; color: #b4b6b0; font-size: .58rem; letter-spacing: .1em; }
-.macro-feed-status span { width: 7px; height: 7px; border-radius: 50%; background: #9b4b40; }
+.macro-feed-status > span:first-child { width: 7px; height: 7px; border-radius: 50%; background: #b19150; }
+.macro-feed-status[data-state="live"] > span:first-child { background: #69c78a; box-shadow: 0 0 10px rgba(105,199,138,.5); }
+.macro-feed-status[data-state="error"] > span:first-child { background: #d27869; }
+.macro-feed-controls button:disabled { opacity: .55; cursor: wait; }
+.macro-feed-intro, .macro-feed-disclosure { max-width: 900px; color: #a6aaa7; font-size: .78rem; line-height: 1.7; }
+.macro-feed-intro { margin: 0 0 1.2rem; }
+.macro-feed-disclosure { margin: 1.3rem 0 0; font-size: .68rem; }
+.macro-feed-disclosure a { color: var(--gold-bright); }
 .macro-feed-list { border-top: 1px solid var(--line-dark); }
-.macro-feed-list article { display: grid; grid-template-columns: 145px minmax(0, 1fr) 150px; gap: 1.5rem; align-items: center; padding: 1.2rem 0; border-bottom: 1px solid var(--line-dark); }
-.macro-feed-list time, .macro-feed-state { color: var(--gold-bright); font-size: .58rem; letter-spacing: .1em; }
-.macro-feed-list h3 { margin: 0 0 .25rem; font: 1.25rem var(--serif); }
-.macro-feed-list p { max-width: 750px; margin: 0; color: #a6aaa7; font-size: .78rem; line-height: 1.6; }
-.macro-feed-state { justify-self: end; color: #a6aaa7; text-align: right; }
+.macro-feed-list article { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 1.5rem; align-items: center; padding: 1.2rem 0; border-bottom: 1px solid var(--line-dark); }
+.macro-feed-category { color: var(--gold-bright); font-size: .58rem; letter-spacing: .1em; }
+.macro-feed-list h3 { margin: 0 0 .4rem; font: 1.2rem/1.35 var(--serif); }
+.macro-headline-main a { color: var(--text); text-decoration: none; }
+.macro-headline-main a:hover h3, .macro-headline-main a:focus-visible h3 { color: var(--gold-bright); text-decoration: underline; text-underline-offset: .2em; }
+.macro-headline-main p { display: flex; flex-wrap: wrap; gap: .4rem 1rem; max-width: 750px; margin: 0; color: #a6aaa7; font-size: .65rem; line-height: 1.6; }
+.macro-headline-source { color: #d0bd91; }
+.macro-feed-empty { padding: 1.4rem 0; color: #b7bbb5; font-size: .85rem; }
 .macro-signup { display: flex; justify-content: space-between; align-items: center; gap: 2rem; }
 .macro-signup h2 { margin: .45rem 0 .75rem; font: clamp(2.7rem, 5vw, 5rem)/.98 var(--serif); }
 .macro-signup > div > p:last-child { color: #5f6562; }
@@ -7793,8 +7806,7 @@ h2 {
   .macro-event-impact { grid-column: 2; justify-self: start; }
   .macro-event-date strong { font-size: 1.8rem; }
   .macro-map-grid { grid-template-columns: 1fr; }
-  .macro-feed-list article { grid-template-columns: 1fr auto; gap: .5rem 1rem; }
-  .macro-feed-list article > div { grid-column: 1 / -1; grid-row: 2; }
-  .macro-feed-state { grid-column: 2; grid-row: 1; }
+  .macro-feed-controls { align-items: flex-start; flex-direction: column; }
+  .macro-feed-list article { grid-template-columns: 1fr; gap: .45rem; }
   .macro-signup { align-items: flex-start; flex-direction: column; }
 }

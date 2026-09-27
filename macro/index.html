@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="A draft TGI Macro Desk portal for economic events, cross-asset context, positioning, and technical structure." />
+    <meta name="description" content="TGI Macro Desk: recent macroeconomic headlines, official release calendars, cross-asset context, and weekly positioning." />
     <meta name="theme-color" content="#080a0a" />
-    <title>Macro Desk Preview | Trader Growth Institute</title>
+    <title>Macro Desk | Trader Growth Institute</title>
     <link rel="stylesheet" href="../styles.css" />
     <script defer src="../app.js"></script>
   </head>
   <body class="macro-page">
-    <a class="skip-link" href="#macro-main">Skip to Macro Desk preview</a>
+    <a class="skip-link" href="#macro-main">Skip to Macro Desk</a>
     <header class="site-header" data-header>
       <a class="brand" href="/" aria-label="Trader Growth Institute home">
         <span class="brand-mark" aria-hidden="true">TGI</span>
@@ -29,31 +29,31 @@
     </header>
 
     <main id="macro-main">
-      <div class="macro-preview-banner" role="status">
+      <div class="macro-preview-banner macro-live-banner" role="status" aria-live="polite">
         <span class="macro-preview-dot" aria-hidden="true"></span>
-        <strong>CONCEPT PREVIEW</strong>
-        <span>Sample editorial and calendar. Automated or real-time news feeds are not connected.</span>
-        <span class="macro-preview-date">Drafted September 27, 2026</span>
+        <strong>LIVE HEADLINE STREAM</strong>
+        <span>Recent macro and market news links · refreshes every 15 minutes while this page is open</span>
+        <span class="macro-preview-date" id="macro-last-updated">Connecting to feed…</span>
       </div>
 
       <section class="macro-masthead">
         <div class="macro-masthead-top"><span>TGI / RESEARCH</span><span>MACRO DESK <i>—</i> WEEK AHEAD</span><span>EDUCATION · INFORMATION</span></div>
         <div class="macro-hero-grid">
           <div class="macro-hero-copy">
-            <p class="eyebrow">The week in markets · September 28 – October 2</p>
+            <p class="eyebrow">Recent headlines · official economic calendars</p>
             <h1>Read the forces<br />behind <em>price.</em></h1>
             <p class="macro-deck">Economic releases, policy context, capital positioning, and technical structure—brought together in one disciplined market briefing.</p>
             <div class="macro-hero-actions">
-              <a class="button button-gold" href="#week-ahead">Explore this week</a>
+              <a class="button button-gold" href="#live-headlines">View live headlines</a>
               <a class="text-link" href="../newsletter/">Get the weekly email <span aria-hidden="true">→</span></a>
             </div>
           </div>
-          <aside class="macro-thesis-card" aria-label="Illustrative editorial framing">
-            <div class="macro-card-topline"><span>EDITORIAL FRAME</span><span>DEMO COPY</span></div>
+          <aside class="macro-thesis-card" aria-label="TGI editorial standard">
+            <div class="macro-card-topline"><span>EDITORIAL STANDARD</span><span>SOURCE FIRST</span></div>
             <p class="macro-card-kicker">The question to carry</p>
-            <h2>Does the data change the rate path—or only confirm it?</h2>
-            <p>This is a sample framing question, not a current market conclusion. The published edition would pair fresh data with price response, positioning, and explicit uncertainty.</p>
-            <div class="macro-card-meta"><span>01 / WEEKLY QUESTION</span><span>4 MIN READ</span></div>
+            <h2>What changed—and what would confirm it in price?</h2>
+            <p>Headlines provide context. Verify the original reporting, check the underlying release, and judge market reaction before drawing a conclusion.</p>
+            <div class="macro-card-meta"><span>VERIFY THE SOURCE</span><span>THEN ASSESS PRICE</span></div>
           </aside>
         </div>
         <div class="macro-source-line"><span>EDITORIAL STANDARD</span><p>Separate <b>what happened</b> from <b>what it may mean</b>. Cite the source. State what would change the view.</p></div>
@@ -66,24 +66,19 @@
       <section class="macro-content section-light" id="week-ahead" aria-labelledby="week-title">
         <div class="macro-section-heading">
           <div><p class="eyebrow">01 / Event risk</p><h2 id="week-title">A calendar is not a forecast.</h2></div>
-          <p>These are scheduled releases verified against official calendars. The desk should add consensus, actuals, and market reaction after publication.</p>
+          <p>Use primary-source calendars for upcoming releases. Agencies can revise dates and times; confirm the schedule before publication or trading.</p>
         </div>
         <div class="macro-week-layout">
-          <div class="macro-calendar">
+          <div class="macro-calendar macro-calendar-resources">
             <article class="macro-event macro-event-featured">
-              <div class="macro-event-date"><span>WED</span><strong>30</strong><small>SEP</small></div>
-              <div class="macro-event-copy"><span class="macro-event-tag">UNITED STATES · 08:30 ET</span><h3>Personal Income &amp; Outlays / PCE</h3><p>August release. Watch the inflation details and revisions; the market response matters more than a headline in isolation.</p><a href="https://www.bea.gov/news/schedule" target="_blank" rel="noopener noreferrer">BEA release schedule <span aria-hidden="true">↗</span></a></div>
-              <span class="macro-event-impact">HIGH ATTENTION</span>
+              <div class="macro-event-date"><span>US</span><strong>01</strong><small>DATA</small></div>
+              <div class="macro-event-copy"><span class="macro-event-tag">OFFICIAL RELEASES</span><h3>U.S. economic calendar</h3><p>Check release dates, times, and source material directly with the statistical agencies.</p><a href="https://www.bea.gov/news/schedule" target="_blank" rel="noopener noreferrer">BEA schedule <span aria-hidden="true">↗</span></a> · <a href="https://www.bls.gov/schedule/news_release/" target="_blank" rel="noopener noreferrer">BLS schedule <span aria-hidden="true">↗</span></a> · <a href="https://www.census.gov/economic-indicators/calendar-listview.html" target="_blank" rel="noopener noreferrer">Census calendar <span aria-hidden="true">↗</span></a></div>
+              <span class="macro-event-impact">PRIMARY SOURCES</span>
             </article>
             <article class="macro-event">
-              <div class="macro-event-date"><span>THU</span><strong>01</strong><small>OCT</small></div>
-              <div class="macro-event-copy"><span class="macro-event-tag">UNITED STATES · 10:00 ET</span><h3>ISM Manufacturing PMI</h3><p>First business day of the month. Read new orders, prices, and employment alongside the headline index.</p><a href="https://www.ismworld.org/supply-management-news-and-reports/reports/rob-report-calendar/" target="_blank" rel="noopener noreferrer">ISM release calendar <span aria-hidden="true">↗</span></a></div>
-              <span class="macro-event-impact">WATCH</span>
-            </article>
-            <article class="macro-event">
-              <div class="macro-event-date"><span>FRI</span><strong>02</strong><small>OCT</small></div>
-              <div class="macro-event-copy"><span class="macro-event-tag">UNITED STATES · 08:30 ET</span><h3>Employment Situation</h3><p>September labor-market report. Payrolls, unemployment, wages, and revisions can pull rates and the dollar in different directions.</p><a href="https://www.bls.gov/schedule/news_release/empsit.htm" target="_blank" rel="noopener noreferrer">BLS release schedule <span aria-hidden="true">↗</span></a></div>
-              <span class="macro-event-impact">HIGH ATTENTION</span>
+              <div class="macro-event-date"><span>CB</span><strong>02</strong><small>POLICY</small></div>
+              <div class="macro-event-copy"><span class="macro-event-tag">CENTRAL BANKS &amp; ACTIVITY</span><h3>Policy and survey calendars</h3><p>Confirm policy meeting dates and survey-release timing at the institutions that publish them.</p><a href="https://www.federalreserve.gov/newsevents/calendar.htm" target="_blank" rel="noopener noreferrer">Federal Reserve <span aria-hidden="true">↗</span></a> · <a href="https://www.ecb.europa.eu/press/calendars/html/index.en.html" target="_blank" rel="noopener noreferrer">ECB <span aria-hidden="true">↗</span></a> · <a href="https://www.ismworld.org/supply-management-news-and-reports/reports/rob-report-calendar/" target="_blank" rel="noopener noreferrer">ISM <span aria-hidden="true">↗</span></a></div>
+              <span class="macro-event-impact">VERIFY TIMING</span>
             </article>
           </div>
           <aside class="macro-calendar-note">
@@ -93,13 +88,13 @@
             <div class="macro-note-stamp"><span>01</span><span>EVENT ≠ SIGNAL</span></div>
           </aside>
         </div>
-        <p class="macro-time-note">Times shown in U.S. Eastern Time. Confirm official calendars before publication; agencies may revise schedules.</p>
+        <p class="macro-time-note">All calendar links open official sources. TGI does not guarantee third-party release schedules or consensus estimates.</p>
       </section>
 
       <section class="macro-driver-section section-dark" aria-labelledby="drivers-title">
         <div class="macro-section-heading macro-section-heading-dark">
           <div><p class="eyebrow">02 / Research framework</p><h2 id="drivers-title">Three lenses. One market.</h2></div>
-          <p>The draft portal organizes verified inputs into questions. It does not auto-generate conclusions or trade instructions.</p>
+          <p>This portal links information sources and organizes questions. It does not auto-generate conclusions or trade instructions.</p>
         </div>
         <div class="macro-driver-grid">
           <article><span class="macro-driver-index">01</span><p class="eyebrow">Growth &amp; inflation</p><h3>What is changing?</h3><p>Track the direction and breadth of activity, labor, prices, and policy expectations.</p><span class="macro-driver-footer">SOURCE → INTERPRETATION</span></article>
@@ -111,7 +106,7 @@
       <section class="macro-cross-asset section-light" aria-labelledby="cross-asset-title">
         <div class="macro-section-heading">
           <div><p class="eyebrow">03 / Cross-asset map</p><h2 id="cross-asset-title">Follow the transmission.</h2></div>
-          <p>Editorial template only. A live edition would state the observation date, link its data, and distinguish verified readings from analyst interpretation.</p>
+          <p>Use these relationships as research prompts. Confirm observations against current source data and separate verified readings from interpretation.</p>
         </div>
         <div class="macro-map-grid">
           <article class="macro-map-lead"><span class="macro-map-label">RATES → FX</span><h3>Rate expectations can move currencies before the policy decision.</h3><p>Compare front-end yields and central-bank pricing with the currency’s response. Divergence is a question to investigate—not proof of a trade.</p><div class="macro-map-path"><span>DATA</span><b>→</b><span>YIELDS</span><b>→</b><span>FX</span></div></article>
@@ -122,16 +117,14 @@
         </div>
       </section>
 
-      <section class="macro-feed section-dark" aria-labelledby="feed-title">
+      <section class="macro-feed section-dark" id="live-headlines" aria-labelledby="feed-title">
         <div class="macro-section-heading macro-section-heading-dark">
-          <div><p class="eyebrow">04 / Update stream concept</p><h2 id="feed-title">Fast when it matters.<br /><em>Clear about what is known.</em></h2></div>
-          <div class="macro-feed-status"><span></span>FEED CONNECTION: NOT CONFIGURED</div>
+          <div><p class="eyebrow">04 / Live headline stream</p><h2 id="feed-title">Recent coverage.<br /><em>Source-linked.</em></h2></div>
+          <div class="macro-feed-controls"><span class="macro-feed-status" id="macro-feed-status" data-state="loading"><span aria-hidden="true"></span><span id="macro-feed-status-text">CONNECTING TO HEADLINE FEED</span></span><button class="button button-small button-outline" id="macro-refresh" type="button">Refresh now</button></div>
         </div>
-        <div class="macro-feed-list">
-          <article><time>EVENT WATCH</time><div><h3>Before the release</h3><p>Publish the time, official source, consensus if verified, and the market channels to monitor.</p></div><span class="macro-feed-state">PLANNED</span></article>
-          <article><time>DATA UPDATE</time><div><h3>At the release</h3><p>Automated delivery would require a licensed data/news source and a tested pipeline. This draft does not fetch breaking news.</p></div><span class="macro-feed-state">NOT LIVE</span></article>
-          <article><time>MARKET REACTION</time><div><h3>After the release</h3><p>An editor verifies the source, timestamp, and price response before an update appears here.</p></div><span class="macro-feed-state">EDITORIAL REVIEW</span></article>
-        </div>
+        <p class="macro-feed-intro">Recent links indexed by GDELT across publishers. Open the original source to verify the full report and context.</p>
+        <div class="macro-feed-list" id="macro-headlines" aria-live="polite" aria-busy="true"><p class="macro-feed-empty">Loading recent headlines…</p></div>
+        <p class="macro-feed-disclosure">This public aggregator is not a licensed real-time terminal. Coverage can be delayed, incomplete, duplicated, or misclassified. No live market prices, consensus estimates, or trading recommendations are supplied. <a href="https://www.gdeltproject.org/" target="_blank" rel="noopener noreferrer">About GDELT</a>.</p>
       </section>
 
       <section class="macro-signup section-light">
@@ -145,5 +138,6 @@
       <p>TraderGrowth.com</p><p class="footer-promise">Macro context. Technical structure. Risk governance.</p>
       <nav aria-label="Footer navigation"><a href="../newsletter/">Newsletter</a><a href="../cot/">COT</a><a href="../dzc/">Book</a><a href="../privacy/">Privacy</a><a href="../terms/">Terms</a><a href="../risk-disclosure/">Risk disclosure</a></nav>
     </footer>
+    <script defer src="./news.js"></script>
   </body>
 </html>
