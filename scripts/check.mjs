@@ -55,7 +55,8 @@ const pageIds = new Map(
 );
 
 const resolveLocalTarget = (page, reference) => {
-  const [targetPath, fragment] = reference.split("#", 2);
+  const [pathWithQuery, fragment] = reference.split("#", 2);
+  const [targetPath] = pathWithQuery.split("?", 1);
   if (!targetPath) return { file: page, fragment };
 
   const resolved = targetPath.startsWith("/")
