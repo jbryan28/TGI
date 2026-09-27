@@ -22,7 +22,7 @@ const pages = [
 
 const html = pages.map((path) => fs.readFileSync(path, "utf8")).join("\n");
 const ids = new Set([...html.matchAll(/id="([^"]+)"/g)].map((match) => match[1]));
-const javascriptFiles = ["app.js", "weekly-capital-review/review.js", "glossary/glossary.js", "cdza/cdza.js", "cdza/journal/journal.js", "newsletter/newsletter.js", "cot/cot.js", "membership/config.js", "membership/membership.js"];
+const javascriptFiles = ["app.js", "weekly-capital-review/review.js", "glossary/glossary.js", "cdza/cdza.js", "cdza/journal/journal.js", "newsletter/newsletter.js", "cot/cot.js", "macro/news.js", "membership/config.js", "membership/membership.js"];
 const javascript = javascriptFiles
   .map((path) => fs.readFileSync(path, "utf8"))
   .join("\n");
@@ -146,8 +146,11 @@ if (!Array.isArray(cotData.markets) || cotData.markets.length !== 15) {
   throw new Error(`COT dataset must contain 15 markets; found ${cotData.markets?.length ?? 0}.`);
 }
 
-for (const requiredPhrase of ["CONCEPT PREVIEW", "Automated or real-time news feeds are not connected", "FEED CONNECTION: NOT CONFIGURED", "Personal Income &amp; Outlays / PCE", "Employment Situation"]) {
-  if (!macroPage.includes(requiredPhrase)) throw new Error(`Macro Desk preview is missing required status/content: ${requiredPhrase}`);
+for (const requiredPhrase of ["LIVE HEADLINE STREAM", "api.gdeltproject.org/api/v2/doc/doc", "refreshIntervalMs = 15 * 60 * 1000", "official sources", "This public aggregator is not a licensed real-time terminal", "Federal Reserve", "BLS schedule"]) {
+  if (!macroPage.includes(requiredPhrase) && !fs.readFileSync("macro/news.js", "utf8").includes(requiredPhrase)) throw new Error(`Macro Desk live portal is missing required integration/content: ${requiredPhrase}`);
+}
+if (/September 28\s*–\s*October 2|CONCEPT PREVIEW|FEED CONNECTION: NOT CONFIGURED/.test(macroPage)) {
+  throw new Error("The Macro Desk still includes stale preview labeling or a hard-coded sample week.");
 }
 if (homepage.includes('href="macro/"') || homepage.includes('href="/macro/"')) {
   throw new Error("The Macro Desk draft must remain separate from the homepage navigation.");
