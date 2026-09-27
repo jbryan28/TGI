@@ -13,6 +13,7 @@ const pages = [
   "newsletter/index.html",
   "newsletter/welcome/index.html",
   "cot/index.html",
+  "macro/index.html",
   "dzc/index.html",
   "daily-zone-command/index.html",
   "membership/index.html",
@@ -100,6 +101,7 @@ const newsletterPage = fs.readFileSync("newsletter/index.html", "utf8");
 const cotData = JSON.parse(fs.readFileSync("cot/data/cot.json", "utf8"));
 const bookPage = fs.readFileSync("dzc/index.html", "utf8");
 const legacyBookPage = fs.readFileSync("daily-zone-command/index.html", "utf8");
+const macroPage = fs.readFileSync("macro/index.html", "utf8");
 
 if (/Series\s*(?:7|66)|7\s*(?:&amp;|&)\s*66/i.test(html)) {
   throw new Error("Former Series 7/66 language remains in the published site.");
@@ -142,6 +144,13 @@ for (const requiredPhrase of ["Economic regime", "Technical structure", "High-im
 
 if (!Array.isArray(cotData.markets) || cotData.markets.length !== 15) {
   throw new Error(`COT dataset must contain 15 markets; found ${cotData.markets?.length ?? 0}.`);
+}
+
+for (const requiredPhrase of ["CONCEPT PREVIEW", "Automated or real-time news feeds are not connected", "FEED CONNECTION: NOT CONFIGURED", "Personal Income &amp; Outlays / PCE", "Employment Situation"]) {
+  if (!macroPage.includes(requiredPhrase)) throw new Error(`Macro Desk preview is missing required status/content: ${requiredPhrase}`);
+}
+if (homepage.includes('href="macro/"') || homepage.includes('href="/macro/"')) {
+  throw new Error("The Macro Desk draft must remain separate from the homepage navigation.");
 }
 for (const market of cotData.markets) {
   if (!market.records?.length || market.records.length < 52) throw new Error(`${market.symbol} has fewer than 52 COT records.`);
