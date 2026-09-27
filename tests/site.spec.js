@@ -130,7 +130,7 @@ test("separate Macro Desk connects to the headline feed and preserves source lin
   await page.goto("/macro/");
   await expectStylesApplied(page);
   await expect(page).toHaveTitle(/Macro Desk/);
-  await expect(page.getByText("LIVE HEADLINE STREAM")).toBeVisible();
+  await expect(page.getByText("LIVE HEADLINE STREAM", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Read the forces");
   await expect(page.getByRole("link", { name: /BEA schedule/ })).toHaveAttribute("href", "https://www.bea.gov/news/schedule");
   await expect(page.getByRole("link", { name: /ISM/ })).toHaveAttribute("href", "https://www.ismworld.org/supply-management-news-and-reports/reports/rob-report-calendar/");
@@ -151,7 +151,7 @@ test("separate Macro Desk connects to the headline feed and preserves source lin
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
-  await expect(page.getByText("LIVE HEADLINE STREAM")).toBeVisible();
+  await expect(page.getByText("LIVE HEADLINE STREAM", { exact: true })).toBeVisible();
   await page.locator(".nav-toggle").click();
   await expect(page.locator("#site-nav")).toBeVisible();
   await expect(page.locator("#site-nav a")).toHaveCount(4);
