@@ -1,7 +1,8 @@
 (() => {
-  const apiEndpoint = "https://api.gdeltproject.org/api/v2/doc/doc";
-  const searchQuery = '(inflation OR "Federal Reserve" OR central bank OR interest rates OR Treasury yields OR employment OR payrolls OR oil prices OR crude oil OR gold prices OR commodities OR foreign exchange OR currency markets)';
+  const cacheEndpoint = "./data/headlines.json";
+  const storageKey = "tgi-macro-headlines-v1";
   const refreshIntervalMs = 15 * 60 * 1000;
+  const freshWindowMs = 45 * 60 * 1000;
   const headlinesElement = document.querySelector("#macro-headlines");
   const statusElement = document.querySelector("#macro-feed-status");
   const statusTextElement = document.querySelector("#macro-feed-status-text");
@@ -9,7 +10,7 @@
   const refreshButton = document.querySelector("#macro-refresh");
   if (!headlinesElement || !statusElement || !statusTextElement || !updatedElement || !refreshButton) return;
 
-  let lastSuccessfulUpdate = null;
+  let lastPayload = null;
   let activeController = null;
 
   const setStatus = (state, message) => {
@@ -21,12 +22,30 @@
     ? `${value.slice(0, 4)}-${value.slice(4, 6)}-${value.slice(6, 8)}T${value.slice(9, 11)}:${value.slice(11, 13)}:${value.slice(13, 15)}Z`
     : value;
 
+  const parsedDate = (value) => {
+    if (!value) return null;
+    const parsed = new Date(normalizedDate(value));
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  };
+
   const displayDate = (value) => {
-    if (!value) return "Publisher time unavailable";
-    const normalized = normalizedDate(value);
-    const parsed = new Date(normalized);
-    if (Number.isNaN(parsed.getTime())) return "Publisher time unavailable";
-    return `Indexed ${new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }).format(parsed)} UTC`;
+    const parsed = parsedDate(value);
+    if (!parsed) return "Publisher time unavailable";
+    return `Published ${new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(parsed)}`;
+  };
+
+  const updateAgeLabel = (generatedAt) => {
+    const updated = parsedDate(generatedAt);
+    if (!updated) {
+      updatedElement.textContent = "Update time unavailable";
+      return { fresh: false, updated: null };
+    }
+    const ageMs = Math.max(0, Date.now() - updated.getTime());
+    const minutes = Math.max(1, Math.round(ageMs / 60000));
+    updatedElement.textContent = minutes < 60
+      ? `Updated ${minutes} min ago`
+      : `Updated ${new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(updated)}`;
+    return { fresh: ageMs <= freshWindowMs, updated };
   };
 
   const renderArticles = (articles) => {
@@ -46,7 +65,7 @@
     if (!safeArticles.length) {
       const empty = document.createElement("p");
       empty.className = "macro-feed-empty";
-      empty.textContent = "No matching coverage was returned. Try refreshing later or use the official calendars above.";
+      empty.textContent = "No recent coverage is cached. Use the official calendars above while the next update is prepared.";
       headlinesElement.append(empty);
       return 0;
     }
@@ -56,7 +75,7 @@
       const row = document.createElement("article");
       const label = document.createElement("span");
       label.className = "macro-feed-category";
-      label.textContent = "NEWS LINK";
+      label.textContent = article.sourceType === "official" ? "OFFICIAL" : "NEWS LINK";
       const content = document.createElement("div");
       content.className = "macro-headline-main";
       const link = document.createElement("a");
@@ -81,6 +100,32 @@
     return safeArticles.length;
   };
 
+  const readStoredPayload = () => {
+    try {
+      const value = JSON.parse(window.localStorage.getItem(storageKey));
+      return value && Array.isArray(value.articles) ? value : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const applyPayload = (payload, source = "network") => {
+    const count = renderArticles(payload.articles || []);
+    const { fresh } = updateAgeLabel(payload.generatedAt);
+    lastPayload = payload;
+    if (source === "network" && count) {
+      try { window.localStorage.setItem(storageKey, JSON.stringify(payload)); } catch { /* Storage is optional. */ }
+    }
+    if (!count) {
+      setStatus("error", "HEADLINE CACHE AWAITING UPDATE");
+    } else if (fresh) {
+      setStatus("live", "HEADLINES UPDATED · VERIFIED SOURCES");
+    } else {
+      setStatus("stale", "SHOWING LAST VERIFIED UPDATE");
+    }
+    return count;
+  };
+
   const fetchHeadlines = async () => {
     if (activeController) activeController.abort();
     const controller = new AbortController();
@@ -89,39 +134,35 @@
     const timeout = window.setTimeout(() => {
       timedOut = true;
       controller.abort();
-    }, 12000);
+    }, 10000);
     refreshButton.disabled = true;
     headlinesElement.setAttribute("aria-busy", "true");
-    setStatus(lastSuccessfulUpdate ? "refreshing" : "loading", lastSuccessfulUpdate ? "REFRESHING HEADLINES" : "CONNECTING TO HEADLINE FEED");
-    updatedElement.textContent = lastSuccessfulUpdate ? `Last updated ${lastSuccessfulUpdate.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}` : "Connecting to feed…";
+    setStatus(lastPayload ? "refreshing" : "loading", lastPayload ? "CHECKING FOR UPDATES" : "LOADING VERIFIED HEADLINES");
+    if (!lastPayload) updatedElement.textContent = "Loading latest cache…";
 
     try {
-      const url = new URL(apiEndpoint);
-      url.search = new URLSearchParams({
-        query: searchQuery,
-        mode: "ArtList",
-        format: "json",
-        timespan: "24h",
-        maxrecords: "50",
-        sort: "DateDesc",
-      }).toString();
-      const response = await fetch(url, { signal: controller.signal, headers: { Accept: "application/json" } });
-      if (!response.ok) throw new Error(`Feed responded ${response.status}`);
+      const response = await fetch(`${cacheEndpoint}?v=${Date.now()}`, {
+        signal: controller.signal,
+        cache: "no-store",
+        headers: { Accept: "application/json" },
+      });
+      if (!response.ok) throw new Error(`Headline cache responded ${response.status}`);
       const data = await response.json();
-      if (!Array.isArray(data.articles)) throw new Error("Headline feed response was not recognized");
-      const count = renderArticles(data.articles);
-      lastSuccessfulUpdate = new Date();
-      updatedElement.textContent = `Updated ${lastSuccessfulUpdate.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`;
-      setStatus("live", count ? "HEADLINES LIVE · GDELT" : "CONNECTED · NO MATCHING HEADLINES");
+      if (!Array.isArray(data.articles)) throw new Error("Headline cache response was not recognized");
+      applyPayload(data);
     } catch (error) {
       if (activeController === controller && (error.name !== "AbortError" || timedOut)) {
-        setStatus("error", lastSuccessfulUpdate ? "REFRESH FAILED · SHOWING LAST RESULTS" : "FEED TEMPORARILY UNAVAILABLE");
-        updatedElement.textContent = lastSuccessfulUpdate ? `Last successful update ${lastSuccessfulUpdate.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}` : "Feed unavailable · retry shortly";
-        if (!lastSuccessfulUpdate) {
+        const stored = lastPayload || readStoredPayload();
+        if (stored?.articles?.length) {
+          applyPayload(stored, "stored");
+          setStatus("stale", "UPDATE DELAYED · SHOWING SAVED HEADLINES");
+        } else {
+          setStatus("error", "HEADLINE UPDATE TEMPORARILY UNAVAILABLE");
+          updatedElement.textContent = "Use the official calendars below";
           headlinesElement.replaceChildren();
           const message = document.createElement("p");
           message.className = "macro-feed-empty";
-          message.textContent = "The headline service did not respond. Use the official release calendars above or try again.";
+          message.textContent = "The cached headline service did not respond. Use the official release calendars above or try again.";
           headlinesElement.append(message);
         }
       }
@@ -134,7 +175,12 @@
     }
   };
 
+  const stored = readStoredPayload();
+  if (stored?.articles?.length) applyPayload(stored, "stored");
   refreshButton.addEventListener("click", fetchHeadlines);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) fetchHeadlines();
+  });
   fetchHeadlines();
   window.setInterval(() => {
     if (!document.hidden) fetchHeadlines();

@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#080a0a" />
     <title>Macro Desk | Trader Growth Institute</title>
     <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="./macro.css" />
     <script defer src="../app.js"></script>
   </head>
   <body class="macro-page">
@@ -32,8 +33,8 @@
       <div class="macro-preview-banner macro-live-banner" role="status" aria-live="polite">
         <span class="macro-preview-dot" aria-hidden="true"></span>
         <strong>LIVE HEADLINE STREAM</strong>
-        <span>Recent macro and market news links · refreshes every 15 minutes while this page is open</span>
-        <span class="macro-preview-date" id="macro-last-updated">Connecting to feed…</span>
+        <span>Recent macro and market links · cached from verified sources every 15 minutes</span>
+        <span class="macro-preview-date" id="macro-last-updated">Loading latest cache…</span>
       </div>
 
       <section class="macro-masthead">
@@ -120,11 +121,11 @@
       <section class="macro-feed section-dark" id="live-headlines" aria-labelledby="feed-title">
         <div class="macro-section-heading macro-section-heading-dark">
           <div><p class="eyebrow">04 / Live headline stream</p><h2 id="feed-title">Recent coverage.<br /><em>Source-linked.</em></h2></div>
-          <div class="macro-feed-controls"><span class="macro-feed-status" id="macro-feed-status" data-state="loading"><span aria-hidden="true"></span><span id="macro-feed-status-text">CONNECTING TO HEADLINE FEED</span></span><button class="button button-small button-outline" id="macro-refresh" type="button">Refresh now</button></div>
+          <div class="macro-feed-controls"><span class="macro-feed-status" id="macro-feed-status" data-state="loading"><span aria-hidden="true"></span><span id="macro-feed-status-text">LOADING VERIFIED HEADLINES</span></span><button class="button button-small button-outline" id="macro-refresh" type="button">Check for updates</button></div>
         </div>
         <p class="macro-feed-intro">Recent links indexed by GDELT across publishers. Open the original source to verify the full report and context.</p>
         <div class="macro-feed-list" id="macro-headlines" aria-live="polite" aria-busy="true"><p class="macro-feed-empty">Loading recent headlines…</p></div>
-        <p class="macro-feed-disclosure">This public aggregator is not a licensed real-time terminal. Coverage can be delayed, incomplete, duplicated, or misclassified. No live market prices, consensus estimates, or trading recommendations are supplied. <a href="https://www.gdeltproject.org/" target="_blank" rel="noopener noreferrer">About GDELT</a>.</p>
+        <p class="macro-feed-disclosure">This cached source index is not a licensed real-time terminal. Updates can be delayed, incomplete, duplicated, or misclassified. No live market prices, consensus estimates, or trading recommendations are supplied. Open every link to verify the original report and timestamp.</p>
       </section>
 
       <section class="macro-signup section-light">

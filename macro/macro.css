@@ -1,0 +1,42 @@
+.macro-page main {
+  padding-top: var(--header-height);
+}
+
+.macro-page .site-header,
+.macro-page .site-header:not(.is-scrolled) {
+  border-bottom-color: var(--line-dark);
+  background: rgba(8, 10, 10, 0.97);
+}
+
+.macro-preview-banner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.macro-feed-status[data-state="stale"] > span:first-child {
+  background: #d3a94f;
+}
+
+@media (max-width: 600px) {
+  .macro-preview-banner {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.5rem 0.65rem;
+    padding: 0.8rem 1.25rem;
+    font-size: 0.65rem;
+  }
+
+  .macro-preview-banner > span:nth-of-type(2),
+  .macro-preview-date {
+    grid-column: 1 / -1;
+    width: auto;
+    margin-left: 0;
+  }
+
+  .macro-preview-banner > span:nth-of-type(2) {
+    line-height: 1.45;
+  }
+}

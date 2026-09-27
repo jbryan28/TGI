@@ -28,7 +28,7 @@ const prepareFullPageCapture = async (page) => {
 };
 
 const expectStylesApplied = async (page) => {
-  await expect(page.locator('link[rel="stylesheet"]')).toHaveCount(1);
+  await expect(page.locator('link[rel="stylesheet"][href$="styles.css"]')).toHaveCount(1);
   await expect
     .poll(() => page.evaluate(() => getComputedStyle(document.body).backgroundColor))
     .toBe("rgb(8, 10, 10)");
@@ -114,15 +114,17 @@ test("COT dashboard loads official data and updates market views", async ({ page
 test("separate Macro Desk connects to the headline feed and preserves source links", async ({ page }, testInfo) => {
   const errors = captureErrors(page);
   let feedRequests = 0;
-  await page.route("https://api.gdeltproject.org/api/v2/doc/doc**", async (route) => {
+  await page.route("**/macro/data/headlines.json**", async (route) => {
     feedRequests += 1;
     await route.fulfill({
       status: 200,
       contentType: "application/json",
       body: JSON.stringify({
+        generatedAt: new Date().toISOString(),
+        sources: [{ name: "Test source", ok: true, articleCount: 2 }],
         articles: [
-          { title: "Central bank keeps policy rate unchanged", url: "https://example.com/policy-update", domain: "example.com", seendate: "20260927T160000Z" },
-          { title: "Oil prices move after supply data", url: "https://markets.example.org/energy", domain: "markets.example.org", seendate: "20260927T151500Z" },
+          { title: "Central bank keeps policy rate unchanged", url: "https://example.com/policy-update", domain: "Federal Reserve", seendate: "2026-09-27T16:00:00Z", sourceType: "official" },
+          { title: "Oil prices move after supply data", url: "https://markets.example.org/energy", domain: "markets.example.org", seendate: "2026-09-27T15:15:00Z", sourceType: "aggregator" },
         ],
       }),
     });
@@ -143,7 +145,7 @@ test("separate Macro Desk connects to the headline feed and preserves source lin
   await expect(page.locator('a[href="../newsletter/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="../cot/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="../membership/"]')).toHaveCount(0);
-  await page.getByRole("button", { name: "Refresh now" }).click();
+  await page.getByRole("button", { name: "Check for updates" }).click();
   await expect.poll(() => feedRequests).toBe(2);
 
   await prepareFullPageCapture(page);
@@ -152,6 +154,17 @@ test("separate Macro Desk connects to the headline feed and preserves source lin
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
   await expect(page.getByText("LIVE HEADLINE STREAM", { exact: true })).toBeVisible();
+  await page.evaluate(() => {
+    document.documentElement.style.scrollBehavior = "auto";
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  });
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  const headerBox = await page.locator(".site-header").boundingBox();
+  const bannerBox = await page.locator(".macro-preview-banner").boundingBox();
+  expect(headerBox).not.toBeNull();
+  expect(bannerBox).not.toBeNull();
+  expect(bannerBox.y).toBeGreaterThanOrEqual(headerBox.y + headerBox.height - 1);
   await page.locator(".nav-toggle").click();
   await expect(page.locator("#site-nav")).toBeVisible();
   await expect(page.locator("#site-nav a")).toHaveCount(4);
