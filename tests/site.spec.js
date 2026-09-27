@@ -153,6 +153,7 @@ test("separate Macro Desk connects to the headline feed and preserves source lin
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
+  await page.evaluate(() => window.scrollTo(0, 0));
   await expect(page.getByText("LIVE HEADLINE STREAM", { exact: true })).toBeVisible();
   const headerBox = await page.locator(".site-header").boundingBox();
   const bannerBox = await page.locator(".macro-preview-banner").boundingBox();
