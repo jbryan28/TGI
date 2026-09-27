@@ -64,7 +64,8 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
 
   await page.locator(".founder-story summary").click();
   await expect(page.locator(".founder-story")).toHaveAttribute("open", "");
-  await expect(page.locator(".resource-card")).toHaveCount(6);
+  await expect(page.locator(".resource-card")).toHaveCount(7);
+  await expect(page.locator('a[href="cot/"]')).not.toHaveCount(0);
   await expect(page.locator('#site-nav a[href="dzc/"]')).toHaveText("Book");
   await expect(page.locator('a[href="dzc/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="cdza/"]')).not.toHaveCount(0);
@@ -74,6 +75,39 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
 
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("homepage-full.png"), fullPage: true });
+  expect(errors).toEqual([]);
+});
+
+test("COT dashboard loads official data and updates market views", async ({ page }, testInfo) => {
+  const errors = captureErrors(page);
+  await page.goto("/cot/");
+  await expectStylesApplied(page);
+  await expect(page).toHaveTitle(/COT Positioning Dashboard/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("See Where Capital");
+  await expect(page.locator("#cot-market option")).toHaveCount(15);
+  await expect(page.locator("#hero-report-date")).not.toHaveText("—");
+  await expect(page.locator("#cot-table-body tr")).toHaveCount(52);
+  await expect(page.locator("#cot-long-ranking li")).toHaveCount(5);
+  await expect(page.locator("#cot-short-ranking li")).toHaveCount(5);
+
+  await page.locator("#cot-market").selectOption("GOLD");
+  await expect(page.locator("#cot-actor")).toHaveValue("managedMoney");
+  await expect(page.locator("#cot-chart-symbol")).toContainText("GOLD");
+  await page.locator("#cot-actor").selectOption("producers");
+  await expect(page.locator("#cot-chart-symbol")).toContainText("Producers / Merchants");
+
+  await page.locator('[data-cot-range="13"]').click();
+  await expect(page.locator("#cot-table-body tr")).toHaveCount(13);
+  await expect(page.locator("#cot-line")).not.toHaveAttribute("d", "");
+
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("cot-dashboard.png"), fullPage: true });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  await expect(page.locator("#cot-market option")).toHaveCount(15);
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("cot-dashboard-mobile.png"), fullPage: true });
   expect(errors).toEqual([]);
 });
 

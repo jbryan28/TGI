@@ -2240,6 +2240,15 @@ h2 {
   background: radial-gradient(circle, rgba(201, 154, 61, 0.12), transparent 62%);
 }
 
+.resource-chart-cot span::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 120'%3E%3Cpath d='M0 72L35 84L70 62L105 74L140 48L175 57L210 29L245 42L280 21L315 34L350 12L400 25' fill='none' stroke='%23d9ad53' stroke-width='3'/%3E%3Cpath d='M0 72H400' stroke='%237d8580' stroke-width='1' stroke-dasharray='7 6'/%3E%3C/svg%3E");
+}
+
+.resource-chart-cot span::after {
+  background-image: repeating-linear-gradient(to right, transparent 0 18px, rgba(201, 154, 61, 0.28) 18px 24px);
+  mask-image: linear-gradient(to top, black, transparent 78%);
+}
+
 .resource-card p {
   display: flex;
   flex-direction: column;
@@ -7004,6 +7013,558 @@ h2 {
     transition-duration: 0.01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
+}
+
+/* CFTC Commitments of Traders dashboard */
+.cot-page {
+  background: var(--ink);
+}
+
+.cot-hero {
+  position: relative;
+  min-height: 760px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.72fr);
+  gap: clamp(3rem, 8vw, 9rem);
+  align-items: center;
+  padding: calc(var(--header-height) + clamp(4rem, 8vw, 8rem)) clamp(1.5rem, 7vw, 8rem) clamp(5rem, 8vw, 8rem);
+  overflow: hidden;
+}
+
+.cot-hero::after {
+  content: "";
+  position: absolute;
+  right: -12%;
+  top: 8%;
+  width: 58vw;
+  height: 58vw;
+  border: 1px solid rgba(201, 154, 61, 0.07);
+  border-radius: 50%;
+  box-shadow: 0 0 0 70px rgba(201, 154, 61, 0.018), 0 0 0 140px rgba(201, 154, 61, 0.012);
+  pointer-events: none;
+}
+
+.cot-hero-copy,
+.cot-hero-ledger {
+  position: relative;
+  z-index: 2;
+}
+
+.cot-hero-copy h1 {
+  max-width: 900px;
+  margin-bottom: 1.8rem;
+  font-size: clamp(4.4rem, 8.5vw, 9rem);
+  line-height: 0.86;
+}
+
+.cot-hero-copy > p:not(.eyebrow) {
+  max-width: 690px;
+  color: #b5bab6;
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  line-height: 1.75;
+}
+
+.cot-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  align-items: center;
+  margin-top: 2.5rem;
+}
+
+.cot-hero-ledger {
+  padding: clamp(1.5rem, 3vw, 2.4rem);
+  border: 1px solid rgba(201, 154, 61, 0.32);
+  background: linear-gradient(145deg, rgba(24, 29, 27, 0.96), rgba(8, 10, 10, 0.92));
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.42);
+}
+
+.cot-ledger-heading,
+.cot-panel-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.cot-ledger-heading {
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--line-dark);
+  color: var(--muted);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.cot-ledger-heading span:first-child {
+  color: var(--gold-bright);
+}
+
+.cot-hero-ledger dl {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 0;
+}
+
+.cot-hero-ledger dl > div {
+  min-height: 115px;
+  display: grid;
+  align-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-right: 1px solid var(--line-dark);
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.cot-hero-ledger dl > div:nth-child(2n) { border-right: 0; }
+.cot-hero-ledger dl > div:nth-last-child(-n + 2) { border-bottom: 0; }
+.cot-hero-ledger dt { color: var(--muted); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.cot-hero-ledger dd { margin: 0; color: var(--text); font: 1.35rem var(--serif); }
+
+.cot-ledger-bars {
+  height: 90px;
+  display: flex;
+  gap: 8px;
+  align-items: end;
+  margin-top: 1.4rem;
+  padding: 0 0.5rem;
+  border-bottom: 1px solid rgba(201, 154, 61, 0.28);
+}
+
+.cot-ledger-bars span {
+  flex: 1;
+  height: var(--bar);
+  background: linear-gradient(to top, rgba(201, 154, 61, 0.18), var(--gold));
+  animation: cot-bars 0.9s var(--ease) both;
+}
+
+.cot-hero-ledger > p {
+  margin: 1.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@keyframes cot-bars {
+  from { height: 0; opacity: 0; }
+}
+
+.cot-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line-dark);
+  border-bottom: 1px solid var(--line-dark);
+  background: #0c0f0e;
+  color: var(--text);
+}
+
+.cot-strip > div {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 1.5rem clamp(1.5rem, 4vw, 4rem);
+  border-right: 1px solid var(--line-dark);
+}
+
+.cot-strip > div:last-child { border-right: 0; }
+.cot-strip span { color: var(--gold-bright); font: 1rem var(--serif); }
+.cot-strip p { margin: 0; color: #dfe1dd; font-size: 0.75rem; }
+.cot-strip small { display: block; margin-bottom: 0.25rem; color: var(--muted); font-size: 0.57rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.cot-shell {
+  padding: var(--section-pad) clamp(1.25rem, 5vw, 6rem);
+}
+
+.cot-dashboard-heading,
+.cot-rankings-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.45fr);
+  gap: 3rem;
+  align-items: end;
+  max-width: var(--max-width);
+  margin: 0 auto 3rem;
+}
+
+.cot-dashboard-heading h2,
+.cot-rankings-heading h2 {
+  max-width: 900px;
+  margin: 0;
+  font-size: clamp(2.7rem, 5vw, 5.2rem);
+}
+
+.cot-dashboard-heading > p,
+.cot-rankings-heading > p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.cot-controls {
+  max-width: var(--max-width);
+  display: grid;
+  grid-template-columns: minmax(250px, 1fr) minmax(220px, 0.7fr) auto;
+  gap: 1px;
+  margin: 0 auto 1px;
+  background: var(--line-dark);
+  border: 1px solid var(--line-dark);
+}
+
+.cot-controls label,
+.cot-controls fieldset {
+  min-width: 0;
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  border: 0;
+  background: #101313;
+}
+
+.cot-controls label > span,
+.cot-controls legend {
+  color: var(--muted);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cot-controls legend { padding: 0; }
+.cot-controls select {
+  width: 100%;
+  min-height: 38px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: 1rem var(--sans);
+}
+
+.cot-controls select:focus-visible { outline: 1px solid var(--gold); outline-offset: 5px; }
+
+.cot-range {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.cot-range button,
+.cot-download {
+  border: 1px solid var(--line-dark);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.cot-range button {
+  min-width: 50px;
+  padding: 0.7rem;
+}
+
+.cot-range button.is-active,
+.cot-range button:hover,
+.cot-range button:focus-visible,
+.cot-download:hover,
+.cot-download:focus-visible {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+}
+
+.cot-kpis {
+  max-width: var(--max-width);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin: 0 auto 1px;
+  border: 1px solid var(--line-dark);
+  background: var(--line-dark);
+}
+
+.cot-kpis article {
+  min-width: 0;
+  padding: 1.5rem;
+  background: #0d1010;
+}
+
+.cot-kpis p,
+.cot-panel-heading p {
+  margin: 0 0 0.65rem;
+  color: var(--muted);
+  font-size: 0.6rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.cot-kpis strong {
+  display: block;
+  margin-bottom: 0.45rem;
+  font: clamp(1.7rem, 3vw, 2.7rem) var(--serif);
+  font-variant-numeric: tabular-nums;
+}
+
+.cot-kpis span {
+  color: var(--muted);
+  font-size: 0.64rem;
+  line-height: 1.45;
+}
+
+.is-positive { color: #78b994 !important; }
+.is-negative { color: #d37f77 !important; }
+
+.cot-primary-grid {
+  max-width: var(--max-width);
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.55fr);
+  gap: 1px;
+  margin: 0 auto 1px;
+  border: 1px solid var(--line-dark);
+  background: var(--line-dark);
+}
+
+.cot-chart-panel,
+.cot-balance-panel,
+.cot-table-panel {
+  background: #0d1010;
+}
+
+.cot-chart-panel,
+.cot-balance-panel {
+  padding: clamp(1.3rem, 3vw, 2.3rem);
+}
+
+.cot-panel-heading h3 {
+  margin: 0;
+  font: clamp(1.35rem, 2vw, 2rem) var(--serif);
+}
+
+.cot-panel-heading > span {
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+
+#cot-chart {
+  width: 100%;
+  min-height: 320px;
+  margin-top: 1.25rem;
+  overflow: visible;
+}
+
+.cot-chart-grid path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.075);
+  stroke-width: 1;
+}
+
+.cot-zero-line {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-dasharray: 6 8;
+}
+
+.cot-area { fill: rgba(201, 154, 61, 0.13); }
+.cot-line { fill: none; stroke: var(--gold-bright); stroke-width: 3; vector-effect: non-scaling-stroke; }
+.cot-last-point { fill: var(--gold-bright); stroke: #0d1010; stroke-width: 3; }
+.cot-chart-labels text { fill: #777e79; font: 12px var(--sans); }
+
+.cot-legend {
+  display: flex;
+  gap: 1.25rem;
+  color: var(--muted);
+  font-size: 0.6rem;
+}
+
+.cot-legend span { display: flex; gap: 0.45rem; align-items: center; }
+.cot-legend i { width: 18px; height: 2px; background: var(--gold); }
+.cot-legend span:last-child i { background: rgba(255, 255, 255, 0.28); }
+
+.cot-balance-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.cot-balance-visual {
+  display: grid;
+  flex: 1;
+  min-height: 270px;
+  place-items: center;
+}
+
+.cot-donut {
+  --long-share: 50%;
+  width: min(210px, 70%);
+  aspect-ratio: 1;
+  display: grid;
+  place-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle, #0d1010 55%, transparent 56%), conic-gradient(#4c9a72 0 var(--long-share), #9e5049 var(--long-share) 100%);
+  box-shadow: 0 0 0 1px var(--line-dark);
+  text-align: center;
+}
+
+.cot-donut span { font: 2.4rem var(--serif); }
+.cot-donut small { color: var(--muted); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.cot-balance-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border: 1px solid var(--line-dark);
+}
+
+.cot-balance-stats > div { padding: 1rem; }
+.cot-balance-stats > div + div { border-left: 1px solid var(--line-dark); }
+.cot-balance-stats span { display: flex; gap: 0.5rem; align-items: center; color: var(--muted); font-size: 0.6rem; text-transform: uppercase; }
+.cot-balance-stats i { width: 6px; height: 6px; border-radius: 50%; }
+.cot-balance-stats i.is-long { background: #4c9a72; }
+.cot-balance-stats i.is-short { background: #9e5049; }
+.cot-balance-stats strong { display: block; margin: 0.6rem 0 0.25rem; font-size: 1rem; font-variant-numeric: tabular-nums; }
+.cot-balance-stats small { color: var(--muted); font-size: 0.58rem; }
+.cot-balance-note { margin: 1rem 0 0; color: var(--muted); font-size: 0.7rem; line-height: 1.55; }
+
+.cot-table-panel {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(1.3rem, 3vw, 2.3rem);
+  border: 1px solid var(--line-dark);
+}
+
+.cot-download {
+  min-height: 38px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cot-table-wrap {
+  max-height: 680px;
+  margin-top: 1.5rem;
+  overflow: auto;
+  border: 1px solid var(--line-dark);
+}
+
+.cot-table-wrap table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.cot-table-wrap th,
+.cot-table-wrap td {
+  padding: 1rem;
+  border-right: 1px solid var(--line-dark);
+  border-bottom: 1px solid var(--line-dark);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.cot-table-wrap tr > *:first-child { position: sticky; left: 0; z-index: 2; background: #0d1010; text-align: left; }
+.cot-table-wrap thead th { position: sticky; top: 0; z-index: 3; background: #171b1a; color: var(--muted); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.cot-table-wrap thead th:first-child { z-index: 4; background: #171b1a; }
+.cot-table-wrap tbody tr:hover > * { background-color: #141817; }
+.cot-latest-badge { margin-left: 0.65rem; padding: 0.25rem 0.45rem; border: 1px solid rgba(201, 154, 61, 0.45); border-radius: 99px; color: var(--gold-bright); font-size: 0.52rem; text-transform: uppercase; }
+
+.cot-rankings {
+  padding: var(--section-pad) clamp(1.25rem, 5vw, 6rem);
+}
+
+.cot-rankings-heading > p { color: var(--muted-dark); }
+
+.cot-ranking-grid {
+  max-width: var(--max-width);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 0.72fr)) minmax(320px, 1fr);
+  gap: 1px;
+  margin: 0 auto;
+  border: 1px solid var(--line-light);
+  background: var(--line-light);
+}
+
+.cot-ranking-grid > article {
+  min-width: 0;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  background: var(--paper);
+}
+
+.cot-ranking-grid > article > span { color: var(--muted-dark); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.cot-ranking-grid ol { margin: 1.5rem 0 0; padding: 0; list-style: none; counter-reset: ranking; }
+.cot-ranking-grid li { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line-light); counter-increment: ranking; }
+.cot-ranking-grid li::before { content: "0" counter(ranking); color: #9a8d74; font: 0.75rem var(--serif); }
+.cot-ranking-grid li span { flex: 1; font-size: 0.72rem; }
+.cot-ranking-grid li strong { color: #75591f; font-size: 0.72rem; }
+
+.cot-member-preview {
+  background: linear-gradient(145deg, #171b1a, #0a0c0c) !important;
+  color: var(--text);
+}
+
+.cot-member-preview h3 { max-width: 480px; margin: 0 0 1.5rem; font: clamp(2rem, 3vw, 3.3rem)/1 var(--serif); }
+.cot-member-preview ul { margin: 0 0 2rem; padding: 0; list-style: none; }
+.cot-member-preview li { display: block; padding: 0.7rem 0; border-bottom: 1px solid var(--line-dark); color: #c9ccc8; }
+.cot-member-preview li::before { content: "◇"; margin-right: 0.6rem; color: var(--gold); }
+
+.cot-methodology {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.55fr) minmax(0, 1.45fr);
+  gap: clamp(3rem, 7vw, 8rem);
+  padding: var(--section-pad) clamp(1.25rem, 7vw, 8rem);
+}
+
+.cot-methodology h2 { margin: 0; font-size: clamp(3rem, 5vw, 5.5rem); }
+.cot-methodology-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line-dark); }
+.cot-methodology-grid article { min-height: 320px; padding: 2rem; border-right: 1px solid var(--line-dark); }
+.cot-methodology-grid article:last-child { border-right: 0; }
+.cot-methodology-grid span { color: var(--gold); font: 0.9rem var(--serif); }
+.cot-methodology-grid h3 { margin: 3rem 0 1rem; font: 1.5rem var(--serif); }
+.cot-methodology-grid p { color: var(--muted); font-size: 0.75rem; line-height: 1.75; }
+.cot-source-note { grid-column: 2; margin: 0; color: var(--muted); font-size: 0.62rem; line-height: 1.6; }
+.cot-source-note a { color: var(--gold-bright); }
+.has-data-error .cot-controls,
+.has-data-error .cot-kpis,
+.has-data-error .cot-primary-grid,
+.has-data-error .cot-table-panel { opacity: 0.45; pointer-events: none; }
+
+@media (max-width: 1100px) {
+  .cot-hero { grid-template-columns: 1fr; }
+  .cot-hero-ledger { width: min(100%, 720px); }
+  .cot-primary-grid { grid-template-columns: 1fr; }
+  .cot-balance-visual { min-height: 220px; }
+  .cot-donut { width: min(190px, 42%); }
+  .cot-ranking-grid { grid-template-columns: repeat(2, 1fr); }
+  .cot-member-preview { grid-column: 1 / -1; }
+  .cot-methodology { grid-template-columns: 1fr; }
+  .cot-source-note { grid-column: 1; }
+}
+
+@media (max-width: 780px) {
+  .cot-hero { min-height: 0; padding-left: 1.15rem; padding-right: 1.15rem; }
+  .cot-hero-copy h1 { font-size: clamp(3.7rem, 18vw, 6rem); }
+  .cot-strip { grid-template-columns: 1fr; }
+  .cot-strip > div { border-right: 0; border-bottom: 1px solid var(--line-dark); }
+  .cot-strip > div:last-child { border-bottom: 0; }
+  .cot-dashboard-heading,
+  .cot-rankings-heading { grid-template-columns: 1fr; gap: 1.5rem; }
+  .cot-controls { grid-template-columns: 1fr; }
+  .cot-kpis { grid-template-columns: repeat(2, 1fr); }
+  .cot-chart-panel,
+  .cot-balance-panel,
+  .cot-table-panel { padding: 1rem; }
+  #cot-chart { min-height: 230px; }
+  .cot-ranking-grid { grid-template-columns: 1fr; }
+  .cot-member-preview { grid-column: auto; }
+  .cot-methodology-grid { grid-template-columns: 1fr; }
+  .cot-methodology-grid article { min-height: 0; border-right: 0; border-bottom: 1px solid var(--line-dark); }
+  .cot-methodology-grid article:last-child { border-bottom: 0; }
+}
+
+@media (max-width: 480px) {
+  .cot-hero-actions { align-items: flex-start; flex-direction: column; }
+  .cot-ledger-heading { display: grid; }
+  .cot-hero-ledger dl > div { min-height: 98px; padding: 0.8rem; }
+  .cot-hero-ledger dd { font-size: 1.05rem; }
+  .cot-kpis { grid-template-columns: 1fr; }
+  .cot-panel-heading { display: grid; }
+  .cot-download { justify-self: start; }
+  .cot-donut { width: min(185px, 66%); }
 }
 
 @media print {

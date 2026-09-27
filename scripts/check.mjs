@@ -12,6 +12,7 @@ const pages = [
   "cdza/journal/index.html",
   "newsletter/index.html",
   "newsletter/welcome/index.html",
+  "cot/index.html",
   "dzc/index.html",
   "daily-zone-command/index.html",
   "membership/index.html",
@@ -20,7 +21,7 @@ const pages = [
 
 const html = pages.map((path) => fs.readFileSync(path, "utf8")).join("\n");
 const ids = new Set([...html.matchAll(/id="([^"]+)"/g)].map((match) => match[1]));
-const javascriptFiles = ["app.js", "weekly-capital-review/review.js", "glossary/glossary.js", "cdza/cdza.js", "cdza/journal/journal.js", "newsletter/newsletter.js", "membership/config.js", "membership/membership.js"];
+const javascriptFiles = ["app.js", "weekly-capital-review/review.js", "glossary/glossary.js", "cdza/cdza.js", "cdza/journal/journal.js", "newsletter/newsletter.js", "cot/cot.js", "membership/config.js", "membership/membership.js"];
 const javascript = javascriptFiles
   .map((path) => fs.readFileSync(path, "utf8"))
   .join("\n");
@@ -96,6 +97,7 @@ if (exposedMembershipLinks.length) {
 
 const homepage = fs.readFileSync("index.html", "utf8");
 const newsletterPage = fs.readFileSync("newsletter/index.html", "utf8");
+const cotData = JSON.parse(fs.readFileSync("cot/data/cot.json", "utf8"));
 const bookPage = fs.readFileSync("dzc/index.html", "utf8");
 const legacyBookPage = fs.readFileSync("daily-zone-command/index.html", "utf8");
 
@@ -136,6 +138,14 @@ for (const requiredPhrase of ["Economic context", "Technical context", "Risk dis
 }
 for (const requiredPhrase of ["Economic regime", "Technical structure", "High-impact calendar", "Scenarios &amp; invalidation"]) {
   if (!newsletterPage.includes(requiredPhrase)) throw new Error(`Newsletter page is missing issue component: ${requiredPhrase}`);
+}
+
+if (!Array.isArray(cotData.markets) || cotData.markets.length !== 15) {
+  throw new Error(`COT dataset must contain 15 markets; found ${cotData.markets?.length ?? 0}.`);
+}
+for (const market of cotData.markets) {
+  if (!market.records?.length || market.records.length < 52) throw new Error(`${market.symbol} has fewer than 52 COT records.`);
+  if (!market.records[0].actors?.[market.defaultActor]) throw new Error(`${market.symbol} is missing its default participant data.`);
 }
 
 const bimiLogo = fs.readFileSync("assets/bimi/tgi-logo.svg", "utf8");

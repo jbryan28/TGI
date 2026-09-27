@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Explore official CFTC Commitments of Traders positioning across currencies, metals, energy, digital assets, equity indexes, and rates."
+    />
+    <meta name="theme-color" content="#080a0a" />
+    <title>COT Positioning Dashboard | Trader Growth Institute</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <script defer src="../app.js"></script>
+    <script defer src="cot.js"></script>
+  </head>
+  <body class="cot-page">
+    <a class="skip-link" href="#cot-dashboard">Skip to dashboard</a>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="/" aria-label="Trader Growth Institute home">
+        <span class="brand-mark" aria-hidden="true">TGI</span>
+        <span class="brand-name">Trader Growth Institute</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span></span><span></span><span class="sr-only">Open navigation</span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="../newsletter/">Intelligence</a>
+        <a aria-current="page" href="./">COT Dashboard</a>
+        <a href="../dzc/">Book</a>
+        <a href="../cdza/">CDZA</a>
+        <a href="../glossary/">Glossary</a>
+      </nav>
+      <a class="button button-small button-outline header-cta" href="../newsletter/">Get the briefing</a>
+    </header>
+
+    <main id="cot-dashboard">
+      <section class="cot-hero section-dark">
+        <div class="ambient-grid" aria-hidden="true"></div>
+        <div class="cot-hero-copy reveal">
+          <p class="eyebrow">CFTC positioning · updated weekly</p>
+          <h1>See Where Capital<br />Is Positioned.</h1>
+          <p>
+            Track institutional positioning across currencies, commodities, digital assets, equity indexes, and rates using official Commitments of Traders data.
+          </p>
+          <div class="cot-hero-actions">
+            <a class="button button-gold" href="#positioning">Open the dashboard</a>
+            <a class="text-link" href="#methodology">Understand the data <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+
+        <div class="cot-hero-ledger reveal" aria-label="Latest COT report overview">
+          <div class="cot-ledger-heading"><span>TGI / COT</span><span id="cot-load-state">Loading official data</span></div>
+          <dl>
+            <div><dt>Latest report</dt><dd id="hero-report-date">—</dd></div>
+            <div><dt>Markets tracked</dt><dd id="hero-market-count">15</dd></div>
+            <div><dt>Source</dt><dd>CFTC</dd></div>
+            <div><dt>Cadence</dt><dd>Weekly</dd></div>
+          </dl>
+          <div class="cot-ledger-bars" aria-hidden="true">
+            <span style="--bar: 74%"></span><span style="--bar: 41%"></span><span style="--bar: 86%"></span><span style="--bar: 58%"></span><span style="--bar: 68%"></span><span style="--bar: 33%"></span><span style="--bar: 79%"></span>
+          </div>
+          <p>Positioning is context—not an entry signal.</p>
+        </div>
+      </section>
+
+      <section class="cot-strip" aria-label="Dashboard principles">
+        <div><span>01</span><p><small>Official source</small>CFTC public reporting</p></div>
+        <div><span>02</span><p><small>Correct lens</small>Participant-level positioning</p></div>
+        <div><span>03</span><p><small>TGI doctrine</small>Context before execution</p></div>
+      </section>
+
+      <section class="cot-shell section-dark" id="positioning" aria-labelledby="positioning-title">
+        <div class="cot-dashboard-heading">
+          <div><p class="eyebrow">Positioning ledger</p><h2 id="positioning-title">Institutional exposure, without the noise.</h2></div>
+          <p id="cot-status" role="status" aria-live="polite">Retrieving official CFTC data…</p>
+        </div>
+
+        <div class="cot-controls" aria-label="Dashboard controls">
+          <label>
+            <span>Market</span>
+            <select id="cot-market" aria-label="Select market"></select>
+          </label>
+          <label>
+            <span>Participant</span>
+            <select id="cot-actor" aria-label="Select participant category"></select>
+          </label>
+          <fieldset>
+            <legend>History</legend>
+            <div class="cot-range" role="group" aria-label="History range">
+              <button type="button" data-cot-range="13">13W</button>
+              <button type="button" data-cot-range="26">26W</button>
+              <button class="is-active" type="button" data-cot-range="52">52W</button>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="cot-kpis" aria-label="Latest positioning summary">
+          <article>
+            <p>Net position</p>
+            <strong id="cot-net">—</strong>
+            <span id="cot-posture">—</span>
+          </article>
+          <article>
+            <p>Weekly net change</p>
+            <strong id="cot-weekly-change">—</strong>
+            <span>Long minus short change</span>
+          </article>
+          <article>
+            <p>52-week percentile</p>
+            <strong id="cot-percentile">—</strong>
+            <span>Position within one-year range</span>
+          </article>
+          <article>
+            <p>Open interest</p>
+            <strong id="cot-open-interest">—</strong>
+            <span id="cot-open-interest-change">—</span>
+          </article>
+        </div>
+
+        <div class="cot-primary-grid">
+          <article class="cot-chart-panel">
+            <div class="cot-panel-heading">
+              <div><p id="cot-chart-symbol">—</p><h3>Net positioning history</h3></div>
+              <span id="cot-chart-date">—</span>
+            </div>
+            <svg id="cot-chart" viewBox="0 0 900 360" role="img" aria-labelledby="cot-chart-title cot-chart-desc">
+              <title id="cot-chart-title">COT net positioning history</title>
+              <desc id="cot-chart-desc">Weekly net positioning plotted as a line above or below zero.</desc>
+              <g class="cot-chart-grid" aria-hidden="true">
+                <path d="M50 40H870M50 110H870M50 180H870M50 250H870M50 320H870" />
+              </g>
+              <path id="cot-zero-line" class="cot-zero-line" d="M50 180H870" />
+              <path id="cot-area" class="cot-area" d="" />
+              <path id="cot-line" class="cot-line" d="" />
+              <g id="cot-chart-labels" class="cot-chart-labels"></g>
+              <circle id="cot-last-point" class="cot-last-point" cx="0" cy="0" r="5" />
+            </svg>
+            <div class="cot-legend"><span><i></i>Net positions</span><span><i></i>Zero line</span></div>
+          </article>
+
+          <aside class="cot-balance-panel">
+            <div class="cot-panel-heading"><div><p>Current report</p><h3>Long / short balance</h3></div></div>
+            <div class="cot-balance-visual" aria-hidden="true">
+              <div class="cot-donut" id="cot-donut"><span id="cot-donut-value">—</span><small>long share</small></div>
+            </div>
+            <div class="cot-balance-stats">
+              <div><span><i class="is-long"></i>Long</span><strong id="cot-long">—</strong><small id="cot-long-pct">—</small></div>
+              <div><span><i class="is-short"></i>Short</span><strong id="cot-short">—</strong><small id="cot-short-pct">—</small></div>
+            </div>
+            <p class="cot-balance-note" id="cot-balance-note">Select a market to inspect participant exposure.</p>
+          </aside>
+        </div>
+
+        <div class="cot-table-panel">
+          <div class="cot-panel-heading">
+            <div><p>Historical ledger</p><h3>Weekly positions and changes</h3></div>
+            <button class="cot-download" id="cot-download" type="button">Download current view</button>
+          </div>
+          <div class="cot-table-wrap">
+            <table>
+              <thead><tr><th scope="col">Report date</th><th scope="col">Long</th><th scope="col">Short</th><th scope="col">Change long</th><th scope="col">Change short</th><th scope="col">% long</th><th scope="col">% short</th><th scope="col">Net position</th></tr></thead>
+              <tbody id="cot-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="cot-rankings section-light" aria-labelledby="rankings-title">
+        <div class="cot-rankings-heading">
+          <div><p class="eyebrow">Cross-market snapshot</p><h2 id="rankings-title">Where positioning is most decisive.</h2></div>
+          <p>Rankings use each market’s default professional participant category and should be interpreted alongside price structure.</p>
+        </div>
+        <div class="cot-ranking-grid">
+          <article><span>Highest 52-week percentile</span><ol id="cot-long-ranking"></ol></article>
+          <article><span>Lowest 52-week percentile</span><ol id="cot-short-ranking"></ol></article>
+          <article class="cot-member-preview">
+            <p class="eyebrow">TGI member layer</p>
+            <h3>Positioning becomes useful when it meets price.</h3>
+            <ul><li>Institutional divergence</li><li>Four- and thirteen-week momentum</li><li>DZC technical alignment</li><li>Authorized / Monitor / Wait</li></ul>
+            <a class="button button-dark" href="../newsletter/">Get the launch briefing</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="cot-methodology section-dark" id="methodology" aria-labelledby="methodology-title">
+        <div><p class="eyebrow">Methodology</p><h2 id="methodology-title">Positioning is evidence. Not permission.</h2></div>
+        <div class="cot-methodology-grid">
+          <article><span>01</span><h3>Read the participant</h3><p>Financial contracts default to Leveraged Funds. Physical commodities default to Managed Money. Change the participant control to inspect the other side of the market.</p></article>
+          <article><span>02</span><h3>Read the reporting lag</h3><p>The report normally reflects positions held at Tuesday’s close and is released Friday. It is strategic context, not real-time order flow.</p></article>
+          <article><span>03</span><h3>Read price authority</h3><p>Combine positioning with macro regime, Daily Zones, displacement, invalidation, and risk governance before considering capital deployment.</p></article>
+        </div>
+        <p class="cot-source-note">Source: <a href="https://publicreporting.cftc.gov/stories/s/Commitments-of-Traders/r4w3-av2u/" rel="noopener noreferrer" target="_blank">U.S. Commodity Futures Trading Commission</a>. Educational information only. Not individualized investment advice or a trade signal.</p>
+      </section>
+
+      <section class="briefing-signup section-dark">
+        <div><p class="eyebrow">The TGI Intelligence Briefing</p><h2>Put positioning inside the complete trading week.</h2></div>
+        <div class="briefing-signup-action"><a class="button button-gold" href="../newsletter/">Get the weekly briefing</a><p>Economic context. Technical structure. Risk discipline.</p></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand" href="/" aria-label="Trader Growth Institute home"><span class="brand-mark" aria-hidden="true">TGI</span><span class="sr-only">Trader Growth Institute home</span></a>
+      <p>TraderGrowth.com</p>
+      <p class="footer-promise">Official positioning data. Interpreted with discipline.</p>
+      <nav aria-label="Footer navigation"><a href="../newsletter/">Newsletter</a><a aria-current="page" href="./">COT</a><a href="../dzc/">Book</a><a href="../cdza/">CDZA</a><a href="../glossary/">Glossary</a><a href="../privacy/">Privacy</a><a href="../terms/">Terms</a><a href="../risk-disclosure/">Risk disclosure</a></nav>
+    </footer>
+  </body>
+</html>
