@@ -111,6 +111,34 @@ test("COT dashboard loads official data and updates market views", async ({ page
   expect(errors).toEqual([]);
 });
 
+test("separate Macro Desk preview stays clearly labeled and source linked", async ({ page }, testInfo) => {
+  const errors = captureErrors(page);
+  await page.goto("/macro/");
+  await expectStylesApplied(page);
+  await expect(page).toHaveTitle(/Macro Desk Preview/);
+  await expect(page.getByText("CONCEPT PREVIEW")).toBeVisible();
+  await expect(page.getByText("Automated or real-time news feeds are not connected")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Read the forces");
+  await expect(page.getByRole("heading", { name: /Personal Income & Outlays \/ PCE/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /BEA release schedule/ })).toHaveAttribute("href", "https://www.bea.gov/news/schedule");
+  await expect(page.getByRole("link", { name: /ISM release calendar/ })).toHaveAttribute("href", "https://www.ismworld.org/supply-management-news-and-reports/reports/rob-report-calendar/");
+  await expect(page.getByRole("link", { name: /BLS release schedule/ })).toHaveAttribute("href", "https://www.bls.gov/schedule/news_release/empsit.htm");
+  await expect(page.locator('a[href="../newsletter/"]')).not.toHaveCount(0);
+  await expect(page.locator('a[href="../cot/"]')).not.toHaveCount(0);
+  await expect(page.locator('a[href="../membership/"]')).toHaveCount(0);
+
+  await prepareFullPageCapture(page);
+  await page.screenshot({ path: testInfo.outputPath("macro-desk-preview.png"), fullPage: true });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  await expect(page.getByText("CONCEPT PREVIEW")).toBeVisible();
+  await page.locator(".nav-toggle").click();
+  await expect(page.locator("#site-nav")).toBeVisible();
+  await expect(page.locator("#site-nav a")).toHaveCount(4);
+  expect(errors).toEqual([]);
+});
+
 test("Intelligence Briefing loads the configured Beehiiv form and attribution", async ({ page }, testInfo) => {
   const errors = captureErrors(page);
   await page.route("https://subscribe-forms.beehiiv.com/v3/loader.js", async (route) => {

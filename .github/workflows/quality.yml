@@ -34,3 +34,10 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 30
+      - name: Upload Macro Desk visual preview
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: macro-desk-visual-preview
+          path: test-results/**/macro-desk-preview.png
+          retention-days: 7
