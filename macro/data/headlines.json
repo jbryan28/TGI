@@ -1,0 +1,74 @@
+{
+  "generatedAt": "2026-09-27T22:56:20.754Z",
+  "lastAttemptAt": "2026-09-27T22:56:20.754Z",
+  "sources": [
+    {
+      "name": "GDELT",
+      "ok": false,
+      "articleCount": 0,
+      "error": "HTTP 429"
+    },
+    {
+      "name": "Federal Reserve",
+      "ok": true,
+      "articleCount": 20
+    },
+    {
+      "name": "Bureau of Labor Statistics",
+      "ok": true,
+      "articleCount": 1
+    },
+    {
+      "name": "Bureau of Economic Analysis",
+      "ok": true,
+      "articleCount": 48
+    },
+    {
+      "name": "U.S. Energy Information Administration",
+      "ok": true,
+      "articleCount": 19
+    },
+    {
+      "name": "European Central Bank",
+      "ok": true,
+      "articleCount": 15
+    }
+  ],
+  "articles": [
+    {
+      "title": "Major Economic Indicators Latest Numbers",
+      "url": "https://www.bls.gov/bls/",
+      "domain": "Bureau of Labor Statistics",
+      "seendate": "2026-09-25T14:00:53.000Z",
+      "sourceType": "official"
+    },
+    {
+      "title": "Henry Hub natural gas prices this summer were 6% lower than last summer",
+      "url": "https://www.eia.gov/todayinenergy/detail.php?id=68204",
+      "domain": "U.S. Energy Information Administration",
+      "seendate": "2026-09-25T14:00:00.000Z",
+      "sourceType": "official"
+    },
+    {
+      "title": "U.S. International Transactions and Investment Position, 2nd Quarter 2026",
+      "url": "https://bea.gov/news/2026/us-international-transactions-and-investment-position-2nd-quarter-2026",
+      "domain": "Bureau of Economic Analysis",
+      "seendate": "2026-09-24T12:30:00.000Z",
+      "sourceType": "official"
+    },
+    {
+      "title": "Philip R. Lane: The outlook for the euro area economy",
+      "url": "https://www.ecb.europa.eu//press/key/date/2026/html/ecb.sp260924~e0eceef02c.en.pdf",
+      "domain": "European Central Bank",
+      "seendate": "2026-09-24T09:00:00.000Z",
+      "sourceType": "official"
+    },
+    {
+      "title": "Public companies produce most U.S. crude oil and natural gas",
+      "url": "https://www.eia.gov/todayinenergy/detail.php?id=68184",
+      "domain": "U.S. Energy Information Administration",
+      "seendate": "2026-09-22T14:00:00.000Z",
+      "sourceType": "official"
+    }
+  ]
+}
