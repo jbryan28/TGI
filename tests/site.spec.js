@@ -28,7 +28,7 @@ const prepareFullPageCapture = async (page) => {
 };
 
 const expectStylesApplied = async (page) => {
-  await expect(page.locator('link[rel="stylesheet"]')).toHaveCount(1);
+  await expect(page.locator('link[rel="stylesheet"][href$="styles.css"]')).toHaveCount(1);
   await expect
     .poll(() => page.evaluate(() => getComputedStyle(document.body).backgroundColor))
     .toBe("rgb(8, 10, 10)");
