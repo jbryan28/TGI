@@ -188,7 +188,8 @@ test("Intelligence Briefing loads the configured Beehiiv form and attribution", 
   });
   await page.goto("/newsletter/");
   await expect(page).toHaveTitle(/TGI Intelligence Briefing/);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Enter the Trading Week");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Read the forces behind price");
+  await expect(page.locator('.newsletter-device-stage img')).toHaveAttribute("src", "../assets/tgi-newsletter-devices.svg");
   await expect(page.locator("[data-briefing-desk]")).toHaveCount(3);
   await expect(page.locator(".newsletter-founder-image img")).toHaveAttribute("src", "../assets/jay-bryan-newsletter.webp");
   await expect(page.locator('[data-newsletter-cta="founder"]')).toHaveAttribute("href", "#subscribe");
@@ -208,6 +209,11 @@ test("Intelligence Briefing loads the configured Beehiiv form and attribution", 
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
+  const heroFormBox = await page.locator(".newsletter-hero-embed").boundingBox();
+  const deviceStageBox = await page.locator(".newsletter-device-stage").boundingBox();
+  expect(heroFormBox).not.toBeNull();
+  expect(deviceStageBox).not.toBeNull();
+  expect(heroFormBox.y).toBeLessThan(deviceStageBox.y);
   await page.locator('[data-briefing-desk="2"]').click();
   await expect(page.locator("#desk-title")).toHaveText("Know when participation is unauthorized.");
   await prepareFullPageCapture(page);
