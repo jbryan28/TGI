@@ -18,6 +18,7 @@ const pages = [
   "daily-zone-command/index.html",
   "membership/index.html",
   "member/index.html",
+  "jay/index.html",
 ];
 
 const html = pages.map((path) => fs.readFileSync(path, "utf8")).join("\n");
