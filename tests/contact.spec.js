@@ -11,7 +11,17 @@ test('contact card works on a narrow mobile screen', async ({ page }) => {
   const download = await downloadEvent;
   expect(download.suggestedFilename()).toBe('jay-bryan.vcf');
   const card = await page.request.get('/jay/jay-bryan.vcf');
-  expect(await card.text()).toContain('EMAIL;TYPE=INTERNET,WORK:jay@tradergrowth.com');
+  const vcard = (await card.text()).replace(/\r?\n[ \t]/g, '');
+  expect(vcard).toContain('EMAIL;TYPE=INTERNET,WORK:jay@tradergrowth.com');
+  expect(vcard).toContain('TEL;TYPE=CELL:+12149490472');
+  for (const label of ['Who is Jay Bryan', 'Company', 'Book', 'Newsletter']) {
+    expect(vcard).toContain(`X-ABLabel:${label}`);
+  }
+  expect(vcard).toContain('Soli Deo Honor et Gloria.');
+  expect(vcard).toContain('To God alone be honor and glory.');
+  const photo = vcard.match(/PHOTO;ENCODING=b;TYPE=JPEG:([^\r\n]+)/);
+  expect(photo).not.toBeNull();
+  expect(Buffer.from(photo[1], 'base64').subarray(0, 3).toString('hex')).toBe('ffd8ff');
   await expect(page.getByRole('img', { name: /QR code/ })).toBeVisible();
   const qrDownload = page.waitForEvent('download');
   await page.getByRole('link', { name: 'Download QR code' }).click();
