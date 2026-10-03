@@ -13,7 +13,7 @@ test('contact card works on a narrow mobile screen', async ({ page }) => {
   const card = await page.request.get('/jay/jay-bryan.vcf');
   const vcard = (await card.text()).replace(/\r?\n[ \t]/g, '');
   expect(vcard).toContain('EMAIL;TYPE=INTERNET,WORK:jay@tradergrowth.com');
-  expect(vcard).toContain('TEL;TYPE=CELL:+12149490472');
+  expect(vcard).not.toMatch(/^(?:[\w-]+\.)?TEL[;:]/m);
   for (const label of ['Who is Jay Bryan', 'Company', 'Book', 'Newsletter']) {
     expect(vcard).toContain(`X-ABLabel:${label}`);
   }
