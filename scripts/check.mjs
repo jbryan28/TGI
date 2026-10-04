@@ -19,11 +19,12 @@ const pages = [
   "membership/index.html",
   "member/index.html",
   "jay/index.html",
+  "dollar/index.html",
 ];
 
 const html = pages.map((path) => fs.readFileSync(path, "utf8")).join("\n");
 const ids = new Set([...html.matchAll(/id="([^"]+)"/g)].map((match) => match[1]));
-const javascriptFiles = ["app.js", "weekly-capital-review/review.js", "glossary/glossary.js", "cdza/cdza.js", "cdza/journal/journal.js", "newsletter/newsletter.js", "cot/cot.js", "macro/news.js", "membership/config.js", "membership/membership.js"];
+const javascriptFiles = ["app.js", "weekly-capital-review/review.js", "glossary/glossary.js", "cdza/cdza.js", "cdza/journal/journal.js", "newsletter/newsletter.js", "cot/cot.js", "macro/news.js", "membership/config.js", "membership/membership.js", "dollar/pilot.js"];
 const javascript = javascriptFiles
   .map((path) => fs.readFileSync(path, "utf8"))
   .join("\n");
