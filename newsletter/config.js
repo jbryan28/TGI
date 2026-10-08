@@ -4,6 +4,6 @@
  */
 window.TGI_NEWSLETTER_CONFIG = Object.freeze({
   beehiivEmbedScriptUrl: "https://subscribe-forms.beehiiv.com/v3/loader.js",
-  beehiivFormId: "11ce4844-7014-4245-ae48-50f9805170b0",
+  beehiivFormId: "ec5ec129-a4a4-45dc-b5a6-c9b520b51423",
   beehiivAttributionScriptUrl: "https://subscribe-forms.beehiiv.com/attribution.js",
 });
