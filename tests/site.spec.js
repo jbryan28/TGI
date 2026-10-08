@@ -269,7 +269,7 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
   for (const viewport of [{width:1440,height:900},{width:390,height:844},{width:375,height:667}]) {
     await page.setViewportSize(viewport);
     await page.goto("/desk/");
-    await expect.poll(() => page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe("rgb(7, 27, 22)");
+    await expect.poll(() => page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe("rgb(8, 10, 10)");
     await expect(page).toHaveTitle(/TGI Operating Desk Membership/);
     const join = page.locator(".desk-hero .desk-join");
     await expect(join).toHaveAttribute("href", "https://tradergrowthfx.thinkific.com/enroll/3775153?price_id=4732368");
