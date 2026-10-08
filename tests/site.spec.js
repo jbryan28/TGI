@@ -198,8 +198,8 @@ test("Intelligence Briefing loads the configured Beehiiv form and attribution", 
   await expect(page.locator("#desk-title")).toHaveText("Define where capital earns permission.");
   await expect(page.locator("#desk-points li")).toHaveCount(3);
 
-  await expect(page.locator('#beehiiv-embed-host script[data-beehiiv-form="11ce4844-7014-4245-ae48-50f9805170b0"]')).toHaveCount(1);
-  await expect(page.locator('#beehiiv-embed-host iframe[data-beehiiv-form="11ce4844-7014-4245-ae48-50f9805170b0"]')).toHaveCount(1);
+  await expect(page.locator('#beehiiv-embed-host script[data-beehiiv-form="ec5ec129-a4a4-45dc-b5a6-c9b520b51423"]')).toHaveCount(1);
+  await expect(page.locator('#beehiiv-embed-host iframe[data-beehiiv-form="ec5ec129-a4a4-45dc-b5a6-c9b520b51423"]')).toHaveCount(1);
   await expect(page.locator("#newsletter-preview-form")).toBeHidden();
   await expect(page.locator('script[data-newsletter-attribution="beehiiv"]')).toHaveCount(1);
   await expect.poll(() => page.evaluate(() => window.beehiivAttributionLoaded)).toBe(true);
