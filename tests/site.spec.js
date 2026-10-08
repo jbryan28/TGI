@@ -71,7 +71,7 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   await expect(page.locator('a[href="cdza/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="glossary/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="newsletter/"]')).not.toHaveCount(0);
-  await expect(page.locator('a[href="membership/"]')).toHaveCount(0);
+  await expect(page.locator('#site-nav a[href="desk/"]')).toHaveText("Operating Desk");
 
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("homepage-full.png"), fullPage: true });
@@ -264,79 +264,33 @@ test("legacy book URL redirects to the canonical DZC route", async ({ page }) =>
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("The Daily Zone Command");
 });
 
-test("membership separates curriculum, operating desk, and certification", async ({ page }, testInfo) => {
+test("Operating Desk offer has visible checkout, accurate scope and clear cancellation", async ({ page }) => {
   const errors = captureErrors(page);
-  await page.goto("/membership/");
-  await expectStylesApplied(page);
-  await expect(page).toHaveTitle(/Trader Growth Institute Membership/);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Think Like Capital");
-  await expect(page.locator(".membership-hero")).toContainText("46-item implementation path");
-  await expect(page.locator(".offer-architecture-grid > *")).toHaveCount(3);
-  await expect(page.locator("[data-membership-layer]")).toHaveCount(3);
-  await expect(page.locator("[data-program-phase]")).toHaveCount(7);
-  await expect(page.locator(".release-timeline li")).toHaveCount(8);
-  await expect(page.locator(".desk-calendar > div")).toHaveCount(4);
-  await expect(page.locator(".access-rule-grid article")).toHaveCount(4);
-  await expect(page.locator(".membership-price-grid")).toContainText("$99");
-  await expect(page.locator(".membership-price-grid")).toContainText("$990");
-
-  await page.locator('[data-membership-layer="1"]').click();
-  await expect(page.locator("#layer-title")).toHaveText("Apply the doctrine to current markets.");
-  await expect(page.locator("#layer-points li")).toHaveCount(3);
-
-  await page.locator('[data-program-phase="6"]').click();
-  await expect(page.locator("#phase-title")).toHaveText("Capital Operator qualification");
-  await expect(page.locator("#phase-outcomes li")).toHaveCount(4);
-  await expect(page.locator("#phase-proof")).toContainText("90% final examination");
-  await expect(page.locator("#enrollment button")).toBeDisabled();
-  await expect(page.locator("#membership-enroll-cta")).toHaveText("Enrollment remains closed");
-  await expect(page.locator("#thinkific-status")).toHaveText("Pending");
-  await expect(page.locator("#enrollment")).toContainText("Thinkific configuration");
-  await expect(page.locator("#enrollment")).toContainText("Pending");
-
-  await prepareFullPageCapture(page);
-  await page.screenshot({ path: testInfo.outputPath("membership.png"), fullPage: true });
-
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.reload();
-  await page.locator('[data-membership-layer="2"]').click();
-  await expect(page.locator("#layer-title")).toHaveText("Convert decisions into evidence.");
-  await prepareFullPageCapture(page);
-  await page.screenshot({ path: testInfo.outputPath("membership-mobile.png"), fullPage: true });
+  for (const viewport of [{width:1440,height:900},{width:390,height:844},{width:375,height:667}]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/desk/");
+    await expectStylesApplied(page);
+    await expect(page).toHaveTitle(/TGI Operating Desk Membership/);
+    const join = page.locator(".desk-hero .desk-join");
+    await expect(join).toHaveAttribute("href", "https://tradergrowthfx.thinkific.com/enroll/3775153?price_id=4732368");
+    const box = await join.boundingBox();
+    expect(box.y + box.height).toBeLessThanOrEqual(viewport.height);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+    await expect(page.locator(".desk-grid article")).toHaveCount(6);
+    await page.getByText("Can I cancel anytime?", {exact:true}).click();
+    await expect(page.locator("details[open]")).toContainText("stop future monthly charges");
+    await expect(page.locator(".desk-disclaimer")).toContainText("No profitability");
+    await expect(page.locator(".desk-disclaimer")).toContainText("not included");
+    await page.locator("header .brand").click();
+    await page.waitForURL(/\/$/);
+  }
   expect(errors).toEqual([]);
 });
 
-test("membership checkout remains fail-closed until a valid HTTPS checkout is configured", async ({ page }) => {
-  await page.addInitScript(() => {
-    Object.defineProperty(window, "TGI_MEMBERSHIP_CONFIG", {
-      configurable: true,
-      get: () => ({ enrollmentOpen: true, checkoutUrl: "javascript:alert('unsafe')" }),
-      set: () => {},
-    });
-  });
-  await page.goto("/membership/");
-  await expect(page.locator("#membership-enroll-cta")).toBeDisabled();
-  await expect(page.locator("#thinkific-status")).toHaveText("Pending");
-});
-
-test("membership checkout opens only through the reviewed configuration switch", async ({ page }) => {
-  await page.route("**/membership/config.js", async (route) => {
-    await route.fulfill({
-      contentType: "application/javascript",
-      body: 'window.TGI_MEMBERSHIP_CONFIG = Object.freeze({ enrollmentOpen: true, checkoutUrl: "https://checkout.example.test/tgi-membership" });',
-    });
-  });
-  await page.goto("/membership/");
-  const checkout = page.locator('a#membership-enroll-cta');
-  await expect(checkout).toHaveText("Enroll in TGI Membership");
-  await expect(checkout).toHaveAttribute("href", "https://checkout.example.test/tgi-membership");
-  await expect(page.locator("#thinkific-status")).toHaveText("Open");
-});
-
-test("legacy member route feeds the newsletter-first launch", async ({ page }) => {
+test("legacy member route opens the Operating Desk", async ({ page }) => {
   await page.goto("/member/");
-  await page.waitForURL(/\/newsletter\/$/);
-  await expect(page).toHaveTitle(/TGI Intelligence Briefing/);
+  await page.waitForURL(/\/desk\/$/);
+  await expect(page).toHaveTitle(/TGI Operating Desk/);
 });
 
 test("mobile navigation and responsive controls work", async ({ page }, testInfo) => {

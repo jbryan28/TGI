@@ -17,6 +17,7 @@ const pages = [
   "dzc/index.html",
   "daily-zone-command/index.html",
   "membership/index.html",
+  "desk/index.html",
   "member/index.html",
   "jay/index.html",
 ];
@@ -87,15 +88,6 @@ for (const page of pages) {
 
 if (missingLinks.length) {
   throw new Error(`Broken local references:\n${missingLinks.join("\n")}`);
-}
-
-const newsletterFirstPages = pages.filter((page) => page !== "membership/index.html");
-const exposedMembershipLinks = newsletterFirstPages.filter((page) =>
-  /href="(?:\.\.\/)*membership\//.test(fs.readFileSync(page, "utf8")),
-);
-
-if (exposedMembershipLinks.length) {
-  throw new Error(`Newsletter-first release exposes membership links on: ${exposedMembershipLinks.join(", ")}`);
 }
 
 const homepage = fs.readFileSync("index.html", "utf8");
@@ -186,4 +178,4 @@ if (fs.existsSync("assets/bimi/tgi-mark-certificate.pem")) {
   }
 }
 
-console.log(`Static checks passed for ${pages.length} routes, ${new Set(referencedIds).size} interactive DOM references, ${openingBraces} CSS blocks, all local links, the BIMI asset contract, and the newsletter-first release gate.`);
+console.log(`Static checks passed for ${pages.length} routes, ${new Set(referencedIds).size} interactive DOM references, ${openingBraces} CSS blocks, all local links, the BIMI asset contract, and Operating Desk route.`);

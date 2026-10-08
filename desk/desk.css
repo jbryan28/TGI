@@ -1,0 +1,27 @@
+
+.desk-page {background:#071b16;color:var(--ivory)}
+.desk-page .site-header {background:rgba(5,20,16,.97)}
+.desk-hero {padding:125px 6vw 45px;display:grid;grid-template-columns:1fr 1.08fr;gap:3vw;align-items:center;background:radial-gradient(ellipse at 80% 40%,#123f30 0,transparent 60%)}
+.desk-page h1 {font-family:var(--serif);font-size:clamp(2.4rem,3.7vw,4.3rem);line-height:1.08;letter-spacing:-.03em;margin:18px 0}
+.desk-page h2 {font-family:var(--serif);font-size:clamp(2rem,3.3vw,3.5rem);line-height:1.13;letter-spacing:-.02em;margin:15px 0 26px}
+.desk-page em {font-style:normal;color:#c99a3d}
+.desk-page p {line-height:1.65;color:#becbc4}
+.desk-page .eyebrow {color:#c99a3d;font-size:11px;letter-spacing:.16em}
+.desk-lead {font-size:18px;max-width:570px}
+.desk-offer {display:flex;gap:16px;align-items:center;margin:22px 0}
+.desk-offer b {font-size:40px;font-family:var(--serif)}
+.desk-offer span {font-size:13px;line-height:1.6;color:#becbc4}
+.desk-join {text-transform:none;letter-spacing:0;font-size:14px;gap:5px;padding:18px 22px;white-space:normal;line-height:1.4;text-align:center;background:#c99a3d;color:#080a0a;border-color:#c99a3d}
+.desk-page .desk-micro {font-size:12px;line-height:1.65;margin:12px 0 18px}
+.desk-page .text-link {font-size:13px}
+.desk-preview {margin:0}.desk-preview img {width:100%;height:auto}.desk-preview figcaption {font-size:11px;text-align:center;color:#93aaa0;margin-top:12px}
+.desk-strip {display:flex;justify-content:center;flex-wrap:wrap;gap:2rem;padding:24px;border-block:1px solid #c99a3d33;color:#c99a3d;font-size:12px;text-transform:uppercase;letter-spacing:.12em}
+.desk-section {padding:75px 7vw;max-width:1500px;margin:auto}.desk-intro {max-width:720px;font-size:18px}.desk-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:35px}
+.desk-grid article,.desk-fit article {padding:28px;background:#0b2820;border:1px solid #c99a3d26;border-radius:5px}.desk-number {color:#c99a3d;font-family:var(--serif);font-size:25px}.desk-page h3 {font-size:19px;margin:18px 0 12px}.desk-grid p {font-size:14px}
+.desk-workflow,.desk-founder,.desk-pricing {display:grid;grid-template-columns:1fr 1fr;gap:65px;align-items:center}.desk-workflow {background:#0b2820;max-width:none}.desk-workflow ol {padding:0;list-style:none}.desk-workflow li {border-bottom:1px solid #c99a3d33;padding:22px 0}.desk-workflow li span {font-size:11px;color:#c99a3d;letter-spacing:.15em}.desk-workflow h3 {margin:9px 0}.desk-workflow p {margin:0}.desk-founder img {width:100%;height:410px;object-fit:cover;border-radius:6px}.desk-page a:not(.button) {color:inherit}.desk-page p a {text-decoration:underline;text-underline-offset:4px}
+.desk-fit {display:grid;grid-template-columns:1fr 1fr;gap:22px}.desk-page ul {padding-left:20px}.desk-page li {font-size:15px;line-height:1.8;color:#becbc4}.desk-pricing {border-top:1px solid #c99a3d33}.desk-pricing aside {padding:35px;background:#0b2820;border:1px solid #c99a3d;border-radius:6px}.desk-pricing .desk-price {font-family:var(--serif);font-size:58px;margin:10px 0;color:var(--ivory)}.desk-price span {font-family:var(--sans);font-size:15px;color:#becbc4}.desk-pricing .desk-join {display:flex;width:100%}
+.desk-faq {max-width:1050px}.desk-faq details {border-bottom:1px solid #c99a3d33;padding:22px 0}.desk-faq summary {font-size:17px;cursor:pointer;line-height:1.5}.desk-faq details p {font-size:15px;margin:16px 0 0}.desk-disclaimer {border-top:1px solid #c99a3d33;padding-top:40px}.desk-disclaimer h2 {font-family:var(--sans);font-size:19px}.desk-disclaimer p {font-size:12px;max-width:1050px}
+@media(max-width:900px){.desk-hero {grid-template-columns:1fr;padding:100px 22px 35px;gap:30px}.desk-page h1 {font-size:clamp(2.2rem,6vw,3.5rem)}.desk-lead {font-size:16px}.desk-offer {margin:16px 0}.desk-hero .desk-join {display:flex;width:100%;max-width:500px}.desk-preview {max-width:640px}.desk-section {padding:50px 22px}.desk-grid {grid-template-columns:1fr 1fr}.desk-workflow,.desk-founder,.desk-pricing {grid-template-columns:1fr;gap:25px}.desk-strip {gap:16px;font-size:10px}.desk-founder img {height:330px}.desk-fit {grid-template-columns:1fr}.desk-pricing aside {padding:24px}}
+@media(max-width:500px){.desk-grid {grid-template-columns:1fr}.desk-hero {padding-top:94px}.desk-page h1 {font-size:2.3rem}.desk-join {font-size:13px;padding:16px 12px}.desk-hero .desk-micro {margin:8px 0 12px}.desk-section h2 {font-size:2rem}}
+
+@media(max-width:500px){.desk-hero h1{font-size:2rem;margin:12px 0}.desk-hero .desk-lead{line-height:1.5}.desk-hero .eyebrow{margin:0}.desk-hero .desk-offer{margin:12px 0}}
