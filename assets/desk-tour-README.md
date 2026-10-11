@@ -1,6 +1,8 @@
 # TGI Operating Desk landing page animation
 
-The landing page uses `tgi-forex-portal-walkthrough.gif`, the exact 18-second animation included in the October 11 newsletter draft: 960 × 660, 108 frames, infinite loop. Its matching still is `tgi-forex-portal-walkthrough-poster.webp`. These assets are tracked directly and are separate from the generated membership tour below.
+The landing page uses `tgi-forex-portal-walkthrough.gif`, the approved 18-second portal animation with EURUSD Short, USDJPY Long and GBPAUD Short position tools: 960 × 660, 108 frames, infinite loop. Its matching still is `tgi-forex-portal-walkthrough-poster.webp`. These assets are tracked directly and are separate from the generated membership tour below.
+
+The animation removes the earlier preview labels and draws entry, stop and target areas in each currency scene. Charts remain layout previews rather than current market assessments. Rebuild the GIF and poster on Linux with `node scripts/render-forex-portal.cjs`; this requires ffmpeg with its librsvg decoder and DejaVu fonts.
 
 The borderless GIF starts when it enters view and stops when hidden. Clicking, tapping, or using the keyboard button toggles playback. Reduced-motion and JavaScript-disabled visitors see the matching still poster. No download links, caption, video panel or transcript appear beneath it.
 
