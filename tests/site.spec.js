@@ -346,7 +346,15 @@ test("Operating Desk stays readable with reduced motion or JavaScript disabled",
       if (profile.name === "no-javascript") {
         await expect(page.locator("[data-desk-gif-control]")).toBeHidden();
       }
-      await prepareFullPageCapture(page);
+      // Keep capture preparation synchronous: page timers do not run with JavaScript disabled.
+      await page.evaluate(() => {
+        window.scrollTo(0, 0);
+        const header = document.querySelector(".site-header");
+        header.style.position = "absolute";
+        header.style.top = "0";
+        document.querySelector(".skip-link").style.display = "none";
+        if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+      });
       await page.screenshot({ path: testInfo.outputPath(`desk-${profile.name}.png`), fullPage: true });
       expect(errors).toEqual([]);
     } finally {
