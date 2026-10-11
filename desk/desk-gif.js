@@ -34,7 +34,7 @@
       status.textContent = 'Animation stopped. Play starts the complete walkthrough again.';
     } else {
       play();
-      status.textContent = 'The full 42-second walkthrough animation is playing.';
+      status.textContent = 'The 18-second portal walkthrough animation is playing.';
     }
   });
   image.addEventListener('error', () => {
@@ -42,7 +42,7 @@
     stop();
     userStopped = true;
     control.hidden = true;
-    status.textContent = 'Animation unavailable. The Daily Zones illustration is shown instead.';
+    status.textContent = 'Animation unavailable. The portal preview is shown instead.';
   });
 
   if ('IntersectionObserver' in window) {
