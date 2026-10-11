@@ -307,11 +307,11 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
     ]);
     await expect(page.locator(".desk-coverage-note")).toContainText("not every instrument receives a fresh review each day");
     await page.getByText("How often is the Desk updated?", {exact:true}).click();
-    await expect(page.locator("details[open]")).toContainText("Weekly news announcements");
-    await expect(page.locator("details[open]")).toContainText("does not guarantee a new review of all 43 instruments every day");
+    await expect(page.locator(".desk-faq details[open]")).toContainText("Weekly news announcements");
+    await expect(page.locator(".desk-faq details[open]")).toContainText("does not guarantee a new review of all 43 instruments every day");
     await page.getByText("How often is the Desk updated?", {exact:true}).click();
     await page.getByText("Can I cancel anytime?", {exact:true}).click();
-    await expect(page.locator("details[open]")).toContainText("stop future monthly charges");
+    await expect(page.locator(".desk-faq details[open]")).toContainText("stop future monthly charges");
     await expect(page.locator(".desk-disclaimer")).toContainText("No profitability");
     await expect(page.locator(".desk-disclaimer")).toContainText("not included");
     await page.locator("header .brand").click();
