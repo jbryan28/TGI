@@ -14,7 +14,7 @@
 .desk-join {text-transform:none;letter-spacing:0;font-size:14px;gap:5px;padding:18px 22px;white-space:normal;line-height:1.4;text-align:center;background:#c99a3d;color:#080a0a;border-color:#c99a3d}
 .desk-page .desk-micro {font-size:12px;line-height:1.65;margin:12px 0 18px}
 .desk-page .text-link {font-size:13px}
-.desk-preview {margin:0}.desk-preview img {width:100%;height:auto}.desk-preview figcaption {font-size:11px;text-align:center;color:#98958c;margin-top:12px}
+.desk-preview {margin:0}.desk-preview img {width:100%;height:auto}
 .desk-strip {display:flex;justify-content:center;flex-wrap:wrap;gap:2rem;padding:24px;border-block:1px solid #c99a3d33;color:#c99a3d;font-size:12px;text-transform:uppercase;letter-spacing:.12em}
 .desk-section {padding:75px 7vw;max-width:1500px;margin:auto}.desk-intro {max-width:720px;font-size:18px}.desk-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:35px}
 .desk-grid article,.desk-fit article {padding:28px;background:#111212;border:1px solid #c99a3d26;border-radius:5px}.desk-number {color:#c99a3d;font-family:var(--serif);font-size:25px}.desk-page h3 {font-size:19px;margin:18px 0 12px}.desk-grid p {font-size:14px}
@@ -30,13 +30,12 @@
 .desk-hero {background:radial-gradient(ellipse at 88% 15%,rgba(201,154,61,.10),transparent 52%)}
 .desk-preview {padding:24px 20px 18px;border:1px solid rgba(201,154,61,.5);border-radius:6px;background:linear-gradient(145deg,#151512,#090a0a);box-shadow:0 22px 65px rgba(0,0,0,.3)}
 .desk-preview img {display:block;filter:drop-shadow(0 15px 20px rgba(0,0,0,.35))}
-.desk-preview figcaption {line-height:1.6;margin-top:20px}
 .desk-founder img {border:1px solid rgba(201,154,61,.6);box-shadow:0 20px 50px rgba(0,0,0,.25)}
 .desk-grid article,.desk-fit article {border-color:rgba(201,154,61,.23);background:linear-gradient(145deg,#141513,#0d0f0f)}
 .desk-workflow {border-block:1px solid rgba(201,154,61,.18)}
 .desk-pricing aside {background:linear-gradient(145deg,#191813,#0d0f0f);box-shadow:0 20px 60px rgba(0,0,0,.25)}
 .desk-page .desk-join:hover {background:#e0b459;border-color:#e0b459}
-@media(max-width:500px){.desk-preview {padding:18px 10px 14px}.desk-preview figcaption {font-size:10px;margin-top:14px}}
+@media(max-width:500px){.desk-preview {padding:18px 10px 14px}}
 
 /* Asset coverage follows the current member portal, rather than review frequency. */
 .desk-coverage {display:grid;grid-template-columns:.8fr 1.6fr;gap:32px;margin-top:38px;padding:32px;border:1px solid rgba(201,154,61,.38);border-radius:6px;background:linear-gradient(130deg,#191813,#0c1010)}
@@ -52,26 +51,10 @@
 @media(max-width:900px){.desk-coverage {grid-template-columns:1fr;gap:25px;padding:25px}.desk-market-groups {max-width:600px}}
 @media(max-width:500px){.desk-page .desk-market-groups {grid-template-columns:1fr;gap:22px}.desk-coverage {padding:24px 20px}}
 
-.desk-video-frame {position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid rgba(201,154,61,.25);border-radius:4px;background:#080a0a}
-.desk-video-frame video {display:block;width:100%;height:100%;object-fit:contain;background:#080a0a}
-.desk-video-play {position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:100%;border:0;background:linear-gradient(180deg,rgba(8,10,10,.12),rgba(8,10,10,.52));color:var(--ivory);cursor:pointer;font-family:var(--sans);text-align:center}
-.desk-video-play svg {width:68px;height:68px;filter:drop-shadow(0 4px 15px rgba(0,0,0,.5))}
-.desk-video-play strong {font-size:18px;font-weight:500;text-shadow:0 2px 8px #000}
-.desk-video-play > span {font-size:12px;color:#e6dfd0;text-shadow:0 2px 8px #000}
-.desk-video-play:hover svg {transform:scale(1.06)}
-.desk-video-play[hidden],.desk-video-status[hidden] {display:none}
-.desk-video-download {display:block;width:fit-content;margin:10px auto 0;text-decoration:underline;text-underline-offset:4px}
-.desk-page .desk-video-status {font-size:12px;margin:12px 0 0}
-.desk-video-transcript {margin-top:18px;border-top:1px solid rgba(201,154,61,.2);padding-top:14px}
-.desk-video-transcript summary {font-size:12px;cursor:pointer;color:#c99a3d}
-.desk-video-transcript p {font-size:13px;margin:14px 0 0}
-@media(max-width:500px){.desk-video-play svg {width:54px;height:54px}.desk-video-play strong {font-size:15px}.desk-video-play > span {font-size:11px}}
-
 /* Brief entrances and tactile feedback; pricing and controls stay available. */
 .desk-page .desk-join {transition:background-color .2s,border-color .2s,box-shadow .25s,transform .25s}
 .desk-grid article,.desk-fit article {transition:border-color .25s,box-shadow .3s,transform .3s cubic-bezier(.22,1,.36,1)}
 .desk-founder img {transition:box-shadow .3s,border-color .3s}
-.desk-video-play svg {transition:transform .25s}
 .desk-grid article:focus-within,.desk-fit article:focus-within {border-color:rgba(201,154,61,.6)}
 @media(hover:hover) and (pointer:fine){
   .desk-page .desk-join:hover {transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,154,61,.15)}
@@ -79,7 +62,7 @@
   .desk-founder img:hover {border-color:#c99a3d;box-shadow:0 24px 60px rgba(0,0,0,.35)}
 }
 @media(prefers-reduced-motion:reduce){
-  .desk-page [data-desk-motion],.desk-page .desk-join,.desk-grid article,.desk-fit article,.desk-founder img,.desk-video-play svg {transition:none!important;animation:none!important;transform:none!important}
+  .desk-page [data-desk-motion],.desk-page .desk-join,.desk-grid article,.desk-fit article,.desk-founder img {transition:none!important;animation:none!important;transform:none!important}
 }
 
 /* The complete GIF blends into the hero without a surrounding frame. */
@@ -89,11 +72,6 @@
 .desk-gif-frame {position:relative;aspect-ratio:16/9}
 .desk-gif-frame img {display:block;width:100%;height:auto}
 .desk-gif-frame::after {content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#080a0a,transparent 4%,transparent 96%,#080a0a),linear-gradient(0deg,#080a0a,transparent 4%,transparent 96%,#080a0a)}
-.desk-gif-controls {display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px 20px;margin:14px 0;font-size:12px}
-.desk-gif-controls button {padding:6px 0;border:0;background:none;font:inherit;color:#c99a3d;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
-.desk-gif-controls button[hidden] {display:none}
-.desk-gif-controls a {text-decoration:underline;text-underline-offset:4px}
-.desk-video-option {margin-top:16px;text-align:left}
-.desk-video-option > summary {cursor:pointer;font-size:12px;color:#c99a3d}
-.desk-video-option .desk-video-frame {margin-top:14px;border:0;border-radius:0}
-.desk-preview figcaption {margin-top:16px}
+.desk-gif-toggle {position:absolute;inset:0;z-index:1;width:100%;height:100%;padding:0;border:0;background:transparent;cursor:pointer;touch-action:manipulation}
+.desk-gif-toggle[hidden] {display:none}
+.desk-gif-toggle:focus-visible {outline:2px solid #c99a3d;outline-offset:4px}

@@ -15,13 +15,15 @@
   const stop = () => {
     if (playing) image.src = poster;
     playing = false;
-    control.textContent = 'Play animation';
+    control.setAttribute('aria-label', 'Play animation');
+    control.title = 'Play animation';
   };
   const play = () => {
     if (playing || document.hidden) return;
     image.src = gif;
     playing = true;
-    control.textContent = 'Stop animation';
+    control.setAttribute('aria-label', 'Stop animation');
+    control.title = 'Stop animation';
   };
 
   control.hidden = false;
@@ -40,12 +42,7 @@
     stop();
     userStopped = true;
     control.hidden = true;
-    status.className = 'desk-video-status';
-    status.textContent = 'Animation unavailable. Use the video controls or read the walkthrough below.';
-  });
-  document.querySelector('[data-desk-video]')?.addEventListener('play', () => {
-    userStopped = true;
-    stop();
+    status.textContent = 'Animation unavailable. The Daily Zones illustration is shown instead.';
   });
 
   if ('IntersectionObserver' in window) {

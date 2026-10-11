@@ -85,7 +85,7 @@ PORTAL = PORTAL.crop((40, 150, 1160, 857)).resize((870, 549), Image.Resampling.L
 
 
 def intro():
-    im = canvas("01 / One member desk")
+    im = canvas("04 / One member desk")
     d = ImageDraw.Draw(im)
     text(d, (96, 240), "Your market preparation.", 108, IVORY, SERIF)
     text(d, (96, 366), "One member desk.", 108, GOLD, SERIF)
@@ -138,7 +138,7 @@ def news():
 
 
 def zones():
-    im = canvas("04 / Daily Zones & Structure")
+    im = canvas("01 / Daily Zones & Scenarios")
     d = ImageDraw.Draw(im)
     text(d, (96, 242), "Daily Zones.", 108, IVORY, SERIF)
     text(d, (96, 372), "Structural levels.", 100, GOLD, SERIF)
@@ -209,9 +209,9 @@ def close():
     return im
 
 
-SCENES = [intro(), board(), news(), zones(), scenarios(), records(), close()]
-STARTS = [0, 5, 11, 17, 24, 30, 36]
-ENDS = [5, 11, 17, 24, 30, 36, 42]
+SCENES = [zones(), board(), news(), intro(), scenarios(), records(), close()]
+STARTS = [0, 7, 13, 19, 24, 30, 36]
+ENDS = [7, 13, 19, 24, 30, 36, 42]
 
 
 def ease(x):
@@ -235,14 +235,14 @@ def scene_frame(index, elapsed):
         d.rounded_rectangle(boxes[k], radius=16, outline=(201, 154, 61), width=3)
         x0, y0, x1, y1 = boxes[k]
         d.line((x0 + 22, y0 + 2, x0 + pulse + 22, y0 + 2), fill="#e0bd76", width=4)
-    if index == 3:
+    if index == 0:
         visible = min(len(CANDLES), max(1, int(ease((elapsed - .3) / 4.8) * len(CANDLES))))
         for i, (opening, closing) in enumerate(CANDLES[:visible]):
             x = 1042 + i * 44
             col = GREEN if closing < opening else "#b99354"
             d.line((x, min(opening, closing) - 16, x, max(opening, closing) + 16), fill=col, width=3)
             d.rectangle((x - 10, min(opening, closing), x + 10, max(opening, closing) + 3), fill=col)
-    if index == 0:
+    if index == 3:
         length = int(445 * ease(elapsed / 2.2))
         d.line((100, 712, 100 + length, 712), fill="#e0bd76", width=4)
     return im
@@ -276,7 +276,7 @@ def main():
         proc.stdin.close()
         if proc.wait():
             raise RuntimeError("ffmpeg render failed")
-    frame_at(7.5).save(OUT / "tgi-operating-desk-tour-poster.webp", quality=93)
+    frame_at(5.5).save(OUT / "tgi-operating-desk-tour-poster.webp", quality=93)
     print(f"Saved {output} ({output.stat().st_size:,} bytes)", flush=True)
 
 
