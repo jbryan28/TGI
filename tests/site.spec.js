@@ -278,6 +278,16 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
     await expect(page.locator(".desk-grid article")).toHaveCount(6);
     await expect(page.locator(".desk-lead")).toContainText("across 43 instruments");
+    const gif = page.locator('[data-desk-gif]');
+    await gif.scrollIntoViewIfNeeded();
+    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour.gif");
+    await expect.poll(() => gif.evaluate(image => image.complete && image.naturalWidth === 960), { timeout: 15000 }).toBe(true);
+    await expect(page.locator(".desk-preview")).toHaveCSS("border-top-width", "0px");
+    await page.getByRole("button", { name: "Stop animation", exact: true }).click();
+    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour-poster.webp");
+    await page.getByRole("button", { name: "Play animation", exact: true }).click();
+    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour.gif");
+    await page.getByText("Watch with video controls", { exact: true }).click();
     const tour = page.locator('[data-desk-video]');
     await expect(tour).toHaveAttribute("poster", "../assets/tgi-operating-desk-tour-poster.webp");
     await expect(tour).toHaveAttribute("preload", "none");
@@ -329,6 +339,7 @@ test("Operating Desk stays readable with reduced motion or JavaScript disabled",
       await expect(heading).toHaveCSS("transform", "none");
       await expect(page.locator(".desk-hero .desk-join")).toBeVisible();
       await expect(page.locator(".desk-offer")).toContainText("$99");
+      await expect(page.locator("[data-desk-gif]")).toHaveAttribute("src", "../assets/tgi-operating-desk-tour-poster.webp");
       const card = page.locator(".desk-grid article").first();
       await card.scrollIntoViewIfNeeded();
       await expect(card).toHaveCSS("opacity", "1");
@@ -338,6 +349,8 @@ test("Operating Desk stays readable with reduced motion or JavaScript disabled",
       await expect(pricing).toHaveCSS("opacity", "1");
       await expect(pricing.locator(".desk-join")).toBeVisible();
       if (profile.name === "no-javascript") {
+        await expect(page.locator("[data-desk-gif-control]")).toBeHidden();
+        await page.getByText("Watch with video controls", { exact: true }).click();
         await expect(page.locator("[data-desk-video]")).toHaveAttribute("controls", "");
         await expect(page.locator("[data-desk-video-start]")).toBeHidden();
       }

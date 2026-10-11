@@ -81,3 +81,19 @@
 @media(prefers-reduced-motion:reduce){
   .desk-page [data-desk-motion],.desk-page .desk-join,.desk-grid article,.desk-fit article,.desk-founder img,.desk-video-play svg {transition:none!important;animation:none!important;transform:none!important}
 }
+
+/* The complete GIF blends into the hero without a surrounding frame. */
+.desk-hero {background:#080a0a}
+.desk-preview {padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+.desk-preview img {filter:none}
+.desk-gif-frame {position:relative;aspect-ratio:16/9}
+.desk-gif-frame img {display:block;width:100%;height:auto}
+.desk-gif-frame::after {content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#080a0a,transparent 4%,transparent 96%,#080a0a),linear-gradient(0deg,#080a0a,transparent 4%,transparent 96%,#080a0a)}
+.desk-gif-controls {display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px 20px;margin:14px 0;font-size:12px}
+.desk-gif-controls button {padding:6px 0;border:0;background:none;font:inherit;color:#c99a3d;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.desk-gif-controls button[hidden] {display:none}
+.desk-gif-controls a {text-decoration:underline;text-underline-offset:4px}
+.desk-video-option {margin-top:16px;text-align:left}
+.desk-video-option > summary {cursor:pointer;font-size:12px;color:#c99a3d}
+.desk-video-option .desk-video-frame {margin-top:14px;border:0;border-radius:0}
+.desk-preview figcaption {margin-top:16px}

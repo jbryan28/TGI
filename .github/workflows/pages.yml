@@ -42,6 +42,7 @@ jobs:
           path: |
             assets/tgi-operating-desk-tour.mp4
             assets/tgi-operating-desk-tour.webm
+            assets/tgi-operating-desk-tour.gif
             assets/tgi-operating-desk-tour-poster.webp
           if-no-files-found: error
 
