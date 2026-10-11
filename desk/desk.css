@@ -69,7 +69,7 @@
 .desk-hero {background:#080a0a}
 .desk-preview {padding:0;border:0;border-radius:0;background:none;box-shadow:none}
 .desk-preview img {filter:none}
-.desk-gif-frame {position:relative;aspect-ratio:16/9}
+.desk-gif-frame {position:relative;aspect-ratio:16/11}
 .desk-gif-frame img {display:block;width:100%;height:auto}
 .desk-gif-frame::after {content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#080a0a,transparent 4%,transparent 96%,#080a0a),linear-gradient(0deg,#080a0a,transparent 4%,transparent 96%,#080a0a)}
 .desk-gif-toggle {position:absolute;inset:0;z-index:1;width:100%;height:100%;padding:0;border:0;background:transparent;cursor:pointer;touch-action:manipulation}

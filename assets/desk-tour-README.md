@@ -1,4 +1,10 @@
-# TGI Operating Desk membership walkthrough
+# TGI Operating Desk landing page animation
+
+The landing page uses `tgi-forex-portal-walkthrough.gif`, the exact 18-second animation included in the October 11 newsletter draft: 960 × 660, 108 frames, infinite loop. Its matching still is `tgi-forex-portal-walkthrough-poster.webp`. These assets are tracked directly and are separate from the generated membership tour below.
+
+The borderless GIF starts when it enters view and stops when hidden. Clicking, tapping, or using the keyboard button toggles playback. Reduced-motion and JavaScript-disabled visitors see the matching still poster. No download links, caption, video panel or transcript appear beneath it.
+
+## Retained membership walkthrough
 
 42-second silent animated explainer, matching the black-and-gold membership page.
 
@@ -9,8 +15,7 @@ The release and pull-request workflows generate the media from the tracked rende
 - GIF: the complete 42 seconds, 960 × 540, 12 fps, infinite loop.
 - Poster: the opening Daily Zones scene with its illustrative chart fully drawn.
 - WebVTT: English captions for the generated video, matching the current slide order.
-- The borderless GIF starts when it enters view and stops when hidden. Clicking, tapping, or using the keyboard button on the GIF toggles playback without a visible control row. Reduced-motion and JavaScript-disabled visitors see the still poster by default.
-- The membership page displays only the GIF; there are no download links, caption, video panel or transcript beneath it. The generated MP4 and WebM remain release assets.
+- The generated tour GIF, MP4 and WebM remain release assets; they are not the current landing page animation.
 
 Slide order: 01 Daily Zones & Scenarios; 02 Current Desk; 03 News & Releases; 04 One member desk; 05 Scenarios & Outlooks; 06 Rules & Historical Work; 07 Join the Desk. The chart animation keeps its full seven seconds and the tour stays 42 seconds long.
 
