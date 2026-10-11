@@ -278,6 +278,16 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
     await expect(page.locator(".desk-grid article")).toHaveCount(6);
     await expect(page.locator(".desk-lead")).toContainText("across 43 instruments");
+    const gif = page.locator('[data-desk-gif]');
+    await gif.scrollIntoViewIfNeeded();
+    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour.gif");
+    await expect.poll(() => gif.evaluate(image => image.complete && image.naturalWidth === 960), { timeout: 15000 }).toBe(true);
+    await expect(page.locator(".desk-preview")).toHaveCSS("border-top-width", "0px");
+    await page.getByRole("button", { name: "Stop animation", exact: true }).click();
+    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour-poster.webp");
+    await page.getByRole("button", { name: "Play animation", exact: true }).click();
+    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour.gif");
+    await page.getByText("Watch with video controls", { exact: true }).click();
     const tour = page.locator('[data-desk-video]');
     await expect(tour).toHaveAttribute("poster", "../assets/tgi-operating-desk-tour-poster.webp");
     await expect(tour).toHaveAttribute("preload", "none");
@@ -297,17 +307,59 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
     ]);
     await expect(page.locator(".desk-coverage-note")).toContainText("not every instrument receives a fresh review each day");
     await page.getByText("How often is the Desk updated?", {exact:true}).click();
-    await expect(page.locator("details[open]")).toContainText("Weekly news announcements");
-    await expect(page.locator("details[open]")).toContainText("does not guarantee a new review of all 43 instruments every day");
+    await expect(page.locator(".desk-faq details[open]")).toContainText("Weekly news announcements");
+    await expect(page.locator(".desk-faq details[open]")).toContainText("does not guarantee a new review of all 43 instruments every day");
     await page.getByText("How often is the Desk updated?", {exact:true}).click();
     await page.getByText("Can I cancel anytime?", {exact:true}).click();
-    await expect(page.locator("details[open]")).toContainText("stop future monthly charges");
+    await expect(page.locator(".desk-faq details[open]")).toContainText("stop future monthly charges");
     await expect(page.locator(".desk-disclaimer")).toContainText("No profitability");
     await expect(page.locator(".desk-disclaimer")).toContainText("not included");
     await page.locator("header .brand").click();
     await page.waitForURL(/\/$/);
   }
   expect(errors).toEqual([]);
+});
+
+test("Operating Desk stays readable with reduced motion or JavaScript disabled", async ({ browser }, testInfo) => {
+  for (const profile of [
+    { name: "reduced-motion", options: { reducedMotion: "reduce" } },
+    { name: "no-javascript", options: { javaScriptEnabled: false } },
+  ]) {
+    const context = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      ...profile.options,
+    });
+    try {
+      const page = await context.newPage();
+      const errors = captureErrors(page);
+      await page.goto("http://127.0.0.1:4173/desk/");
+      const heading = page.getByRole("heading", { level: 1 });
+      await expect(heading).toBeVisible();
+      await expect(heading).toHaveCSS("opacity", "1");
+      await expect(heading).toHaveCSS("transform", "none");
+      await expect(page.locator(".desk-hero .desk-join")).toBeVisible();
+      await expect(page.locator(".desk-offer")).toContainText("$99");
+      await expect(page.locator("[data-desk-gif]")).toHaveAttribute("src", "../assets/tgi-operating-desk-tour-poster.webp");
+      const card = page.locator(".desk-grid article").first();
+      await card.scrollIntoViewIfNeeded();
+      await expect(card).toHaveCSS("opacity", "1");
+      await expect(card).toHaveCSS("transform", "none");
+      const pricing = page.locator(".desk-pricing aside");
+      await pricing.scrollIntoViewIfNeeded();
+      await expect(pricing).toHaveCSS("opacity", "1");
+      await expect(pricing.locator(".desk-join")).toBeVisible();
+      if (profile.name === "no-javascript") {
+        await expect(page.locator("[data-desk-gif-control]")).toBeHidden();
+        await page.getByText("Watch with video controls", { exact: true }).click();
+        await expect(page.locator("[data-desk-video]")).toHaveAttribute("controls", "");
+        await expect(page.locator("[data-desk-video-start]")).toBeHidden();
+      }
+      await page.screenshot({ path: testInfo.outputPath(`desk-${profile.name}.png`), fullPage: true });
+      expect(errors).toEqual([]);
+    } finally {
+      await context.close();
+    }
+  }
 });
 
 test("legacy member route opens the Operating Desk", async ({ page }) => {

@@ -66,3 +66,34 @@
 .desk-video-transcript summary {font-size:12px;cursor:pointer;color:#c99a3d}
 .desk-video-transcript p {font-size:13px;margin:14px 0 0}
 @media(max-width:500px){.desk-video-play svg {width:54px;height:54px}.desk-video-play strong {font-size:15px}.desk-video-play > span {font-size:11px}}
+
+/* Brief entrances and tactile feedback; pricing and controls stay available. */
+.desk-page .desk-join {transition:background-color .2s,border-color .2s,box-shadow .25s,transform .25s}
+.desk-grid article,.desk-fit article {transition:border-color .25s,box-shadow .3s,transform .3s cubic-bezier(.22,1,.36,1)}
+.desk-founder img {transition:box-shadow .3s,border-color .3s}
+.desk-video-play svg {transition:transform .25s}
+.desk-grid article:focus-within,.desk-fit article:focus-within {border-color:rgba(201,154,61,.6)}
+@media(hover:hover) and (pointer:fine){
+  .desk-page .desk-join:hover {transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,154,61,.15)}
+  .desk-grid article:hover,.desk-fit article:hover {transform:translateY(-4px);border-color:rgba(201,154,61,.58);box-shadow:0 14px 35px rgba(0,0,0,.2)}
+  .desk-founder img:hover {border-color:#c99a3d;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+}
+@media(prefers-reduced-motion:reduce){
+  .desk-page [data-desk-motion],.desk-page .desk-join,.desk-grid article,.desk-fit article,.desk-founder img,.desk-video-play svg {transition:none!important;animation:none!important;transform:none!important}
+}
+
+/* The complete GIF blends into the hero without a surrounding frame. */
+.desk-hero {background:#080a0a}
+.desk-preview {padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+.desk-preview img {filter:none}
+.desk-gif-frame {position:relative;aspect-ratio:16/9}
+.desk-gif-frame img {display:block;width:100%;height:auto}
+.desk-gif-frame::after {content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#080a0a,transparent 4%,transparent 96%,#080a0a),linear-gradient(0deg,#080a0a,transparent 4%,transparent 96%,#080a0a)}
+.desk-gif-controls {display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px 20px;margin:14px 0;font-size:12px}
+.desk-gif-controls button {padding:6px 0;border:0;background:none;font:inherit;color:#c99a3d;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.desk-gif-controls button[hidden] {display:none}
+.desk-gif-controls a {text-decoration:underline;text-underline-offset:4px}
+.desk-video-option {margin-top:16px;text-align:left}
+.desk-video-option > summary {cursor:pointer;font-size:12px;color:#c99a3d}
+.desk-video-option .desk-video-frame {margin-top:14px;border:0;border-radius:0}
+.desk-preview figcaption {margin-top:16px}
