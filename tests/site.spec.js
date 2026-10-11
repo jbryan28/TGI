@@ -310,6 +310,45 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
   expect(errors).toEqual([]);
 });
 
+test("Operating Desk stays readable with reduced motion or JavaScript disabled", async ({ browser }, testInfo) => {
+  for (const profile of [
+    { name: "reduced-motion", options: { reducedMotion: "reduce" } },
+    { name: "no-javascript", options: { javaScriptEnabled: false } },
+  ]) {
+    const context = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      ...profile.options,
+    });
+    try {
+      const page = await context.newPage();
+      const errors = captureErrors(page);
+      await page.goto("http://127.0.0.1:4173/desk/");
+      const heading = page.getByRole("heading", { level: 1 });
+      await expect(heading).toBeVisible();
+      await expect(heading).toHaveCSS("opacity", "1");
+      await expect(heading).toHaveCSS("transform", "none");
+      await expect(page.locator(".desk-hero .desk-join")).toBeVisible();
+      await expect(page.locator(".desk-offer")).toContainText("$99");
+      const card = page.locator(".desk-grid article").first();
+      await card.scrollIntoViewIfNeeded();
+      await expect(card).toHaveCSS("opacity", "1");
+      await expect(card).toHaveCSS("transform", "none");
+      const pricing = page.locator(".desk-pricing aside");
+      await pricing.scrollIntoViewIfNeeded();
+      await expect(pricing).toHaveCSS("opacity", "1");
+      await expect(pricing.locator(".desk-join")).toBeVisible();
+      if (profile.name === "no-javascript") {
+        await expect(page.locator("[data-desk-video]")).toHaveAttribute("controls", "");
+        await expect(page.locator("[data-desk-video-start]")).toBeHidden();
+      }
+      await page.screenshot({ path: testInfo.outputPath(`desk-${profile.name}.png`), fullPage: true });
+      expect(errors).toEqual([]);
+    } finally {
+      await context.close();
+    }
+  }
+});
+
 test("legacy member route opens the Operating Desk", async ({ page }) => {
   await page.goto("/member/");
   await page.waitForURL(/\/desk\/$/);
