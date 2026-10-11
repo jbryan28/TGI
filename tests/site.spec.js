@@ -264,7 +264,7 @@ test("legacy book URL redirects to the canonical DZC route", async ({ page }) =>
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("The Daily Zone Command");
 });
 
-test("Operating Desk offer has visible checkout, accurate scope and clear cancellation", async ({ page }) => {
+test("Operating Desk offer has visible checkout, accurate scope and clear cancellation", async ({ page }, testInfo) => {
   const errors = captureErrors(page);
   for (const viewport of [{width:1440,height:900},{width:390,height:844},{width:375,height:667}]) {
     await page.setViewportSize(viewport);
@@ -280,25 +280,20 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
     await expect(page.locator(".desk-lead")).toContainText("across 43 instruments");
     const gif = page.locator('[data-desk-gif]');
     await gif.scrollIntoViewIfNeeded();
-    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour.gif");
+    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour.gif?v=20261011-order");
     await expect.poll(() => gif.evaluate(image => image.complete && image.naturalWidth === 960), { timeout: 15000 }).toBe(true);
     await expect(page.locator(".desk-preview")).toHaveCSS("border-top-width", "0px");
     await page.getByRole("button", { name: "Stop animation", exact: true }).click();
-    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour-poster.webp");
+    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour-poster.webp?v=20261011-order");
     await page.getByRole("button", { name: "Play animation", exact: true }).click();
-    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour.gif");
-    await page.getByText("Watch with video controls", { exact: true }).click();
-    const tour = page.locator('[data-desk-video]');
-    await expect(tour).toHaveAttribute("poster", "../assets/tgi-operating-desk-tour-poster.webp");
-    await expect(tour).toHaveAttribute("preload", "none");
-    await expect(tour).not.toHaveAttribute("autoplay");
-    await expect(tour.locator("source")).toHaveCount(2);
-    await expect(tour.locator('track[kind="captions"]')).toHaveAttribute("src", "../assets/tgi-operating-desk-tour.vtt");
-    expect(await tour.evaluate(video => video.paused)).toBe(true);
-    await page.getByRole("button", { name: "Play the 42-second TGI Operating Desk walkthrough", exact: true }).click();
-    await expect.poll(() => tour.evaluate(video => video.currentTime), { timeout: 15000 }).toBeGreaterThan(0);
-    await expect(page.locator('[data-desk-video-start]')).toBeHidden();
-    await tour.evaluate(video => video.pause());
+    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour.gif?v=20261011-order");
+    const animationControl = page.getByRole("button", { name: "Stop animation", exact: true });
+    await animationControl.focus();
+    await animationControl.press("Enter");
+    await expect(gif).toHaveAttribute("src", "../assets/tgi-operating-desk-tour-poster.webp?v=20261011-order");
+    await expect(page.locator(".desk-preview a, .desk-preview details, .desk-preview figcaption, .desk-preview video")).toHaveCount(0);
+    await page.locator("[data-desk-gif-control]").evaluate(control => control.blur());
+    await page.locator(".desk-preview").screenshot({ path: testInfo.outputPath(`desk-gif-${viewport.width}.png`) });
     await expect(page.locator(".desk-market-groups li")).toHaveText([
       /33.*Forex pairs/,
       /4.*Indices.*DXY.*NAS100.*US30.*SPX/,
@@ -339,7 +334,7 @@ test("Operating Desk stays readable with reduced motion or JavaScript disabled",
       await expect(heading).toHaveCSS("transform", "none");
       await expect(page.locator(".desk-hero .desk-join")).toBeVisible();
       await expect(page.locator(".desk-offer")).toContainText("$99");
-      await expect(page.locator("[data-desk-gif]")).toHaveAttribute("src", "../assets/tgi-operating-desk-tour-poster.webp");
+      await expect(page.locator("[data-desk-gif]")).toHaveAttribute("src", "../assets/tgi-operating-desk-tour-poster.webp?v=20261011-order");
       const card = page.locator(".desk-grid article").first();
       await card.scrollIntoViewIfNeeded();
       await expect(card).toHaveCSS("opacity", "1");
@@ -350,10 +345,16 @@ test("Operating Desk stays readable with reduced motion or JavaScript disabled",
       await expect(pricing.locator(".desk-join")).toBeVisible();
       if (profile.name === "no-javascript") {
         await expect(page.locator("[data-desk-gif-control]")).toBeHidden();
-        await page.getByText("Watch with video controls", { exact: true }).click();
-        await expect(page.locator("[data-desk-video]")).toHaveAttribute("controls", "");
-        await expect(page.locator("[data-desk-video-start]")).toBeHidden();
       }
+      // Keep capture preparation synchronous: page timers do not run with JavaScript disabled.
+      await page.evaluate(() => {
+        window.scrollTo(0, 0);
+        const header = document.querySelector(".site-header");
+        header.style.position = "absolute";
+        header.style.top = "0";
+        document.querySelector(".skip-link").style.display = "none";
+        if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+      });
       await page.screenshot({ path: testInfo.outputPath(`desk-${profile.name}.png`), fullPage: true });
       expect(errors).toEqual([]);
     } finally {
