@@ -278,7 +278,17 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
     await expect(page.locator(".desk-grid article")).toHaveCount(6);
     await expect(page.locator(".desk-lead")).toContainText("across 43 instruments");
-    await expect(page.locator(".desk-preview img")).toHaveAttribute("src", "../assets/tgi-operating-desk-portal.svg");
+    const tour = page.locator('[data-desk-video]');
+    await expect(tour).toHaveAttribute("poster", "../assets/tgi-operating-desk-tour-poster.webp");
+    await expect(tour).toHaveAttribute("preload", "none");
+    await expect(tour).not.toHaveAttribute("autoplay");
+    await expect(tour.locator("source")).toHaveCount(2);
+    await expect(tour.locator('track[kind="captions"]')).toHaveAttribute("src", "../assets/tgi-operating-desk-tour.vtt");
+    expect(await tour.evaluate(video => video.paused)).toBe(true);
+    await page.getByRole("button", { name: "Play the 42-second TGI Operating Desk walkthrough", exact: true }).click();
+    await expect.poll(() => tour.evaluate(video => video.currentTime), { timeout: 15000 }).toBeGreaterThan(0);
+    await expect(page.locator('[data-desk-video-start]')).toBeHidden();
+    await tour.evaluate(video => video.pause());
     await expect(page.locator(".desk-market-groups li")).toHaveText([
       /33.*Forex pairs/,
       /4.*Indices.*DXY.*NAS100.*US30.*SPX/,
