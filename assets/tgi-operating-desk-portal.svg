@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="940" viewBox="0 0 1200 940" role="img" aria-labelledby="title desc">
+  <title id="title">TGI Operating Desk portal structure</title>
+  <desc id="desc">An illustrative member portal with Current Desk, News and Releases, 43 instruments in four market groups, permanent instrument pages, Daily Zones, structural levels, market outlooks and conditional scenarios. No live prices or current analysis are shown.</desc>
+  <defs>
+    <linearGradient id="panel" x2="1" y2="1"><stop stop-color="#191913"/><stop offset="1" stop-color="#0d1010"/></linearGradient>
+    <linearGradient id="gold" x2="1" y2="1"><stop stop-color="#d8b469"/><stop offset="1" stop-color="#a88132"/></linearGradient>
+    <linearGradient id="zone" x2="0" y2="1"><stop stop-color="#c99a3d" stop-opacity=".22"/><stop offset="1" stop-color="#c99a3d" stop-opacity=".05"/></linearGradient>
+  </defs>
+  <rect width="1200" height="940" rx="20" fill="#0c0e0d"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="48" y="57" fill="#c99a3d" font-size="18" letter-spacing="4">INSIDE THE OPERATING DESK</text>
+    <text x="48" y="110" fill="#f2ede2" font-family="Georgia, serif" font-size="43">One portal. A structured market view.</text>
+    <rect x="40" y="150" width="1120" height="707" rx="13" fill="url(#panel)" stroke="#c99a3d" stroke-opacity=".55"/>
+    <path d="M53 150H1147Q1160 150 1160 163V220H40V163Q40 150 53 150Z" fill="#111610"/>
+    <text x="66" y="197" fill="url(#gold)" font-family="Georgia, serif" font-size="36">TGI</text>
+    <path d="M147 175V202" stroke="#c99a3d" stroke-opacity=".5"/>
+    <text x="166" y="195" fill="#e8e1d1" font-size="18" letter-spacing="2">MEMBER PORTAL</text>
+    <text x="920" y="194" fill="#aaa69c" font-size="16">Structure preview</text>
+    <path d="M315 220V857" stroke="#c99a3d" stroke-opacity=".23"/>
+    <rect x="57" y="245" width="239" height="47" rx="5" fill="#c99a3d" fill-opacity=".16"/>
+    <rect x="57" y="245" width="4" height="47" fill="#c99a3d"/>
+    <g font-size="20" fill="#b8b6ac">
+      <text x="78" y="276" fill="#e6c47c" font-weight="700">Current Desk</text>
+      <text x="78" y="328">Start Here</text>
+      <text x="78" y="380">News &amp; Releases</text>
+      <text x="78" y="432">Forex</text>
+      <text x="78" y="484">Indices</text>
+      <text x="78" y="536">Commodities</text>
+      <text x="78" y="588">Crypto</text>
+      <text x="78" y="657" font-size="18">Post Trade Case Studies</text>
+      <text x="78" y="709" font-size="18">DZC Operating Rules</text>
+      <text x="78" y="761">Archive</text>
+    </g>
+    <path d="M77 612H278" stroke="#c99a3d" stroke-opacity=".22"/>
+    <text x="350" y="282" fill="#f2ede2" font-family="Georgia, serif" font-size="38">Current Desk</text>
+    <text x="350" y="316" fill="#b8b6ac" font-size="20">43 instruments · Four market groups</text>
+    <g stroke="#c99a3d" stroke-opacity=".28" fill="#111614">
+      <rect x="350" y="345" width="181" height="94" rx="5"/>
+      <rect x="544" y="345" width="181" height="94" rx="5"/>
+      <rect x="738" y="345" width="181" height="94" rx="5"/>
+      <rect x="932" y="345" width="191" height="94" rx="5"/>
+    </g>
+    <g fill="#d5b068" font-family="Georgia, serif" font-size="35">
+      <text x="370" y="386">33</text><text x="564" y="386">4</text><text x="758" y="386">4</text><text x="952" y="386">2</text>
+    </g>
+    <g fill="#d9d5ca" font-size="18">
+      <text x="370" y="419">Forex pairs</text><text x="564" y="419">Indices</text><text x="758" y="419">Commodities</text><text x="952" y="419">Crypto</text>
+    </g>
+    <text x="350" y="484" fill="#b8b6ac" font-size="20">Open an instrument’s permanent page.</text>
+    <rect x="350" y="508" width="773" height="306" rx="6" fill="#0b100e" stroke="#c99a3d" stroke-opacity=".33"/>
+    <text x="374" y="550" fill="#f2ede2" font-family="Georgia, serif" font-size="27">Daily Zones &amp; Scenarios</text>
+    <text x="374" y="578" fill="#c99a3d" font-size="16">REVIEW DATE · STATUS · SOURCE</text>
+    <g stroke="#647065" stroke-opacity=".2"><path d="M374 622H710M374 671H710M374 720H710M374 769H710"/><path d="M404 605V781M464 605V781M524 605V781M584 605V781M644 605V781M704 605V781"/></g>
+    <rect x="374" y="615" width="336" height="31" fill="url(#zone)" stroke="#c99a3d" stroke-opacity=".65"/>
+    <rect x="374" y="728" width="336" height="29" fill="#4e9c83" fill-opacity=".1" stroke="#71aa94" stroke-opacity=".6"/>
+    <g stroke-width="2">
+      <g fill="#72aa91" stroke="#72aa91"><path d="M397 707V763M432 680V729M467 657V708M502 641V678M537 629V662M642 699V751M677 679V727"/><rect x="390" y="722" width="14" height="25"/><rect x="425" y="694" width="14" height="26"/><rect x="460" y="668" width="14" height="29"/><rect x="495" y="652" width="14" height="17"/><rect x="530" y="638" width="14" height="16"/><rect x="635" y="712" width="14" height="25"/><rect x="670" y="691" width="14" height="27"/></g>
+      <g fill="#c19357" stroke="#c19357"><path d="M572 637V697M607 672V739"/><rect x="565" y="649" width="14" height="31"/><rect x="600" y="687" width="14" height="35"/></g>
+    </g>
+    <path d="M736 604V785" stroke="#c99a3d" stroke-opacity=".22"/>
+    <g fill="#e5dfd1" font-size="21"><text x="762" y="635">Daily Zones</text><text x="762" y="682">Structural levels</text><text x="762" y="729">Market outlooks</text><text x="762" y="776">Conditional scenarios</text></g>
+    <g fill="#c99a3d"><circle cx="1094" cy="628" r="3"/><circle cx="1094" cy="675" r="3"/><circle cx="1094" cy="722" r="3"/><circle cx="1094" cy="769" r="3"/></g>
+    <text x="600" y="901" text-anchor="middle" fill="#97998f" font-size="18">Illustrative navigation · No live prices or current analysis shown</text>
+  </g>
+</svg>

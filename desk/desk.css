@@ -37,3 +37,17 @@
 .desk-pricing aside {background:linear-gradient(145deg,#191813,#0d0f0f);box-shadow:0 20px 60px rgba(0,0,0,.25)}
 .desk-page .desk-join:hover {background:#e0b459;border-color:#e0b459}
 @media(max-width:500px){.desk-preview {padding:18px 10px 14px}.desk-preview figcaption {font-size:10px;margin-top:14px}}
+
+/* Asset coverage follows the current member portal, rather than review frequency. */
+.desk-coverage {display:grid;grid-template-columns:.8fr 1.6fr;gap:32px;margin-top:38px;padding:32px;border:1px solid rgba(201,154,61,.38);border-radius:6px;background:linear-gradient(130deg,#191813,#0c1010)}
+.desk-coverage-heading .eyebrow {margin:0}
+.desk-coverage-heading h3 {font-family:var(--serif);font-size:32px;line-height:1.2;margin:14px 0}
+.desk-coverage-heading p:last-child {font-size:13px;margin:0}
+.desk-page .desk-market-groups {display:grid;grid-template-columns:1fr 1fr;gap:24px 30px;list-style:none;padding:0;margin:0;align-content:center}
+.desk-market-groups li {display:flex;gap:16px;align-items:flex-start;line-height:1.4}
+.desk-market-groups strong {font-family:var(--serif);font-size:38px;line-height:1;color:#c99a3d;min-width:42px}
+.desk-market-groups b {display:block;color:var(--ivory);font-size:15px;font-weight:500}
+.desk-market-groups small {display:block;margin-top:5px;font-size:12px;line-height:1.5;color:#a9a69d}
+.desk-page .desk-coverage-note {grid-column:1/-1;margin:0;padding-top:22px;border-top:1px solid rgba(201,154,61,.2);font-size:13px;line-height:1.7}
+@media(max-width:900px){.desk-coverage {grid-template-columns:1fr;gap:25px;padding:25px}.desk-market-groups {max-width:600px}}
+@media(max-width:500px){.desk-page .desk-market-groups {grid-template-columns:1fr;gap:22px}.desk-coverage {padding:24px 20px}}

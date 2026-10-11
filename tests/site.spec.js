@@ -277,6 +277,19 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
     expect(box.y + box.height).toBeLessThanOrEqual(viewport.height);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
     await expect(page.locator(".desk-grid article")).toHaveCount(6);
+    await expect(page.locator(".desk-lead")).toContainText("across 43 instruments");
+    await expect(page.locator(".desk-preview img")).toHaveAttribute("src", "../assets/tgi-operating-desk-portal.svg");
+    await expect(page.locator(".desk-market-groups li")).toHaveText([
+      /33.*Forex pairs/,
+      /4.*Indices.*DXY.*NAS100.*US30.*SPX/,
+      /4.*Commodities.*Gold.*Silver.*WTI.*Brent/,
+      /2.*Cryptocurrencies.*Bitcoin.*XRP/,
+    ]);
+    await expect(page.locator(".desk-coverage-note")).toContainText("not every instrument receives a fresh review each day");
+    await page.getByText("How often is the Desk updated?", {exact:true}).click();
+    await expect(page.locator("details[open]")).toContainText("Weekly news announcements");
+    await expect(page.locator("details[open]")).toContainText("does not guarantee a new review of all 43 instruments every day");
+    await page.getByText("How often is the Desk updated?", {exact:true}).click();
     await page.getByText("Can I cancel anytime?", {exact:true}).click();
     await expect(page.locator("details[open]")).toContainText("stop future monthly charges");
     await expect(page.locator(".desk-disclaimer")).toContainText("No profitability");
