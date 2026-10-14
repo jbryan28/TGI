@@ -13,7 +13,7 @@ for(const size of sizes) {
  test(`Mentoring booking page at ${size.width}px`,async({page},testInfo)=>{
   const errors=errorsFor(page);await page.setViewportSize(size);
   // Load the requested extensionless route, including its directory redirect.
-  await page.goto('/mentoring');await page.reload();
+  await page.goto('/mentor');await page.reload();
   await expect(page).toHaveTitle('Daily Zone Command™ Mentorship | Trader Growth Institute');
   const heading=page.getByRole('heading',{level:1,name:'Work directly with Jay Bryan'});
   const price=page.locator('.price'),cta=page.getByRole('link',{name:'Book with Jay',exact:true});
@@ -41,7 +41,7 @@ for(const size of sizes) {
  });
  test(`Mentoring preparation page at ${size.width}px`,async({page},testInfo)=>{
   const errors=errorsFor(page);await page.setViewportSize(size);
-  await page.goto('/mentoring/confirmed?invitee_full_name=UnverifiedPerson&invitee_payment_amount=9999');await page.reload();
+  await page.goto('/mentor/confirmed?invitee_full_name=UnverifiedPerson&invitee_payment_amount=9999');await page.reload();
   await expect(page.getByRole('heading',{level:1})).toHaveText('Thank you. Let’s prepare for your session.');
   await expect(page.locator('.intro')).toContainText('booking email');await expect(page.locator('.intro')).toContainText('Microsoft Teams');
   await expect(page.locator('.preparation')).toContainText('two historical trading decisions');
@@ -66,10 +66,14 @@ for(const size of sizes) {
 test('Mentoring pages work without JavaScript',async({browser})=>{
  const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:375,height:667}});
  const page=await context.newPage();
- for(const url of ['/mentoring/','/mentoring/confirmed/']) {
+ for(const url of ['/mentor/','/mentor/confirmed/']) {
   await page.goto('http://127.0.0.1:4173'+url);await page.reload();
   await expect(page.getByRole('heading',{level:1})).toBeVisible();await expect(page.locator('.primary-cta')).toBeVisible();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  }
  await context.close();
+});
+
+test("Earlier mentoring URLs lead to the new mentor pages",async({page})=>{
+ for(const [from,to] of [["/mentoring/","/mentor/"],["/mentoring/confirmed/","/mentor/confirmed/"]]) {await page.goto(from);await expect(page).toHaveURL(new RegExp(to+"$"));await expect(page.getByRole("heading",{level:1})).toBeVisible();}
 });
