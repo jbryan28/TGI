@@ -27,6 +27,7 @@ for(const size of sizes) {
   await expect(page.locator('.membership-note')).toContainText('purchased separately');
   await expect(page.getByRole('img',{name:'Jay Bryan, founder of Trader Growth Institute'})).toBeVisible();
   expect(await contrast(cta)).toBeGreaterThanOrEqual(4.5);
+  if(size.width<=760) {const portrait=page.locator(".mobile-portrait img");await expect(portrait).toBeVisible();const imageBox=await portrait.boundingBox();expect(imageBox.y).toBeLessThan(size.height);if(size.width>=375)expect(imageBox.y+imageBox.height).toBeLessThanOrEqual(size.height);}
   await page.keyboard.press('Tab');await expect(page.getByRole('link',{name:'Skip to mentoring'})).toBeFocused();
   await page.keyboard.press('Tab');await expect(page.getByRole('link',{name:'Trader Growth Institute home'})).toBeFocused();
   await page.keyboard.press('Tab');await expect(cta).toBeFocused();
@@ -51,7 +52,7 @@ for(const size of sizes) {
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content','noindex, follow');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   const cta=page.getByRole('link',{name:'Email your charts',exact:true});
-  const href=await cta.getAttribute('href');expect(href.split('?')[0]).toBe('mailto:justin@tradergrowth.com');
+  const href=await cta.getAttribute('href');expect(href.split('?')[0]).toBe('mailto:jay@tradergrowth.com');
   expect(new URLSearchParams(href.split('?')[1]).get('subject')).toContain('Chart Preparation');
   expect(await contrast(cta)).toBeGreaterThanOrEqual(4.5);
   await cta.evaluate(el=>el.addEventListener('click',e=>{e.preventDefault();window.mentoringEmailClicked=el.href;}));
