@@ -18,6 +18,10 @@ const pages = [
   "daily-zone-command/index.html",
   "membership/index.html",
   "desk/index.html",
+  "mentor/index.html",
+  "mentor/confirmed/index.html",
+  "mentoring/index.html",
+  "mentoring/confirmed/index.html",
   "member/index.html",
   "jay/index.html",
 ];
