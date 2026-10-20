@@ -137,7 +137,7 @@ if (!javascript.includes("document.body.appendChild(siteNav)") || !javascript.in
 if (!legacyBookPage.includes('url=/dzc/') || !legacyBookPage.includes('window.location.replace("/dzc/"')) {
   throw new Error("The legacy book route does not redirect to /dzc/.");
 }
-for (const requiredPhrase of ["Economic context", "Technical context", "Risk discipline"]) {
+for (const requiredPhrase of ["Daily Zones mark areas on the daily chart", "Economic news", "Daily Zones &amp; charts", "Plan your risk"]) {
   if (!homepage.includes(requiredPhrase)) throw new Error(`Homepage is missing newsletter promise: ${requiredPhrase}`);
 }
 for (const requiredPhrase of ["Economic regime", "Technical structure", "High-impact calendar", "Scenarios &amp; invalidation"]) {

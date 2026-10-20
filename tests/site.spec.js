@@ -38,23 +38,23 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   const errors = captureErrors(page);
   await page.goto("/");
   await expectStylesApplied(page);
-  await expect(page).toHaveTitle(/TGI Intelligence Briefing/);
+  await expect(page).toHaveTitle(/Daily Zones.*Trader Growth Institute/);
 
   await page.locator('[data-hero-market="NAS100"]').click();
   await expect(page.locator("#hero-symbol")).toHaveText("NAS100");
-  await expect(page.locator("#hero-status-regime")).toHaveText("Expansion");
+  await expect(page.locator("#hero-status-regime")).toHaveText("U.S. stock index");
 
   await page.locator('[data-stage="2"]').click();
-  await expect(page.locator("#stage-title")).toHaveText("Authorize Execution");
+  await expect(page.locator("#stage-title")).toHaveText("Watch how price reacts");
 
   await page.locator('[data-instrument="USDJPY"]').click();
-  await expect(page.locator("#briefing-price")).toHaveText("159.640");
+  await expect(page.locator("#briefing-price")).toHaveText("Example chart");
 
   await page.locator("#cycle-scrubber").evaluate((element) => {
     element.value = "92";
     element.dispatchEvent(new Event("input", { bubbles: true }));
   });
-  await expect(page.locator("#cycle-tooltip span")).toHaveText("Capital Completion");
+  await expect(page.locator("#cycle-tooltip span")).toHaveText("Pullback");
 
   await page.locator("#case-slider").evaluate((element) => {
     element.value = "72";
@@ -71,7 +71,7 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   await expect(page.locator('a[href="cdza/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="glossary/"]')).not.toHaveCount(0);
   await expect(page.locator('a[href="newsletter/"]')).not.toHaveCount(0);
-  await expect(page.locator('#site-nav a[href="desk/"]')).toHaveText("Operating Desk");
+  await expect(page.locator('#site-nav a[href="desk/"]')).toHaveText("Membership");
 
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("homepage-full.png"), fullPage: true });
@@ -521,4 +521,39 @@ test("CDZA journal saves and restores the certification record", async ({ page }
   await prepareFullPageCapture(page);
   await page.screenshot({ path: testInfo.outputPath("cdza-journal.png"), fullPage: true });
   expect(errors).toEqual([]);
+});
+
+test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ page }, testInfo) => {
+  for (const size of [{width:1440,height:900},{width:390,height:844},{width:375,height:667}]) {
+    await page.setViewportSize(size);await page.goto('/');await page.reload();
+    await expect(page.getByRole('heading',{level:1})).toHaveText(/Understand the chart\.\s*Start with Daily Zones\./);
+    await expect(page.locator('.hero-summary')).toContainText('Daily Zones mark areas on the daily chart');
+    const start=page.locator('.hero-actions .button');await expect(start).toHaveAttribute('href','newsletter/');
+    const box=await start.boundingBox();expect(box.y+box.height).toBeLessThanOrEqual(size.height);
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+    expect(await page.locator('.hero-summary').evaluate(el=>parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(16);
+    await expect(page.locator('.home-zone-key dt')).toHaveText(['Daily Supply','Daily Demand','Current price']);
+    await expect(page.locator('.hero-market')).toContainText('Example only · Not live data');
+    await page.screenshot({path:testInfo.outputPath(`daily-zones-home-${size.width}.png`)});
+    await page.locator('.hero-market').screenshot({path:testInfo.outputPath(`daily-zones-chart-${size.width}.png`)});
+    await page.locator('.hero-actions .text-link').click();
+    await expect(page).toHaveURL(/#daily-zones$/);
+    await expect(page.locator('#authority-title')).toBeInViewport();
+    await page.getByRole('button',{name:'Daily Supply',exact:true}).click();
+    await expect(page.locator('#authority-explainer')).toContainText('sellers previously pushed price lower');
+    await page.getByRole('button',{name:'Plan your risk',exact:true}).click();
+    await expect(page.locator('#authority-explainer')).toContainText('A zone can fail');
+    await page.locator('[data-hero-market="GOLD"]').click();
+    expect(await page.locator('#hero-price-line').getAttribute('y1')).toBe(await page.locator('#hero-last-point').getAttribute('cy'));
+    await expect(page.locator('.pathway-track a[href="desk/"]')).toContainText('TGI Operating Desk');
+    await expect(page.locator('.case-metrics')).toHaveCount(0);
+  }
+});
+
+test('homepage introduction remains readable without JavaScript',async({browser})=>{
+ const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:844}});
+ const page=await context.newPage();await page.goto('http://127.0.0.1:4173/');
+ await expect(page.locator('h1')).toBeVisible();await expect(page.locator('.hero-copy')).toHaveCSS('opacity','1');
+ await expect(page.locator('.home-zone-key')).toBeVisible();await expect(page.locator('.hero-actions .button')).toHaveAttribute('href','newsletter/');
+ await context.close();
 });
