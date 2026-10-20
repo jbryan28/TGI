@@ -18,6 +18,20 @@
 .home-price-line {stroke:#f2eee5;stroke-width:1;stroke-dasharray:5 6;opacity:.45}
 .home-price-label {fill:#f2eee5;font-family:var(--sans);font-size:14px}
 .home-daily-zones .market-chart {display:block;min-height:0;height:auto;margin:1rem 0}
+.home-daily-zones .market-pulse {width:300px;max-width:100%}
+.home-daily-zones .segmented,.home-daily-zones .instrument-tabs {display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.home-daily-zones .segmented button,.home-daily-zones .instrument-tabs button {min-width:0;min-height:44px;padding:.7rem .35rem;font-size:.7rem;letter-spacing:.02em}
+.home-daily-zones .published-chart {min-width:0;margin:1rem 0}
+.home-daily-zones .published-chart-link {display:block;color:var(--gold-bright)}
+.home-daily-zones .published-chart-link:focus-visible {outline:2px solid var(--gold);outline-offset:4px}
+.home-daily-zones .published-chart-image {display:block;width:100%;height:auto;background:#080f15;border:1px solid var(--line-dark)}
+.home-daily-zones .published-chart-action {display:block;padding:.7rem 0;min-height:44px;font-size:.85rem;font-weight:600}
+.home-daily-zones .published-chart figcaption {display:grid;gap:.2rem;color:var(--muted);font-size:.8rem;line-height:1.6}
+.home-daily-zones .briefing-dashboard {align-self:start}
+.home-daily-zones .briefing-dashboard .published-chart-link {color:#765019}
+.home-daily-zones .briefing-dashboard .published-chart figcaption {color:var(--muted-dark)}
+.home-daily-zones .dashboard-chart-title {margin:1rem 0 0;font-size:.78rem;letter-spacing:.03em;align-items:center;flex-wrap:wrap}
+.home-daily-zones .dashboard-chart-title span {font-size:.68rem}
 .home-zone-key {margin:0;padding-top:1rem;border-top:1px solid var(--line-dark);display:grid;gap:.65rem}
 .home-zone-key > div {display:grid;grid-template-columns:125px minmax(0,1fr);gap:.6rem;align-items:start}
 .home-zone-key dt {font-size:14px;font-weight:650}
@@ -72,6 +86,7 @@
  .home-zone-key {gap:.8rem}
  .home-daily-zones .chart-heading small {font-size:.68rem}
  .home-daily-zones .market-pulse > span {font-size:.65rem}
+ .home-daily-zones .market-pulse {width:100%}
  .home-daily-zones .segmented button {font-size:.7rem;min-height:44px}
  .home-daily-zones .authority-heading p {font-size:1rem}
  .home-daily-zones .stage-tabs button {min-width:145px;min-height:64px}

@@ -48,7 +48,8 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   await expect(page.locator("#stage-title")).toHaveText("Watch how price reacts");
 
   await page.locator('[data-instrument="USDJPY"]').click();
-  await expect(page.locator("#briefing-price")).toHaveText("Example chart");
+  await expect(page.locator("#briefing-price")).toHaveText("Historical snapshot");
+  await expect(page.locator("#briefing-symbol")).toHaveText("USDJPY · 4H");
 
   await page.locator("#cycle-scrubber").evaluate((element) => {
     element.value = "92";
@@ -532,8 +533,8 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     const box=await start.boundingBox();expect(box.y+box.height).toBeLessThanOrEqual(size.height);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
     expect(await page.locator('.hero-summary').evaluate(el=>parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(16);
-    await expect(page.locator('.home-zone-key dt')).toHaveText(['Daily Supply','Daily Demand','Current price']);
-    await expect(page.locator('.hero-market')).toContainText('Example only · Not live data');
+    await expect(page.locator('.home-zone-key dt')).toHaveText(['Daily Zones','Candles','Snapshot price']);
+    await expect(page.locator('.hero-market')).toContainText('Historical snapshot · Not live data');
     await page.screenshot({path:testInfo.outputPath(`daily-zones-home-${size.width}.png`)});
     await page.locator('.hero-market').screenshot({path:testInfo.outputPath(`daily-zones-chart-${size.width}.png`)});
     await page.locator('.hero-actions .text-link').click();
@@ -544,7 +545,8 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     await page.getByRole('button',{name:'Plan your risk',exact:true}).click();
     await expect(page.locator('#authority-explainer')).toContainText('A zone can fail');
     await page.locator('[data-hero-market="GOLD"]').click();
-    expect(await page.locator('#hero-price-line').getAttribute('y1')).toBe(await page.locator('#hero-last-point').getAttribute('cy'));
+    await expect(page.locator('#hero-chart-image')).toHaveAttribute('src', 'assets/member-charts/gold-2026-10-18.webp');
+    await expect(page.locator('#hero-chart-caption')).toContainText('18 October 2026');
     await expect(page.locator('.pathway-track a[href="desk/"]')).toContainText('TGI Operating Desk');
     await expect(page.locator('.case-metrics')).toHaveCount(0);
   }
@@ -603,5 +605,52 @@ test('resource carousel shows the offers and reaches every card', async ({ page 
     await expect.poll(() => cardFits(cards.nth(2))).toBe(true);
     await page.keyboard.press('Enter');
     await expect(page).toHaveURL(/\/desk\/$/);
+  }
+});
+
+test('both chart sections show the original dated member charts', async ({ page }, testInfo) => {
+  const charts = [
+    ['DXY', 'dxy-2026-10-18.webp', 'Daily', '18 October 2026', 1484],
+    ['NAS100', 'nas100-2026-10-18.webp', 'Daily', '18 October 2026', 1484],
+    ['GOLD', 'gold-2026-10-18.webp', 'Daily', '18 October 2026', 1484],
+    ['USDJPY', 'usdjpy-4h-2026-10-12.webp', '4H', '12 October 2026', 1310],
+  ];
+  for (const size of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(size);
+    await page.goto('/');
+    for (const [prefix, attribute] of [['hero', 'data-hero-market'], ['briefing', 'data-instrument']]) {
+      const panel = page.locator(`#${prefix}-chart-panel`);
+      for (const [symbol, file, timeframe, date, height] of charts) {
+        const tab = page.locator(`[${attribute}="${symbol}"]`);
+        await tab.click();
+        await expect(tab).toHaveAttribute('aria-selected', 'true');
+        await expect(panel).toHaveAttribute('aria-labelledby', await tab.getAttribute('id'));
+        const image = page.locator(`#${prefix}-chart-image`);
+        await expect(image).toHaveAttribute('src', `assets/member-charts/${file}`);
+        await expect.poll(() => image.evaluate((element) => element.complete && element.naturalWidth === 2048)).toBe(true);
+        await expect(image).toHaveAttribute('height', String(height));
+        await expect(image).toHaveAttribute('alt', new RegExp(`${symbol} ${timeframe}.*${date}`));
+        await expect(page.locator(`#${prefix}-chart-caption`)).toHaveText(`${symbol} · ${timeframe} · ${date}`);
+        await expect(panel).toContainText('Published member chart · Not live data.');
+        const full = page.locator(`#${prefix}-chart-open`);
+        await expect(full).toHaveAttribute('href', `assets/member-charts/${file}`);
+        await expect(full).toHaveAttribute('target', '_blank');
+        const ratio = await image.evaluate(element => {
+          const rect = element.getBoundingClientRect();
+          return Math.abs(rect.width / rect.height - element.naturalWidth / element.naturalHeight);
+        });
+        expect(ratio).toBeLessThan(.01);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+        if (size.width === 390) await panel.screenshot({ path: testInfo.outputPath(`member-chart-${prefix}-${symbol}-390.png`) });
+      }
+      const first = page.locator(`[${attribute}="DXY"]`);
+      await first.focus();
+      await page.keyboard.press('End');
+      await expect(page.locator(`[${attribute}="USDJPY"]`)).toBeFocused();
+      await page.keyboard.press('ArrowRight');
+      await expect(first).toBeFocused();
+      await expect(first).toHaveAttribute('aria-selected', 'true');
+      await expect(page.locator(`#${prefix}-chart-caption`)).toContainText('DXY · Daily');
+    }
   }
 });

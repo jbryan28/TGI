@@ -81,46 +81,61 @@
     });
   };
 
-  const heroMarkets = {
-    DXY: {
-      regime: "U.S. dollar index",
-      path: "M40 280L76 244L112 202L148 228L184 140L220 178L256 86L292 118L328 194L364 128L400 96L436 155L472 170L508 218L544 190L580 244L616 260L652 246L688 272",
-      point: [688, 272],
-    },
-    NAS100: {
-      regime: "U.S. stock index",
-      path: "M40 292L76 270L112 282L148 240L184 250L220 208L256 224L292 180L328 202L364 156L400 168L436 115L472 132L508 92L544 118L580 82L616 98L652 65L688 78",
-      point: [688, 78],
-    },
-    GOLD: {
-      regime: "Gold",
-      path: "M40 278L76 250L112 258L148 214L184 230L220 188L256 205L292 148L328 176L364 128L400 140L436 98L472 112L508 80L544 104L580 72L616 126L652 156L688 144",
-      point: [688, 144],
-    },
+  const publishedCharts = {
+    DXY: { name: "U.S. dollar index", timeframe: "Daily", date: "18 October 2026", src: "assets/member-charts/dxy-2026-10-18.webp", height: 1484, description: "original candles and five marked Daily Zones" },
+    NAS100: { name: "U.S. stock index", timeframe: "Daily", date: "18 October 2026", src: "assets/member-charts/nas100-2026-10-18.webp", height: 1484, description: "original candles and four marked Daily Zones" },
+    GOLD: { name: "Gold", timeframe: "Daily", date: "18 October 2026", src: "assets/member-charts/gold-2026-10-18.webp", height: 1484, description: "original candles and five marked Daily Zones" },
+    USDJPY: { name: "U.S. dollar / Japanese yen", timeframe: "4H", date: "12 October 2026", src: "assets/member-charts/usdjpy-4h-2026-10-12.webp", height: 1310, description: "original candles, marked buy and completion areas, and a conditional projected path" },
   };
 
-  const heroButtons = $$("[data-hero-market]");
-  heroButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const symbol = button.dataset.heroMarket;
-      const market = heroMarkets[symbol];
-      if (!market) return;
-
-      activateTabs(heroButtons, button);
-      $("#hero-symbol").textContent = symbol;
-      $("#hero-regime").textContent = "Example of Daily Zones";
-      $("#hero-status-regime").textContent = market.regime;
-      $("#hero-chart-line").setAttribute("d", market.path);
-      $("#hero-chart-area").setAttribute("d", chartAreaPath(market.path));
-      $("#hero-last-point").setAttribute("cx", market.point[0]);
-      $("#hero-last-point").setAttribute("cy", market.point[1]);
-      $("#hero-price-line").setAttribute("y1", market.point[1]);
-      $("#hero-price-line").setAttribute("y2", market.point[1]);
-      $("#hero-price-label").setAttribute("y", market.point[1] - 14);
-      $("#hero-chart-title").textContent = `${symbol} daily chart with Daily Zones`;
-      $("#hero-chart-desc").textContent = `${symbol} example daily chart with Daily Supply, Daily Demand and an example current price.`;
+  const bindPublishedCharts = (selector, dataKey, prefix) => {
+    const buttons = $$(selector);
+    if (!buttons.length) return;
+    const image = $(`#${prefix}-chart-image`);
+    const link = $(`#${prefix}-chart-open`);
+    const panel = $(`#${prefix}-chart-panel`);
+    const caption = $(`#${prefix}-chart-caption`);
+    const render = (button) => {
+      const symbol = button.dataset[dataKey];
+      const chart = publishedCharts[symbol];
+      if (!chart) return;
+      activateTabs(buttons, button);
+      buttons.forEach(item => { item.tabIndex = item === button ? 0 : -1; });
+      image.src = chart.src;
+      image.width = 2048;
+      image.height = chart.height;
+      image.alt = `Jay Bryan’s ${symbol} ${chart.timeframe} chart review from ${chart.date}, with ${chart.description}. Historical snapshot.`;
+      link.href = chart.src;
+      link.setAttribute("aria-label", `Open ${symbol} ${chart.timeframe} chart from ${chart.date} at full size (opens in a new tab)`);
+      panel.setAttribute("aria-labelledby", button.id);
+      caption.textContent = `${symbol} · ${chart.timeframe} · ${chart.date}`;
+      if (prefix === "hero") {
+        $("#hero-symbol").textContent = symbol;
+        $("#hero-timeframe").textContent = chart.timeframe;
+        $("#hero-status-regime").textContent = chart.name;
+        $("#hero-status-timeframe").textContent = chart.timeframe;
+        $("#hero-candle-description").textContent = chart.timeframe === "Daily" ? "One day per candle in this chart." : "Four hours per candle in this chart.";
+      } else {
+        $("#briefing-symbol").textContent = `${symbol} · ${chart.timeframe}`;
+      }
+    };
+    buttons.forEach((button, index) => {
+      button.addEventListener("click", () => render(button));
+      button.addEventListener("keydown", (event) => {
+        let next;
+        if (event.key === "ArrowRight") next = (index + 1) % buttons.length;
+        if (event.key === "ArrowLeft") next = (index - 1 + buttons.length) % buttons.length;
+        if (event.key === "Home") next = 0;
+        if (event.key === "End") next = buttons.length - 1;
+        if (next === undefined) return;
+        event.preventDefault();
+        render(buttons[next]);
+        buttons[next].focus();
+      });
     });
-  });
+    render(buttons.find(button => button.getAttribute("aria-selected") === "true") || buttons[0]);
+  };
+  bindPublishedCharts("[data-hero-market]", "heroMarket", "hero");
 
   const principleButtons = $$("[data-principle]");
   const principleExplainer = $("#authority-explainer");
@@ -206,54 +221,7 @@
   $("#stage-prev")?.addEventListener("click", () => renderStage(activeStage - 1, true));
   $("#stage-next")?.addEventListener("click", () => renderStage(activeStage + 1, true));
 
-  const briefingMarkets = {
-    DXY: {
-      regime: "News that could move the market",
-      bias: "Key price areas and chart explanations",
-      risk: "What to watch and what could change",
-      price: "Example chart",
-      path: "M40 252L80 212L120 225L160 150L200 185L240 116L280 138L320 96L360 168L400 182L440 235L480 205L520 245L560 277L600 250L640 300L680 285L720 245L760 225L805 236L840 208",
-    },
-    GOLD: {
-      regime: "News that could move the market",
-      bias: "Key price areas and chart explanations",
-      risk: "What to watch and what could change",
-      price: "Example chart",
-      path: "M40 292L80 270L120 278L160 246L200 258L240 215L280 232L320 190L360 204L400 170L440 186L480 140L520 158L560 116L600 132L640 88L680 105L720 72L760 94L805 62L840 74",
-    },
-    NAS100: {
-      regime: "News that could move the market",
-      bias: "Key price areas and chart explanations",
-      risk: "What to watch and what could change",
-      price: "Example chart",
-      path: "M40 215L80 180L120 205L160 142L200 175L240 126L280 158L320 105L360 148L400 116L440 170L480 145L520 210L560 188L600 244L640 220L680 264L720 235L760 246L805 216L840 230",
-    },
-    USDJPY: {
-      regime: "News that could move the market",
-      bias: "Key price areas and chart explanations",
-      risk: "What to watch and what could change",
-      price: "Example chart",
-      path: "M40 300L80 278L120 287L160 258L200 270L240 240L280 252L320 215L360 228L400 190L440 204L480 170L520 186L560 148L600 162L640 120L680 134L720 98L760 112L805 72L840 86",
-    },
-  };
-
-  const briefingButtons = $$("[data-instrument]");
-  briefingButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const symbol = button.dataset.instrument;
-      const market = briefingMarkets[symbol];
-      if (!market) return;
-      activateTabs(briefingButtons, button);
-      $("#briefing-symbol").textContent = `${symbol} DAILY`;
-      $("#briefing-price").textContent = market.price;
-      $("#signal-regime").textContent = market.regime;
-      $("#signal-bias").textContent = market.bias;
-      $("#signal-risk").textContent = market.risk;
-      $("#briefing-line").setAttribute("d", market.path);
-      $("#briefing-area").setAttribute("d", chartAreaPath(market.path, 365));
-      $("#briefing-chart-title").textContent = `${symbol} example chart with Daily Zones`;
-    });
-  });
+  bindPublishedCharts("[data-instrument]", "instrument", "briefing");
 
   const cycleStages = [
     { max: 24, name: "Sideways price", detail: "Price stays in a range", description: "Price may stay within a small area while buyers and sellers trade." },

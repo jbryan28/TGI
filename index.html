@@ -14,8 +14,8 @@
     <meta property="og:description" content="Learn where to pay attention on the daily chart and how to plan your risk. Free weekly market updates from Jay Bryan." />
     <link rel="preload" href="assets/jay-bryan-founder.webp" as="image" type="image/webp" />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="home.css?v=20261020-offers" />
-    <script defer src="app.js?v=20261020-offers"></script>
+    <link rel="stylesheet" href="home.css?v=20261020-membercharts" />
+    <script defer src="app.js?v=20261020-membercharts"></script>
   </head>
   <body class="home-daily-zones">
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -59,56 +59,41 @@
           <p class="trust-note"><span aria-hidden="true">◇</span> Free market updates. Chart explanations. Unsubscribe anytime.</p>
         </div>
 
-        <div class="hero-market reveal" aria-label="Daily Zones chart example">
+        <div class="hero-market reveal" aria-label="Daily Zones from Jay Bryan’s member chart reviews">
           <div class="chart-heading">
             <div>
-              <span id="hero-symbol">DXY</span> <span class="muted">DAILY</span>
-              <small id="hero-regime">Example of Daily Zones</small>
+              <span id="hero-symbol">DXY</span> <span class="muted" id="hero-timeframe">Daily</span>
+              <small id="hero-regime">From Jay’s member chart review</small>
             </div>
             <div class="market-pulse">
-              <span>Choose an example</span>
-              <div class="segmented" role="tablist" aria-label="Example market">
-                <button class="is-active" type="button" role="tab" aria-selected="true" data-hero-market="DXY">DXY</button>
-                <button type="button" role="tab" aria-selected="false" data-hero-market="NAS100">NAS100</button>
-                <button type="button" role="tab" aria-selected="false" data-hero-market="GOLD">Gold</button>
+              <span>Choose a market</span>
+              <div class="segmented" role="tablist" aria-label="Member chart market">
+                <button class="is-active" type="button" role="tab" aria-selected="true" id="hero-tab-dxy" aria-controls="hero-chart-panel" tabindex="0" data-hero-market="DXY">DXY</button>
+                <button type="button" role="tab" aria-selected="false" id="hero-tab-nas100" aria-controls="hero-chart-panel" tabindex="-1" data-hero-market="NAS100">NAS100</button>
+                <button type="button" role="tab" aria-selected="false" id="hero-tab-gold" aria-controls="hero-chart-panel" tabindex="-1" data-hero-market="GOLD">Gold</button>
+                <button type="button" role="tab" aria-selected="false" id="hero-tab-usdjpy" aria-controls="hero-chart-panel" tabindex="-1" data-hero-market="USDJPY">USDJPY</button>
               </div>
             </div>
           </div>
 
-          <svg class="market-chart" viewBox="0 0 720 390" role="img" aria-labelledby="hero-chart-title hero-chart-desc">
-            <title id="hero-chart-title">DXY daily chart with Daily Supply, Daily Demand and the example’s current price</title>
-            <desc id="hero-chart-desc">A simplified daily chart. Daily Supply marks an area of past selling, Daily Demand marks an area of past buying, and the dot marks the latest point in this example.</desc>
-            <defs>
-              <linearGradient id="hero-area-gradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#c99a3d" stop-opacity=".28" />
-                <stop offset="1" stop-color="#c99a3d" stop-opacity="0" />
-              </linearGradient>
-            </defs>
-            <g class="chart-grid">
-              <path d="M36 45H690M36 105H690M36 165H690M36 225H690M36 285H690M36 345H690" />
-              <path d="M90 28V356M210 28V356M330 28V356M450 28V356M570 28V356M690 28V356" />
-            </g>
-            <rect class="zone zone-supply" x="430" y="82" width="220" height="48" rx="2" />
-            <text class="zone-label" x="540" y="110" text-anchor="middle">DAILY SUPPLY</text>
-            <rect class="zone zone-demand" x="365" y="274" width="260" height="50" rx="2" />
-            <text class="zone-label" x="495" y="303" text-anchor="middle">DAILY DEMAND</text>
-            <path id="hero-chart-area" class="chart-area" d="M40,280 L76,244 L112,202 L148,228 L184,140 L220,178 L256,86 L292,118 L328,194 L364,128 L400,96 L436,155 L472,170 L508,218 L544,190 L580,244 L616,260 L652,246 L688,272 L688,350 L40,350 Z" />
-            <path id="hero-chart-line" class="chart-line" d="M40,280 L76,244 L112,202 L148,228 L184,140 L220,178 L256,86 L292,118 L328,194 L364,128 L400,96 L436,155 L472,170 L508,218 L544,190 L580,244 L616,260 L652,246 L688,272" />
-            <line id="hero-price-line" class="home-price-line" x1="36" y1="272" x2="690" y2="272" />
-            <text id="hero-price-label" class="home-price-label" x="680" y="258" text-anchor="end">CURRENT PRICE · EXAMPLE</text>
-            <circle id="hero-last-point" class="last-point" cx="688" cy="272" r="5" />
-          </svg>
+          <figure class="published-chart" id="hero-chart-panel" role="tabpanel" aria-labelledby="hero-tab-dxy">
+            <a class="published-chart-link" id="hero-chart-open" href="assets/member-charts/dxy-2026-10-18.webp" target="_blank" rel="noopener" aria-label="Open DXY daily chart from 18 October 2026 at full size (opens in a new tab)">
+              <img class="published-chart-image" id="hero-chart-image" src="assets/member-charts/dxy-2026-10-18.webp" alt="Jay Bryan’s DXY daily chart review from 18 October 2026, with original candles and five marked Daily Zones. Historical snapshot." width="2048" height="1484" />
+              <span class="published-chart-action">Open full chart <span aria-hidden="true">↗</span></span>
+            </a>
+            <figcaption><span id="hero-chart-caption" aria-live="polite">DXY · Daily · 18 October 2026</span><span>Published member chart · Not live data.</span></figcaption>
+          </figure>
 
 
           <dl class="home-zone-key">
-            <div><dt>Daily Supply</dt><dd>Sellers previously pushed price down here.</dd></div>
-            <div><dt>Daily Demand</dt><dd>Buyers previously pushed price up here.</dd></div>
-            <div><dt>Current price</dt><dd>The latest point in this example.</dd></div>
+            <div><dt>Daily Zones</dt><dd>The marked price areas in this review.</dd></div>
+            <div><dt>Candles</dt><dd id="hero-candle-description">One day per candle in this chart.</dd></div>
+            <div><dt>Snapshot price</dt><dd>The quote recorded at the time of capture.</dd></div>
           </dl>
-          <div class="status-chips" aria-label="Example chart information">
-            <span><i class="status-dot status-green"></i><b id="hero-status-regime">U.S. dollar index</b></span>
-            <span><i class="status-dot"></i>Daily</span>
-            <span>Example only · Not live data</span>
+          <div class="status-chips" aria-label="Published chart information">
+            <span><b id="hero-status-regime">U.S. dollar index</b></span>
+            <span id="hero-status-timeframe">Daily</span>
+            <span>Historical snapshot · Not live data</span>
           </div>
         </div>
       </section>
@@ -240,33 +225,19 @@
 
         <div class="briefing-dashboard reveal">
           <div class="instrument-tabs" role="tablist" aria-label="Briefing instrument">
-            <button class="is-active" type="button" role="tab" aria-selected="true" data-instrument="DXY">DXY</button>
-            <button type="button" role="tab" aria-selected="false" data-instrument="GOLD">Gold</button>
-            <button type="button" role="tab" aria-selected="false" data-instrument="NAS100">NAS100</button>
-            <button type="button" role="tab" aria-selected="false" data-instrument="USDJPY">USDJPY</button>
+            <button class="is-active" type="button" role="tab" aria-selected="true" id="briefing-tab-dxy" aria-controls="briefing-chart-panel" tabindex="0" data-instrument="DXY">DXY</button>
+            <button type="button" role="tab" aria-selected="false" id="briefing-tab-nas100" aria-controls="briefing-chart-panel" tabindex="-1" data-instrument="NAS100">NAS100</button>
+            <button type="button" role="tab" aria-selected="false" id="briefing-tab-gold" aria-controls="briefing-chart-panel" tabindex="-1" data-instrument="GOLD">Gold</button>
+            <button type="button" role="tab" aria-selected="false" id="briefing-tab-usdjpy" aria-controls="briefing-chart-panel" tabindex="-1" data-instrument="USDJPY">USDJPY</button>
           </div>
-          <div class="dashboard-chart-title"><b id="briefing-symbol">DXY DAILY</b><span id="briefing-price">Example chart</span></div>
-          <svg class="briefing-chart" viewBox="0 0 880 410" role="img" aria-labelledby="briefing-chart-title">
-            <title id="briefing-chart-title">DXY example chart with Daily Supply and Daily Demand</title>
-            <g class="chart-grid light-grid">
-              <path d="M35 55H845M35 115H845M35 175H845M35 235H845M35 295H845M35 355H845" />
-              <path d="M110 25V375M250 25V375M390 25V375M530 25V375M670 25V375M810 25V375" />
-            </g>
-            <rect class="zone zone-supply" x="505" y="72" width="280" height="58" rx="3" />
-            <text class="zone-label light-label" x="645" y="105" text-anchor="middle">DAILY SUPPLY</text>
-            <rect class="zone zone-demand" x="302" y="276" width="310" height="58" rx="3" />
-            <text class="zone-label light-label" x="457" y="309" text-anchor="middle">DAILY DEMAND</text>
-            <path id="briefing-area" class="briefing-area" d="M40 252L80 212L120 225L160 150L200 185L240 116L280 138L320 96L360 168L400 182L440 235L480 205L520 245L560 277L600 250L640 300L680 285L720 245L760 225L805 236L840 208L840 365L40 365Z" />
-            <path id="briefing-line" class="briefing-line" d="M40 252L80 212L120 225L160 150L200 185L240 116L280 138L320 96L360 168L400 182L440 235L480 205L520 245L560 277L600 250L640 300L680 285L720 245L760 225L805 236L840 208" />
-            <line id="tooltip-line" class="tooltip-line" x1="560" y1="88" x2="560" y2="355" />
-            <g id="chart-tooltip" class="chart-tooltip" transform="translate(480 138)">
-              <rect width="150" height="94" rx="4" />
-              <text x="12" y="22">EXAMPLE CHART</text>
-              <text x="12" y="42">Marked zones</text>
-              <text x="12" y="59">Price reaction</text>
-              <text x="12" y="76">Not live data</text>
-            </g>
-          </svg>
+          <div class="dashboard-chart-title"><b id="briefing-symbol">DXY · Daily</b><span id="briefing-price">Historical snapshot</span></div>
+          <figure class="published-chart" id="briefing-chart-panel" role="tabpanel" aria-labelledby="briefing-tab-dxy">
+            <a class="published-chart-link" id="briefing-chart-open" href="assets/member-charts/dxy-2026-10-18.webp" target="_blank" rel="noopener" aria-label="Open DXY daily chart from 18 October 2026 at full size (opens in a new tab)">
+              <img class="published-chart-image" id="briefing-chart-image" src="assets/member-charts/dxy-2026-10-18.webp" alt="Jay Bryan’s DXY daily chart review from 18 October 2026, with original candles and five marked Daily Zones. Historical snapshot." width="2048" height="1484" />
+              <span class="published-chart-action">Open full chart <span aria-hidden="true">↗</span></span>
+            </a>
+            <figcaption><span id="briefing-chart-caption" aria-live="polite">DXY · Daily · 18 October 2026</span><span>Published member chart · Not live data.</span></figcaption>
+          </figure>
         </div>
       </section>
 
