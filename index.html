@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Join the free TGI Intelligence Briefing for weekly economic context, technical market structure, risk events, and conditional trading scenarios."
+      content="Understand Daily Zones with Trader Growth Institute. Follow Jay Bryan’s chart explanations and get free weekly market updates."
     />
     <meta name="theme-color" content="#080a0a" />
-    <title>TGI Intelligence Briefing | Weekly Economic &amp; Technical Market Analysis</title>
+    <title>Daily Zones &amp; Daily Zone Command™ | Trader Growth Institute</title>
+    <link rel="canonical" href="https://www.tradergrowth.com/" />
+    <meta property="og:title" content="Understand the chart. Start with Daily Zones." />
+    <meta property="og:description" content="Learn where to pay attention on the daily chart and how to plan your risk. Free weekly market updates from Jay Bryan." />
     <link rel="preload" href="assets/jay-bryan-founder.webp" as="image" type="image/webp" />
     <link rel="stylesheet" href="styles.css" />
-    <script defer src="app.js"></script>
+    <link rel="stylesheet" href="home.css?v=20261020" />
+    <script defer src="app.js?v=20261020-dailyzones"></script>
   </head>
-  <body>
+  <body class="home-daily-zones">
     <a class="skip-link" href="#main-content">Skip to content</a>
 
     <header class="site-header" data-header>
@@ -28,16 +32,15 @@
       </button>
 
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
-        <a href="newsletter/">Intelligence</a>
-        <a href="cot/">COT Dashboard</a><a href="desk/">Operating Desk</a>
-        <a href="#framework">Framework</a>
-        <a href="#resources">Resources</a>
+        <a href="#daily-zones">Daily Zones</a>
+        <a href="desk/">Membership</a>
         <a href="dzc/">Book</a>
-        <a href="cdza/">CDZA</a>
-        <a href="glossary/">Glossary</a>
+        <a href="mentor/">Mentoring</a>
+        <a href="#resources">Resources</a>
+        <a href="newsletter/">Free updates</a>
       </nav>
 
-      <a class="button button-small button-outline header-cta" href="newsletter/">Get the briefing</a>
+      <a class="button button-small button-outline header-cta" href="newsletter/">Free weekly updates</a>
     </header>
 
     <main id="main-content">
@@ -45,27 +48,26 @@
         <div class="ambient-grid" aria-hidden="true"></div>
         <div class="hero-copy reveal">
           <p class="eyebrow">Trader Growth Institute</p>
-          <h1>Prepare for the Trading Week<br />With Economic Context<br />and Technical Clarity.</h1>
+          <h1>Understand the chart.<br /><em>Start with Daily Zones.</em></h1>
           <p class="hero-summary">
-            The free weekly TGI Intelligence Briefing connects macroeconomic risk,<br class="desktop-only" />
-            technical market structure, and disciplined capital management.
+            Daily Zones mark areas on the daily chart where price previously moved strongly. Use them to watch price reactions and plan your risk.
           </p>
           <div class="hero-actions">
-            <a class="button button-gold" href="newsletter/">Get the free intelligence briefing</a>
-            <a class="text-link" href="#framework">Explore the TGI framework <span aria-hidden="true">→</span></a>
+            <a class="button button-gold" href="newsletter/">Get free weekly updates</a>
+            <a class="text-link" href="#framework">What are Daily Zones? <span aria-hidden="true">→</span></a>
           </div>
-          <p class="trust-note"><span aria-hidden="true">◇</span> Free every week. Economic context. Technical scenarios. No signals or hype.</p>
+          <p class="trust-note"><span aria-hidden="true">◇</span> Free market updates. Chart explanations. Unsubscribe anytime.</p>
         </div>
 
-        <div class="hero-market reveal" aria-label="Interactive market pulse">
+        <div class="hero-market reveal" aria-label="Daily Zones chart example">
           <div class="chart-heading">
             <div>
               <span id="hero-symbol">DXY</span> <span class="muted">DAILY</span>
-              <small id="hero-regime">Market regime: Accumulation</small>
+              <small id="hero-regime">Example of Daily Zones</small>
             </div>
             <div class="market-pulse">
-              <span>Market pulse</span>
-              <div class="segmented" role="tablist" aria-label="Hero market">
+              <span>Choose an example</span>
+              <div class="segmented" role="tablist" aria-label="Example market">
                 <button class="is-active" type="button" role="tab" aria-selected="true" data-hero-market="DXY">DXY</button>
                 <button type="button" role="tab" aria-selected="false" data-hero-market="NAS100">NAS100</button>
                 <button type="button" role="tab" aria-selected="false" data-hero-market="GOLD">Gold</button>
@@ -74,8 +76,8 @@
           </div>
 
           <svg class="market-chart" viewBox="0 0 720 390" role="img" aria-labelledby="hero-chart-title hero-chart-desc">
-            <title id="hero-chart-title">DXY daily market structure</title>
-            <desc id="hero-chart-desc">A daily market chart showing price, supply, demand, and balance.</desc>
+            <title id="hero-chart-title">DXY daily chart with Daily Supply, Daily Demand and the example’s current price</title>
+            <desc id="hero-chart-desc">A simplified daily chart. Daily Supply marks an area of past selling, Daily Demand marks an area of past buying, and the dot marks the latest point in this example.</desc>
             <defs>
               <linearGradient id="hero-area-gradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0" stop-color="#c99a3d" stop-opacity=".28" />
@@ -87,25 +89,48 @@
               <path d="M90 28V356M210 28V356M330 28V356M450 28V356M570 28V356M690 28V356" />
             </g>
             <rect class="zone zone-supply" x="430" y="82" width="220" height="48" rx="2" />
-            <text class="zone-label" x="540" y="110" text-anchor="middle">SUPPLY ZONE</text>
+            <text class="zone-label" x="540" y="110" text-anchor="middle">DAILY SUPPLY</text>
             <rect class="zone zone-demand" x="365" y="274" width="260" height="50" rx="2" />
-            <text class="zone-label" x="495" y="303" text-anchor="middle">DEMAND ZONE</text>
+            <text class="zone-label" x="495" y="303" text-anchor="middle">DAILY DEMAND</text>
             <path id="hero-chart-area" class="chart-area" d="M40,280 L76,244 L112,202 L148,228 L184,140 L220,178 L256,86 L292,118 L328,194 L364,128 L400,96 L436,155 L472,170 L508,218 L544,190 L580,244 L616,260 L652,246 L688,272 L688,350 L40,350 Z" />
             <path id="hero-chart-line" class="chart-line" d="M40,280 L76,244 L112,202 L148,228 L184,140 L220,178 L256,86 L292,118 L328,194 L364,128 L400,96 L436,155 L472,170 L508,218 L544,190 L580,244 L616,260 L652,246 L688,272" />
-            <path class="balance-line" d="M408 203H690" />
-            <text class="chart-label" x="598" y="193">DAILY BALANCE</text>
-            <g class="sweep-marker">
-              <path d="M242 70L256 86L271 68" />
-              <text x="225" y="54">LIQUIDITY SWEEP</text>
-            </g>
+            <line id="hero-price-line" class="home-price-line" x1="36" y1="272" x2="690" y2="272" />
+            <text id="hero-price-label" class="home-price-label" x="680" y="258" text-anchor="end">CURRENT PRICE · EXAMPLE</text>
             <circle id="hero-last-point" class="last-point" cx="688" cy="272" r="5" />
           </svg>
 
-          <div class="status-chips" aria-label="Market metadata">
-            <span><i class="status-dot status-green"></i><b id="hero-status-regime">Accumulation</b></span>
+
+          <dl class="home-zone-key">
+            <div><dt>Daily Supply</dt><dd>Sellers previously pushed price down here.</dd></div>
+            <div><dt>Daily Demand</dt><dd>Buyers previously pushed price up here.</dd></div>
+            <div><dt>Current price</dt><dd>The latest point in this example.</dd></div>
+          </dl>
+          <div class="status-chips" aria-label="Example chart information">
+            <span><i class="status-dot status-green"></i><b id="hero-status-regime">U.S. dollar index</b></span>
             <span><i class="status-dot"></i>Daily</span>
-            <span>Illustrative framework</span>
+            <span>Example only · Not live data</span>
           </div>
+        </div>
+      </section>
+
+      <section class="authority section-dark" id="daily-zones" aria-labelledby="authority-title">
+        <div class="authority-heading reveal">
+          <p class="eyebrow">The idea behind Daily Zones</p>
+          <h2 id="authority-title">What are Daily Zones?</h2>
+          <p>A zone marks a price area, rather than one exact price. It gives you a place to watch as you build a plan.</p>
+          <p id="authority-explainer" aria-live="polite">Daily Demand is an area where buyers previously pushed price higher. Watch how price behaves if it returns.</p>
+          <a class="text-link" href="#framework">See how to use them <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="principle-grid reveal" role="group" aria-label="Daily Zones explained">
+          <button class="principle-card is-active" type="button" aria-pressed="true" data-principle="Daily Demand is an area where buyers previously pushed price higher. Watch how price behaves if it returns.">
+            <span class="principle-icon" aria-hidden="true">⌖</span><b>Daily Demand</b>
+          </button>
+          <button class="principle-card" type="button" aria-pressed="false" data-principle="Daily Supply is an area where sellers previously pushed price lower. Watch how price behaves if it returns.">
+            <span class="principle-icon" aria-hidden="true">⌁</span><b>Daily Supply</b>
+          </button>
+          <button class="principle-card" type="button" aria-pressed="false" data-principle="A zone can fail. Decide what would make your idea wrong and how much you are willing to lose before trading.">
+            <span class="principle-icon" aria-hidden="true">◇</span><b>Plan your risk</b>
+          </button>
         </div>
       </section>
 
@@ -124,13 +149,13 @@
             width="1280"
             height="808"
           />
-          <div class="founder-caption"><span>Jay Bryan</span><small>Founder &amp; Market Architect</small></div>
+          <div class="founder-caption"><span>Jay Bryan</span><small>Founder &amp; author</small></div>
         </div>
         <div class="founder-copy reveal">
-          <p class="eyebrow">Founder &amp; Market Architect</p>
-          <h2>Built by a Trader Who Had to Become a Capital Operator.</h2>
+          <p class="eyebrow">Founder &amp; author</p>
+          <h2>Learn how Jay reads the chart.</h2>
           <p>
-            Jay Bryan built TGI to help serious traders move beyond prediction and operate with market authority, disciplined risk and a defined capital mandate.
+            Jay Bryan is a trader and the author of Daily Zone Command™. He shares the price areas he watches, the reactions he waits for, and the risk he plans before a trade.
           </p>
           <div class="credential-chips" aria-label="Founder credentials">
             <span>Daily Zone Command</span>
@@ -139,58 +164,40 @@
             <span>15+ Years</span>
           </div>
           <details class="founder-story">
-            <summary>Read Jay’s founder story <span aria-hidden="true">+</span></summary>
+            <summary>Why Jay created TGI <span aria-hidden="true">+</span></summary>
             <div>
               <p>
-                TGI grew from a hard-earned realization: entries do not create durable performance. Authority, role clarity and risk governance do. Jay translated those lessons into a complete operating system for traders becoming capital operators.
+                A useful chart needs a clear plan. Jay created TGI to explain his Daily Zones approach through a book, market updates and chart reviews, so you can study the process and make your own decisions.
               </p>
-              <a class="text-link" href="#framework">See the operating system <span aria-hidden="true">→</span></a>
+              <a class="text-link" href="#framework">Explore the Daily Zones method <span aria-hidden="true">→</span></a>
             </div>
           </details>
         </div>
       </section>
 
-      <section class="authority section-dark" aria-labelledby="authority-title">
-        <div class="authority-heading reveal">
-          <p class="eyebrow">The authority problem</p>
-          <h2 id="authority-title">Most Traders Don’t Lack Entries. They Lack Authority.</h2>
-          <p id="authority-explainer" aria-live="polite">Read the higher-timeframe market before committing capital.</p>
-          <a class="text-link" href="#framework">Explore the problem <span aria-hidden="true">→</span></a>
-        </div>
-        <div class="principle-grid reveal" role="group" aria-label="Core operating principles">
-          <button class="principle-card is-active" type="button" aria-pressed="true" data-principle="Read the higher-timeframe market before committing capital.">
-            <span class="principle-icon" aria-hidden="true">⌖</span><b>Read Authority</b>
-          </button>
-          <button class="principle-card" type="button" aria-pressed="false" data-principle="Require evidence of institutional intent. Patience is a position.">
-            <span class="principle-icon" aria-hidden="true">⌁</span><b>Wait for Proof</b>
-          </button>
-          <button class="principle-card" type="button" aria-pressed="false" data-principle="Define loss before entry and protect the operating mandate.">
-            <span class="principle-icon" aria-hidden="true">◇</span><b>Govern Risk</b>
-          </button>
-        </div>
-      </section>
+
 
       <section class="operating-system section-dark" id="framework" aria-labelledby="framework-title">
         <div class="section-heading-inline">
           <div>
-            <p class="eyebrow">The TGI operating system</p>
-            <h2 id="framework-title">One decision at a time.</h2>
+            <p class="eyebrow">Daily Zone Command™ · The method</p>
+            <h2 id="framework-title">From a marked zone to a trading plan.</h2>
           </div>
-          <p class="control-hint">Select a stage <span aria-hidden="true">↘</span></p>
+          <p class="control-hint">Explore the steps <span aria-hidden="true">↘</span></p>
         </div>
 
-        <div class="stage-tabs" role="tablist" aria-label="Operating system stages">
-          <button class="is-active" role="tab" type="button" aria-selected="true" aria-controls="stage-panel" data-stage="0"><span>01</span>Read Authority</button>
-          <button role="tab" type="button" aria-selected="false" aria-controls="stage-panel" data-stage="1"><span>02</span>Locate Inventory</button>
-          <button role="tab" type="button" aria-selected="false" aria-controls="stage-panel" data-stage="2"><span>03</span>Authorize Execution</button>
-          <button role="tab" type="button" aria-selected="false" aria-controls="stage-panel" data-stage="3"><span>04</span>Govern Risk</button>
-          <button role="tab" type="button" aria-selected="false" aria-controls="stage-panel" data-stage="4"><span>05</span>Complete Cycle</button>
+        <div class="stage-tabs" role="tablist" aria-label="Daily Zones planning steps">
+          <button class="is-active" role="tab" type="button" aria-selected="true" aria-controls="stage-panel" data-stage="0"><span>01</span>Start with the daily chart</button>
+          <button role="tab" type="button" aria-selected="false" aria-controls="stage-panel" data-stage="1"><span>02</span>Mark Daily Zones</button>
+          <button role="tab" type="button" aria-selected="false" aria-controls="stage-panel" data-stage="2"><span>03</span>Watch the reaction</button>
+          <button role="tab" type="button" aria-selected="false" aria-controls="stage-panel" data-stage="3"><span>04</span>Set your risk</button>
+          <button role="tab" type="button" aria-selected="false" aria-controls="stage-panel" data-stage="4"><span>05</span>Review your decision</button>
         </div>
 
         <div class="stage-panel" id="stage-panel" role="tabpanel" tabindex="0">
           <div class="stage-chart-wrap">
-            <div class="mini-chart-title"><span id="stage-symbol">DXY DAILY</span><small id="stage-chart-label">Market regime: Accumulation</small></div>
-            <svg class="stage-chart" viewBox="0 0 720 330" role="img" aria-label="Operating system stage chart">
+            <div class="mini-chart-title"><span id="stage-symbol">DXY DAILY</span><small id="stage-chart-label">A wider view of price</small></div>
+            <svg class="stage-chart" viewBox="0 0 720 330" role="img" aria-label="Example chart for the Daily Zones planning steps">
               <g class="chart-grid">
                 <path d="M30 55H690M30 115H690M30 175H690M30 235H690M30 295H690" />
                 <path d="M105 25V305M225 25V305M345 25V305M465 25V305M585 25V305" />
@@ -204,16 +211,16 @@
           </div>
           <div class="stage-copy">
             <p class="eyebrow" id="stage-kicker">Stage 01</p>
-            <h3 id="stage-title">Market Regime: Accumulation</h3>
+            <h3 id="stage-title">Start with the daily chart</h3>
             <ul id="stage-points">
-              <li>Begin with the Daily chart.</li>
-              <li>Separate authority from noise.</li>
-              <li>Define the prevailing regime.</li>
+              <li>Each candle shows one day of price movement.</li>
+              <li>Look for areas where price moved strongly.</li>
+              <li>Mark the areas you want to study.</li>
             </ul>
             <div class="stage-controls">
-              <button type="button" id="stage-prev" aria-label="Previous operating stage">←</button>
+              <button type="button" id="stage-prev" aria-label="Previous planning step">←</button>
               <span><b id="stage-current">01</b> / 05</span>
-              <button type="button" id="stage-next" aria-label="Next operating stage">→</button>
+              <button type="button" id="stage-next" aria-label="Next planning step">→</button>
             </div>
           </div>
         </div>
@@ -221,14 +228,14 @@
 
       <section class="briefing section-light" id="intelligence" aria-labelledby="briefing-title">
         <div class="briefing-intro reveal">
-          <p class="eyebrow">Inside the weekly</p>
+          <p class="eyebrow">Your free weekly market update</p>
           <h2 id="briefing-title">Intelligence Briefing</h2>
           <div class="signal-stack">
-            <div><span aria-hidden="true">◉</span><p><small>Economic context</small><b id="signal-regime">Regime &amp; capital flows</b></p></div>
-            <div><span aria-hidden="true">↗</span><p><small>Technical context</small><b id="signal-bias">Structure &amp; Daily Zones</b></p></div>
-            <div class="signal-risk"><span aria-hidden="true">△</span><p><small>Risk discipline</small><b id="signal-risk">Events &amp; invalidation</b></p></div>
+            <div><span aria-hidden="true">◉</span><p><small>Economic news</small><b id="signal-regime">News that could move the market</b></p></div>
+            <div><span aria-hidden="true">↗</span><p><small>Daily Zones &amp; charts</small><b id="signal-bias">Key price areas and chart explanations</b></p></div>
+            <div class="signal-risk"><span aria-hidden="true">△</span><p><small>Plan your risk</small><b id="signal-risk">What to watch and what could change</b></p></div>
           </div>
-          <a class="button button-gold" href="newsletter/">Get the full briefing</a>
+          <a class="button button-gold" href="newsletter/">Get free weekly updates</a>
         </div>
 
         <div class="briefing-dashboard reveal">
@@ -238,26 +245,26 @@
             <button type="button" role="tab" aria-selected="false" data-instrument="NAS100">NAS100</button>
             <button type="button" role="tab" aria-selected="false" data-instrument="USDJPY">USDJPY</button>
           </div>
-          <div class="dashboard-chart-title"><b id="briefing-symbol">DXY DAILY</b><span id="briefing-price">102.247</span></div>
+          <div class="dashboard-chart-title"><b id="briefing-symbol">DXY DAILY</b><span id="briefing-price">Example chart</span></div>
           <svg class="briefing-chart" viewBox="0 0 880 410" role="img" aria-labelledby="briefing-chart-title">
-            <title id="briefing-chart-title">DXY chart with supply and demand zones</title>
+            <title id="briefing-chart-title">DXY example chart with Daily Supply and Daily Demand</title>
             <g class="chart-grid light-grid">
               <path d="M35 55H845M35 115H845M35 175H845M35 235H845M35 295H845M35 355H845" />
               <path d="M110 25V375M250 25V375M390 25V375M530 25V375M670 25V375M810 25V375" />
             </g>
             <rect class="zone zone-supply" x="505" y="72" width="280" height="58" rx="3" />
-            <text class="zone-label light-label" x="645" y="105" text-anchor="middle">SUPPLY ZONE</text>
+            <text class="zone-label light-label" x="645" y="105" text-anchor="middle">DAILY SUPPLY</text>
             <rect class="zone zone-demand" x="302" y="276" width="310" height="58" rx="3" />
-            <text class="zone-label light-label" x="457" y="309" text-anchor="middle">DEMAND ZONE</text>
+            <text class="zone-label light-label" x="457" y="309" text-anchor="middle">DAILY DEMAND</text>
             <path id="briefing-area" class="briefing-area" d="M40 252L80 212L120 225L160 150L200 185L240 116L280 138L320 96L360 168L400 182L440 235L480 205L520 245L560 277L600 250L640 300L680 285L720 245L760 225L805 236L840 208L840 365L40 365Z" />
             <path id="briefing-line" class="briefing-line" d="M40 252L80 212L120 225L160 150L200 185L240 116L280 138L320 96L360 168L400 182L440 235L480 205L520 245L560 277L600 250L640 300L680 285L720 245L760 225L805 236L840 208" />
             <line id="tooltip-line" class="tooltip-line" x1="560" y1="88" x2="560" y2="355" />
             <g id="chart-tooltip" class="chart-tooltip" transform="translate(480 138)">
               <rect width="150" height="94" rx="4" />
-              <text x="12" y="22">APR 12, 2026</text>
-              <text x="12" y="42">Open: 102.41</text>
-              <text x="12" y="59">High: 102.66</text>
-              <text x="12" y="76">Close: 102.18</text>
+              <text x="12" y="22">EXAMPLE CHART</text>
+              <text x="12" y="42">Marked zones</text>
+              <text x="12" y="59">Price reaction</text>
+              <text x="12" y="76">Not live data</text>
             </g>
           </svg>
         </div>
@@ -265,53 +272,54 @@
 
       <section class="pathway section-light" aria-labelledby="pathway-title">
         <div class="section-heading-centered">
-          <p class="eyebrow">The pathway</p>
-          <h2 id="pathway-title">From awareness to capital authority.</h2>
+          <p class="eyebrow">Choose your starting point</p>
+          <h2 id="pathway-title">Follow the updates. Learn the method. Study the charts.</h2>
         </div>
         <div class="pathway-track reveal">
-          <a class="path-card" href="#intelligence"><span class="path-icon" aria-hidden="true">◉</span><p><small>01</small><b>Intelligence</b><span>See what others miss.</span></p><i aria-hidden="true">→</i></a>
+          <a class="path-card" href="newsletter/"><span class="path-icon" aria-hidden="true">◉</span><p><small>Start free</small><b>Weekly updates</b><span>Follow Jay’s market updates and chart explanations.</span></p><i aria-hidden="true">→</i></a>
           <span class="path-connector" aria-hidden="true"></span>
-          <a class="path-card" href="#framework"><span class="path-icon" aria-hidden="true">⌑</span><p><small>02</small><b>Command</b><span>Execute with authority.</span></p><i aria-hidden="true">→</i></a>
+          <a class="path-card" href="dzc/"><span class="path-icon" aria-hidden="true">⌑</span><p><small>Learn the method</small><b>Daily Zone Command™</b><span>The book explains how to identify and use Daily Zones.</span></p><i aria-hidden="true">→</i></a>
           <span class="path-connector" aria-hidden="true"></span>
-          <a class="path-card" href="newsletter/"><span class="path-icon" aria-hidden="true">◇</span><p><small>03</small><b>Weekly Briefing</b><span>Prepare before capital is committed.</span></p><i aria-hidden="true">→</i></a>
+          <a class="path-card" href="desk/"><span class="path-icon" aria-hidden="true">◇</span><p><small>Study the charts</small><b>TGI Operating Desk</b><span>See Jay’s published zones and the thinking behind them.</span></p><i aria-hidden="true">→</i></a>
         </div>
       </section>
 
       <section class="market-cycle section-dark" aria-labelledby="cycle-title">
         <div class="cycle-header">
-          <div><p class="eyebrow">Interactive framework</p><h2 id="cycle-title">TGI Institutional Market Cycle</h2></div>
-          <p id="cycle-description">Price discovery begins as institutional inventory is released.</p>
+          <div><p class="eyebrow">Watching price at a zone</p><h2 id="cycle-title">Price can react in different ways.</h2></div>
+          <p id="cycle-description">Price can move away from a zone. Wait for your entry conditions.</p>
         </div>
-        <div class="cycle-pills" role="tablist" aria-label="Market cycle stage">
-          <button type="button" role="tab" aria-selected="false" data-cycle-stage="12">Accumulation</button>
-          <button type="button" role="tab" aria-selected="false" data-cycle-stage="38">Liquidity Harvesting</button>
-          <button class="is-active" type="button" role="tab" aria-selected="true" data-cycle-stage="66">Expansion</button>
-          <button type="button" role="tab" aria-selected="false" data-cycle-stage="90">Capital Completion</button>
+        <div class="cycle-pills" role="tablist" aria-label="Example price behavior">
+          <button type="button" role="tab" aria-selected="false" data-cycle-stage="12">Sideways price</button>
+          <button type="button" role="tab" aria-selected="false" data-cycle-stage="38">Move outside a range</button>
+          <button class="is-active" type="button" role="tab" aria-selected="true" data-cycle-stage="66">Strong move</button>
+          <button type="button" role="tab" aria-selected="false" data-cycle-stage="90">Pullback</button>
         </div>
         <div class="cycle-chart reveal">
-          <svg viewBox="0 0 1120 270" role="img" aria-label="Market cycle price curve">
+          <svg viewBox="0 0 1120 270" role="img" aria-label="Example price path from sideways movement to a larger move">
             <g class="chart-grid">
               <path d="M30 55H1090M30 115H1090M30 175H1090M30 235H1090" />
             </g>
             <path class="cycle-line" d="M35 210C100 190 130 205 190 180S275 165 330 175S405 205 455 140S505 95 555 150S630 195 675 125S750 105 795 82S880 45 925 72S1010 42 1085 28" />
           </svg>
           <div class="cycle-progress" aria-hidden="true"><span id="cycle-progress-fill"></span></div>
-          <label class="sr-only" for="cycle-scrubber">Explore the market cycle</label>
+          <label class="sr-only" for="cycle-scrubber">Explore the example price sequence</label>
           <input id="cycle-scrubber" type="range" min="0" max="100" value="66" />
-          <div class="cycle-tooltip" id="cycle-tooltip"><span>Expansion</span><b>Price Discovery</b></div>
+          <div class="cycle-tooltip" id="cycle-tooltip"><span>Strong move</span><b>Price moves away</b></div>
+          <p class="home-example-note">Example sequence. Price does not always follow this order.</p>
         </div>
       </section>
 
       <section class="case-study section-light" aria-labelledby="case-title">
         <div class="case-copy reveal">
-          <p class="eyebrow">Case study 01 / 03</p>
-          <h2 id="case-title">USDJPY: From Base to Displacement</h2>
-          <div class="case-metrics"><span><b>+310</b> pips</span><span><b>1:4.2</b> R</span></div>
-          <a class="button button-gold" href="#resources">View case study</a>
+          <p class="eyebrow">Daily Zones chart example</p>
+          <h2 id="case-title">Daily Demand: before and after a reaction.</h2>
+          <p>Use the slider to compare a marked area with one possible price reaction. Price can also move through a zone.</p><p class="home-example-note">Simplified example, not a trade result.</p>
+          <a class="text-link" href="dzc/">Explore the Daily Zone Command™ book <span aria-hidden="true">→</span></a>
         </div>
         <div class="comparison" id="case-comparison" style="--position: 50%">
           <div class="comparison-layer comparison-before">
-            <span class="comparison-label">Base</span>
+            <span class="comparison-label">Marked demand area</span>
             <svg viewBox="0 0 860 360" aria-hidden="true">
               <g class="chart-grid light-grid"><path d="M20 60H840M20 130H840M20 200H840M20 270H840M120 25V330M300 25V330M480 25V330M660 25V330" /></g>
               <rect class="base-zone" x="180" y="175" width="460" height="90" />
@@ -319,7 +327,7 @@
             </svg>
           </div>
           <div class="comparison-layer comparison-after">
-            <span class="comparison-label">Displacement</span>
+            <span class="comparison-label">One possible reaction</span>
             <svg viewBox="0 0 860 360" aria-hidden="true">
               <g class="chart-grid light-grid"><path d="M20 60H840M20 130H840M20 200H840M20 270H840M120 25V330M300 25V330M480 25V330M660 25V330" /></g>
               <rect class="base-zone" x="180" y="175" width="300" height="90" />
@@ -327,7 +335,7 @@
               <path class="displacement-arrow" d="M505 180L760 62M730 55L760 62L748 88" />
             </svg>
           </div>
-          <label class="sr-only" for="case-slider">Compare the USDJPY base and displacement</label>
+          <label class="sr-only" for="case-slider">Compare a Daily Demand zone before and after a possible price reaction</label>
           <input id="case-slider" type="range" min="8" max="92" value="50" />
           <div class="comparison-handle" aria-hidden="true"><span>↔</span></div>
         </div>
@@ -335,7 +343,7 @@
 
       <section class="resources section-dark" id="resources" aria-labelledby="resources-title">
         <div class="resources-header">
-          <div><p class="eyebrow">Resources</p><h2 id="resources-title">Build your operating discipline.</h2></div>
+          <div><p class="eyebrow">Resources</p><h2 id="resources-title">More ways to study and practice.</h2></div>
           <div class="carousel-controls">
             <button type="button" id="resources-prev" aria-label="Previous resource">←</button>
             <span id="resources-count">01 / 07</span>
@@ -344,34 +352,35 @@
         </div>
         <div class="resource-window reveal">
           <div class="resource-track" id="resource-track">
-            <a class="resource-card is-featured" href="weekly-capital-review/">
+            <a class="resource-card is-featured" href="dzc/">
+              <div class="resource-book-cover" aria-hidden="true"><img src="assets/daily-zone-command-cover.webp" alt="" /></div>
+              <p><small>Book by Jay Bryan</small><b>The Daily Zone Command</b><span>Learn the Daily Zones method →</span></p>
+            </a>
+            <a class="resource-card" href="weekly-capital-review/">
               <div class="resource-chart resource-chart-one" aria-hidden="true"><span></span></div>
-              <p><small>Interactive template</small><b>Weekly Capital Review</b><span>Review your capital decisions →</span></p>
+              <p><small>Interactive template</small><b>Weekly Capital Review</b><span>Review your trading decisions →</span></p>
             </a>
             <a class="resource-card" href="newsletter/">
               <div class="resource-chart resource-chart-two" aria-hidden="true"><span></span></div>
-              <p><small>Free weekly publication</small><b>TGI Intelligence Briefing</b><span>Read the economic and technical week →</span></p>
+              <p><small>Free weekly publication</small><b>TGI Intelligence Briefing</b><span>Follow the weekly market update →</span></p>
             </a>
             <a class="resource-card" href="cot/">
               <div class="resource-chart resource-chart-cot" aria-hidden="true"><span></span></div>
-              <p><small>Official CFTC positioning</small><b>COT Dashboard</b><span>See where capital is positioned →</span></p>
+              <p><small>Official CFTC positioning</small><b>COT Dashboard</b><span>Explore large traders’ reported positions →</span></p>
             </a>
-            <a class="resource-card" href="newsletter/">
+            <a class="resource-card" href="mentor/">
               <div class="resource-chart resource-chart-three" aria-hidden="true"><span></span></div>
-              <p><small>Weekly protocol</small><b>Trading-Week Prep</b><span>Enter the week prepared →</span></p>
+              <p><small>Private session with Jay</small><b>Daily Zone Command™ Mentorship</b><span>Review your charts with Jay →</span></p>
             </a>
             <a class="resource-card" href="glossary/">
               <div class="resource-chart resource-chart-four" aria-hidden="true"><span></span></div>
-              <p><small>Interactive reference</small><b>TGI Trading Glossary</b><span>Master the language of authority →</span></p>
+              <p><small>Interactive reference</small><b>TGI Trading Glossary</b><span>Look up unfamiliar trading terms →</span></p>
             </a>
             <a class="resource-card" href="cdza/">
               <div class="resource-chart resource-chart-five" aria-hidden="true"><span></span></div>
-              <p><small>Execution standard</small><b>CDZA™ Certification</b><span>Move from belief to evidence →</span></p>
+              <p><small>Execution standard</small><b>CDZA™ Certification</b><span>Read the certification requirements →</span></p>
             </a>
-            <a class="resource-card" href="dzc/">
-              <div class="resource-book-cover" aria-hidden="true"><img src="assets/daily-zone-command-cover.webp" alt="" /></div>
-              <p><small>Book by Jay Bryan</small><b>The Daily Zone Command</b><span>Read the institutional framework →</span></p>
-            </a>
+
           </div>
         </div>
       </section>
@@ -379,19 +388,20 @@
       <section class="briefing-signup section-dark" id="briefing-signup">
         <div>
           <p class="eyebrow">The TGI Intelligence Briefing</p>
-          <h2>Enter the Trading Week With a Mandate—Not an Opinion.</h2>
+          <h2>Start with the next free market update.</h2>
         </div>
         <div class="briefing-signup-action">
-          <a class="button button-gold" href="newsletter/">Join the intelligence briefing</a>
-          <p>Free. One briefing each week. Unsubscribe at any time.</p>
+          <a class="button button-gold" href="newsletter/">Get free weekly updates</a>
+          <p>Free weekly updates from TGI. Unsubscribe anytime.</p>
         </div>
       </section>
+      <p class="home-risk-note">Educational chart examples, not instructions to buy or sell. Zones can fail, and trading involves risk. Updates are published as conditions develop; Daily Zones is the method, not a promise of daily trade alerts.</p>
     </main>
 
     <footer class="site-footer">
       <a class="brand" href="/" aria-label="Trader Growth Institute home"><span class="brand-mark" aria-hidden="true">TGI</span><span class="sr-only">Trader Growth Institute home</span></a>
       <p>TraderGrowth.com</p>
-      <p class="footer-promise">◇ One institutional briefing each week. No signals. No hype.</p>
+      <p class="footer-promise">Daily Zones. Clear explanations. Your own trading decisions.</p>
       <nav aria-label="Footer navigation"><a href="newsletter/">Newsletter</a><a href="dzc/">Book</a><a href="weekly-capital-review/">Capital Review</a><a href="cdza/">CDZA</a><a href="glossary/">Glossary</a><a href="privacy/">Privacy</a><a href="terms/">Terms</a><a href="risk-disclosure/">Risk disclosure</a></nav>
     </footer>
   </body>

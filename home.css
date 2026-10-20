@@ -1,0 +1,65 @@
+/* Homepage messaging and chart labels; other site pages keep their existing styling. */
+.home-daily-zones .reveal {opacity:1;transform:none}
+.home-daily-zones .hero {grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:clamp(2rem,4vw,5rem);padding-top:calc(var(--header-height) + 4rem)}
+.home-daily-zones .hero h1 {font-size:clamp(3rem,4.6vw,5.5rem);line-height:1.04;letter-spacing:-.04em}
+.home-daily-zones .hero h1 em {color:var(--gold-bright);font-style:normal}
+.home-daily-zones .hero-copy > .eyebrow {margin-bottom:1rem}
+.home-daily-zones .hero-summary {font-size:1.05rem;line-height:1.7}
+.home-daily-zones .hero-actions .button {font-size:.8rem;text-transform:none;letter-spacing:.02em}
+.home-daily-zones .hero-actions .text-link {font-size:.78rem;text-transform:none;letter-spacing:.02em}
+.home-daily-zones .trust-note {font-size:.8rem;line-height:1.6}
+.home-daily-zones .zone-supply {fill:rgba(201,154,61,.15);stroke:#c99a3d}
+.home-daily-zones .zone-demand {fill:rgba(40,124,91,.22);stroke:#83b49e}
+.home-daily-zones .zone-label {font-size:15px;letter-spacing:.02em;fill:var(--ivory)}
+.home-daily-zones .light-label {fill:#34382f}
+.home-daily-zones .hero-market .chart-line {stroke:var(--ivory)}
+.home-daily-zones .hero-market .chart-area {opacity:.25}
+.home-daily-zones .hero-market .last-point {fill:var(--ivory);stroke:var(--ink)}
+.home-price-line {stroke:#f2eee5;stroke-width:1;stroke-dasharray:5 6;opacity:.45}
+.home-price-label {fill:#f2eee5;font-family:var(--sans);font-size:14px}
+.home-daily-zones .market-chart {display:block;min-height:0;height:auto;margin:1rem 0}
+.home-zone-key {margin:0;padding-top:1rem;border-top:1px solid var(--line-dark);display:grid;gap:.65rem}
+.home-zone-key > div {display:grid;grid-template-columns:125px minmax(0,1fr);gap:.6rem;align-items:start}
+.home-zone-key dt {font-size:14px;font-weight:650}
+.home-zone-key dd {margin:0;color:#c6c9c6;font-size:14px;line-height:1.5}
+.home-zone-key > div:first-child dt {color:var(--gold-bright)}
+.home-zone-key > div:nth-child(2) dt {color:#a4d0bb}
+.home-daily-zones .status-chips {font-size:.72rem;line-height:1.5}
+.home-daily-zones .authority-heading p {font-size:1.05rem;line-height:1.7}
+.home-daily-zones #authority-explainer {color:var(--gold-bright);min-height:5em}
+.home-daily-zones .principle-card b {font-size:1rem}
+.home-daily-zones .stage-tabs button {font-size:.78rem;text-transform:none;letter-spacing:.01em;line-height:1.4}
+.home-daily-zones .stage-points,.home-daily-zones #stage-points {font-size:1rem;line-height:1.7}
+.home-daily-zones .path-card p > span {font-size:.9rem;line-height:1.6}
+.home-daily-zones .path-card p > b {line-height:1.3}
+.home-daily-zones .signal-stack p b {font-size:.9rem;line-height:1.5}
+.home-daily-zones .cycle-pills button {text-transform:none;font-size:.8rem}
+.home-example-note {font-size:.85rem;line-height:1.6;color:var(--muted);margin-top:1.2rem}
+.home-daily-zones .case-copy > p {font-size:1rem;line-height:1.7;color:var(--muted-dark)}
+.home-daily-zones .case-copy > .home-example-note {font-size:.85rem}
+.home-daily-zones .case-copy > .text-link {color:#765019}
+.home-daily-zones .resource-card p > span {font-size:.85rem;line-height:1.5}
+.home-risk-note {max-width:1050px;margin:0 auto;padding:0 1.5rem 3rem;color:var(--muted);font-size:.85rem;line-height:1.7}
+@media(max-width:1180px) {
+ .home-daily-zones .hero {grid-template-columns:1fr;padding-top:calc(var(--header-height) + 3rem)}
+ .home-daily-zones .hero-copy {max-width:760px}
+ .home-daily-zones .hero-market {max-width:840px;width:100%}
+}
+@media(max-width:620px) {
+ .home-daily-zones .hero {padding-top:calc(var(--header-height) + 2rem);padding-bottom:2.5rem;gap:2rem}
+ .home-daily-zones .hero h1 {font-size:clamp(2.2rem,10.5vw,3.3rem);line-height:1.06;margin-bottom:1.25rem}
+ .home-daily-zones .hero-summary {font-size:1rem;line-height:1.65;margin-bottom:1.4rem}
+ .home-daily-zones .hero-actions {gap:1rem}
+ .home-daily-zones .hero-actions .button {width:100%;font-size:.85rem;min-height:52px}
+ .home-daily-zones .trust-note {margin-top:1.1rem}
+ .home-zone-key > div {grid-template-columns:1fr;gap:.1rem}
+ .home-zone-key {gap:.8rem}
+ .home-daily-zones .chart-heading small {font-size:.68rem}
+ .home-daily-zones .market-pulse > span {font-size:.65rem}
+ .home-daily-zones .segmented button {font-size:.7rem;min-height:44px}
+ .home-daily-zones .authority-heading p {font-size:1rem}
+ .home-daily-zones .stage-tabs button {min-width:145px;min-height:64px}
+ .home-daily-zones .principle-card {min-height:100px}
+ .home-daily-zones .principle-card b {font-size:.9rem}
+ .home-daily-zones .cycle-pills button {min-height:44px}
+}
