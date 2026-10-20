@@ -38,9 +38,23 @@
 .home-daily-zones .case-copy > p {font-size:1rem;line-height:1.7;color:var(--muted-dark)}
 .home-daily-zones .case-copy > .home-example-note {font-size:.85rem}
 .home-daily-zones .case-copy > .text-link {color:#765019}
+.home-daily-zones .resource-window {overflow:auto;padding:.5rem 0}
+.home-daily-zones .resource-window.has-carousel-controls {overflow:hidden}
+.home-daily-zones .resource-track {display:flex;align-items:flex-start;gap:1.2rem}
+.home-daily-zones .resource-track:focus-within {transition:none}
+.home-daily-zones .resource-card {flex:0 0 calc((100% - 2.4rem)/3);min-width:0;height:auto}
+.home-daily-zones .resource-card small {font-size:.68rem;line-height:1.5}
 .home-daily-zones .resource-card p > span {font-size:.85rem;line-height:1.5}
-.home-daily-zones .resource-book-cover {min-height:0;height:280px;background:radial-gradient(circle at 50% 65%,rgba(40,124,91,.18),transparent 65%),#0b0e0b}
+.home-daily-zones .resource-book-cover,.home-daily-zones .resource-offer-image {position:relative;min-height:0;height:260px;overflow:hidden;background:radial-gradient(circle at 50% 65%,rgba(40,124,91,.18),transparent 65%),#0b0e0b;border-bottom:1px solid var(--line-dark)}
 .home-daily-zones .resource-book-cover img {position:absolute;inset:1rem;display:block;width:calc(100% - 2rem);max-width:100%;height:calc(100% - 2rem);object-fit:contain;filter:drop-shadow(0 12px 16px rgba(0,0,0,.45))}
+.home-daily-zones .resource-offer-image img {position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover}
+.home-daily-zones .resource-offer-image--contain img {object-fit:contain}
+.home-daily-zones .resource-offer-image--mentor img {object-position:30% 45%}
+.home-daily-zones .resource-offer-image--devices img {inset:.75rem;width:calc(100% - 1.5rem);height:calc(100% - 1.5rem)}
+@media(max-width:900px) {
+ .home-daily-zones .resource-track {gap:1rem}
+ .home-daily-zones .resource-card {flex-basis:calc((100% - 1rem)/2)}
+}
 .home-risk-note {max-width:1050px;margin:0 auto;padding:0 1.5rem 3rem;color:var(--muted);font-size:.85rem;line-height:1.7}
 @media(max-width:1180px) {
  .home-daily-zones .hero {grid-template-columns:1fr;padding-top:calc(var(--header-height) + 3rem)}
@@ -64,5 +78,6 @@
  .home-daily-zones .principle-card {min-height:100px}
  .home-daily-zones .principle-card b {font-size:.9rem}
  .home-daily-zones .cycle-pills button {min-height:44px}
- .home-daily-zones .resource-book-cover {height:320px}
+ .home-daily-zones .resource-card {flex-basis:100%}
+ .home-daily-zones .resource-book-cover,.home-daily-zones .resource-offer-image {height:260px}
 }

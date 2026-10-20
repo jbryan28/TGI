@@ -14,8 +14,8 @@
     <meta property="og:description" content="Learn where to pay attention on the daily chart and how to plan your risk. Free weekly market updates from Jay Bryan." />
     <link rel="preload" href="assets/jay-bryan-founder.webp" as="image" type="image/webp" />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="home.css?v=20261020-book" />
-    <script defer src="app.js?v=20261020-dailyzones"></script>
+    <link rel="stylesheet" href="home.css?v=20261020-offers" />
+    <script defer src="app.js?v=20261020-offers"></script>
   </head>
   <body class="home-daily-zones">
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -345,9 +345,9 @@
         <div class="resources-header">
           <div><p class="eyebrow">Resources</p><h2 id="resources-title">More ways to study and practice.</h2></div>
           <div class="carousel-controls">
-            <button type="button" id="resources-prev" aria-label="Previous resource">←</button>
-            <span id="resources-count">01 / 07</span>
-            <button type="button" id="resources-next" aria-label="Next resource">→</button>
+            <button type="button" id="resources-prev" aria-label="Previous resource" aria-controls="resource-track">←</button>
+            <span id="resources-count" role="status" aria-live="polite" aria-atomic="true" aria-label="Resource 1 of 8">01 / 08</span>
+            <button type="button" id="resources-next" aria-label="Next resource" aria-controls="resource-track">→</button>
           </div>
         </div>
         <div class="resource-window reveal">
@@ -356,31 +356,34 @@
               <div class="resource-book-cover" aria-hidden="true"><img src="assets/daily-zone-command-book-transparent.webp" alt="" width="768" height="1152" /></div>
               <p><small>Book by Jay Bryan</small><b>The Daily Zone Command</b><span>Learn the Daily Zones method →</span></p>
             </a>
+            <a class="resource-card" href="mentor/">
+              <div class="resource-offer-image resource-offer-image--mentor" aria-hidden="true"><img src="assets/jay-bryan-founder.webp" alt="" width="1280" height="808" /></div>
+              <p><small>Private session with Jay</small><b>Daily Zone Command™ Mentorship</b><span>Review your charts with Jay →</span></p>
+            </a>
+            <a class="resource-card" href="desk/">
+              <div class="resource-offer-image resource-offer-image--contain" aria-hidden="true"><img src="assets/tgi-forex-portal-walkthrough-poster.webp" alt="" width="960" height="660" /></div>
+              <p><small>TGI membership</small><b>TGI Operating Desk</b><span>Explore Daily Zones and market updates →</span></p>
+            </a>
             <a class="resource-card" href="weekly-capital-review/">
-              <div class="resource-chart resource-chart-one" aria-hidden="true"><span></span></div>
+              <div class="resource-offer-image resource-offer-image--contain" aria-hidden="true"><img src="assets/resource-weekly-capital-review.webp" alt="" width="720" height="480" /></div>
               <p><small>Interactive template</small><b>Weekly Capital Review</b><span>Review your trading decisions →</span></p>
             </a>
             <a class="resource-card" href="newsletter/">
-              <div class="resource-chart resource-chart-two" aria-hidden="true"><span></span></div>
+              <div class="resource-offer-image resource-offer-image--contain resource-offer-image--devices" aria-hidden="true"><img src="assets/tgi-newsletter-devices.svg" alt="" width="1400" height="876" /></div>
               <p><small>Free weekly publication</small><b>TGI Intelligence Briefing</b><span>Follow the weekly market update →</span></p>
             </a>
             <a class="resource-card" href="cot/">
-              <div class="resource-chart resource-chart-cot" aria-hidden="true"><span></span></div>
+              <div class="resource-offer-image resource-offer-image--contain" aria-hidden="true"><img src="assets/resource-cot-dashboard.webp" alt="" width="720" height="480" /></div>
               <p><small>Official CFTC positioning</small><b>COT Dashboard</b><span>Explore large traders’ reported positions →</span></p>
             </a>
-            <a class="resource-card" href="mentor/">
-              <div class="resource-chart resource-chart-three" aria-hidden="true"><span></span></div>
-              <p><small>Private session with Jay</small><b>Daily Zone Command™ Mentorship</b><span>Review your charts with Jay →</span></p>
-            </a>
             <a class="resource-card" href="glossary/">
-              <div class="resource-chart resource-chart-four" aria-hidden="true"><span></span></div>
+              <div class="resource-offer-image resource-offer-image--contain" aria-hidden="true"><img src="assets/resource-trading-glossary.webp" alt="" width="720" height="480" /></div>
               <p><small>Interactive reference</small><b>TGI Trading Glossary</b><span>Look up unfamiliar trading terms →</span></p>
             </a>
             <a class="resource-card" href="cdza/">
-              <div class="resource-chart resource-chart-five" aria-hidden="true"><span></span></div>
+              <div class="resource-offer-image resource-offer-image--contain" aria-hidden="true"><img src="assets/resource-cdza-standard.webp" alt="" width="720" height="480" /></div>
               <p><small>Execution standard</small><b>CDZA™ Certification</b><span>Read the certification requirements →</span></p>
             </a>
-
           </div>
         </div>
       </section>

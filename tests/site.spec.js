@@ -64,7 +64,7 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
 
   await page.locator(".founder-story summary").click();
   await expect(page.locator(".founder-story")).toHaveAttribute("open", "");
-  await expect(page.locator(".resource-card")).toHaveCount(7);
+  await expect(page.locator(".resource-card")).toHaveCount(8);
   await expect(page.locator('a[href="cot/"]')).not.toHaveCount(0);
   await expect(page.locator('#site-nav a[href="dzc/"]')).toHaveText("Book");
   await expect(page.locator('a[href="dzc/"]')).not.toHaveCount(0);
@@ -556,4 +556,52 @@ test('homepage introduction remains readable without JavaScript',async({browser}
  await expect(page.locator('h1')).toBeVisible();await expect(page.locator('.hero-copy')).toHaveCSS('opacity','1');
  await expect(page.locator('.home-zone-key')).toBeVisible();await expect(page.locator('.hero-actions .button')).toHaveAttribute('href','newsletter/');
  await context.close();
+});
+
+test('resource carousel shows the offers and reaches every card', async ({ page }, testInfo) => {
+  const cardFits = (card) => card.evaluate((element) => {
+    const cardBox = element.getBoundingClientRect();
+    const viewportBox = element.parentElement.parentElement.getBoundingClientRect();
+    return cardBox.left >= viewportBox.left - 1 && cardBox.right <= viewportBox.right + 1;
+  });
+  for (const size of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(size);
+    await page.goto('/#resources');
+    const cards = page.locator('.resource-card');
+    await expect(cards).toHaveCount(8);
+    for (const [index, href] of ['dzc/', 'mentor/', 'desk/'].entries()) {
+      await expect(cards.nth(index)).toHaveAttribute('href', href);
+    }
+    for (let index = 0; index < 8; index += 1) {
+      const card = cards.nth(index);
+      await expect(card).toHaveClass(/is-featured/);
+      await expect(page.locator('#resources-count')).toHaveText(`${String(index + 1).padStart(2, '0')} / 08`);
+      await expect.poll(() => cardFits(card)).toBe(true);
+      await expect.poll(() => card.locator('img').evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
+      if (size.width === 390 || index < 3) {
+        await card.screenshot({ path: testInfo.outputPath(`resource-${size.width}-${index + 1}.png`), animations: 'disabled' });
+      }
+      if (index < 7) await page.getByRole('button', { name: 'Next resource', exact: true }).click();
+    }
+    await page.getByRole('button', { name: 'Next resource', exact: true }).click();
+    await expect(page.locator('#resources-count')).toHaveText('01 / 08');
+    await page.getByRole('button', { name: 'Previous resource', exact: true }).click();
+    await expect(page.locator('#resources-count')).toHaveText('08 / 08');
+    for (const width of [900, 375]) {
+      await page.setViewportSize({ width, height: 844 });
+      await expect.poll(() => cardFits(cards.nth(7))).toBe(true);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    }
+    await page.getByRole('button', { name: 'Next resource', exact: true }).focus();
+    await page.keyboard.press('Tab');
+    await expect(cards.nth(0)).toBeFocused();
+    await page.keyboard.press('Tab');
+    await expect(cards.nth(1)).toBeFocused();
+    await expect.poll(() => cardFits(cards.nth(1))).toBe(true);
+    await page.keyboard.press('Tab');
+    await expect(cards.nth(2)).toBeFocused();
+    await expect.poll(() => cardFits(cards.nth(2))).toBe(true);
+    await page.keyboard.press('Enter');
+    await expect(page).toHaveURL(/\/desk\/$/);
+  }
 });
