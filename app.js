@@ -235,16 +235,6 @@
   };
   bindPublishedCharts("[data-hero-market]", "heroMarket", "hero");
 
-  const principleButtons = $$("[data-principle]");
-  const principleExplainer = $("#authority-explainer");
-  bindMobileCards("principles", (button) => {
-      principleButtons.forEach((item) => {
-        const isActive = item === button;
-        item.classList.toggle("is-active", isActive);
-        item.setAttribute("aria-pressed", String(isActive));
-      });
-      principleExplainer.textContent = button.dataset.principle;
-  });
   bindMobileCards("benefits");
   bindMobileCards("paths");
 

@@ -63,8 +63,8 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   });
   await expect(page.locator("#case-comparison")).toHaveAttribute("style", /72%/);
 
-  await page.locator(".founder-story summary").click();
-  await expect(page.locator(".founder-story")).toHaveAttribute("open", "");
+  await expect(page.locator("#founder-story")).toBeVisible();
+  await expect(page.locator("#founder details, #founder summary")).toHaveCount(0);
   await expect(page.locator(".resource-card")).toHaveCount(8);
   await expect(page.locator('a[href="cot/"]')).not.toHaveCount(0);
   await expect(page.locator('#site-nav a[href="dzc/"]')).toHaveText("Book");
@@ -525,7 +525,8 @@ test("CDZA journal saves and restores the certification record", async ({ page }
 });
 
 test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ page }, testInfo) => {
-  for (const size of [{width:1440,height:900},{width:390,height:844},{width:375,height:667}]) {
+  test.setTimeout(60000);
+  for (const size of [{width:1440,height:900},{width:390,height:844},{width:375,height:667},{width:320,height:844}]) {
     await page.setViewportSize(size);await page.goto('/');await page.reload();
     await expect(page.getByRole('heading',{level:1})).toHaveText(/Understand the chart\.\s*Start with Daily Zones\./);
     await expect(page.locator('.hero-summary')).toContainText('Daily Zones mark areas on the daily chart');
@@ -537,16 +538,55 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     await expect(page.locator('.hero-market')).toContainText('Historical snapshot · Not live data');
     await page.screenshot({path:testInfo.outputPath(`daily-zones-home-${size.width}.png`)});
     await page.locator('.hero-market').screenshot({path:testInfo.outputPath(`daily-zones-chart-${size.width}.png`)});
-    await page.locator('.hero-actions .text-link').click();
-    await expect(page).toHaveURL(/#daily-zones$/);
-    await expect(page.locator('#authority-title')).toBeInViewport();
-    await page.getByRole('button',{name:'Daily Supply',exact:true}).click();
-    await expect(page.locator('#authority-explainer')).toContainText('sellers previously pushed price lower');
-    await page.getByRole('button',{name:'Plan your risk',exact:true}).click();
-    await expect(page.locator('#authority-explainer')).toContainText('A zone can fail');
     await page.locator('[data-hero-market="GOLD"]').click();
     await expect(page.locator('#hero-chart-image')).toHaveAttribute('src', 'assets/member-charts/gold-2026-10-18.webp');
     await expect(page.locator('#hero-chart-caption')).toContainText('18 October 2026');
+    await page.locator('.hero-actions .text-link').click();
+    await expect(page).toHaveURL(/#daily-zones$/);
+    await expect(page.locator('#framework-title')).toBeInViewport();
+    await expect(page.locator('#daily-zones .eyebrow').first()).toHaveText('What are Daily Zones?');
+    await expect(page.locator('#framework-title')).toHaveText('Here’s the Daily Zone Command™ method.');
+    await expect(page.locator('#framework')).toHaveText('From a marked zone to a trading plan.');
+    await expect(page.locator('#daily-zones [data-stage]')).toHaveCount(5);
+    await expect(page.locator('.authority, .principle-card, [data-principle]')).toHaveCount(0);
+    await expect(page.locator('.operating-system')).toHaveCount(1);
+    const flow = await page.locator('#daily-zones').evaluate(section => [section.nextElementSibling.id, section.nextElementSibling.nextElementSibling.id]);
+    expect(flow).toEqual(['desk-membership', 'founder']);
+    await expect(page.locator('#desk-invite-title')).toHaveText('Get Jay’s Daily Zones.');
+    await expect(page.locator('#desk-membership .button')).toHaveAttribute('href', 'desk/');
+    await expect(page.locator('#desk-membership')).toContainText('$99/month');
+    const labelContrast = await page.locator('#desk-membership .eyebrow').evaluate(label => {
+      const luminance = color => {
+        const channels = color.match(/[\d.]+/g).slice(0, 3).map(value => {
+          const channel = Number(value) / 255;
+          return channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4;
+        });
+        return channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722;
+      };
+      const foreground = luminance(getComputedStyle(label).color);
+      const background = luminance(getComputedStyle(label.closest('section')).backgroundColor);
+      return (Math.max(foreground, background) + .05) / (Math.min(foreground, background) + .05);
+    });
+    expect(labelContrast).toBeGreaterThanOrEqual(4.5);
+    await page.locator('#desk-membership').scrollIntoViewIfNeeded();
+    await expect.poll(() => page.locator('#desk-membership img').evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
+    await expect(page.locator('#founder-title')).toHaveText('Why Jay started TGI.');
+    await expect(page.locator('#founder-story')).toBeVisible();
+    await expect(page.locator('#founder-story')).toContainText('Jay started TGI to explain his Daily Zones approach');
+    await expect(page.locator('#founder details, #founder summary')).toHaveCount(0);
+    if ([1440, 390].includes(size.width)) {
+      for (const section of ['daily-zones', 'desk-membership', 'founder']) {
+        await page.locator(`#${section}`).screenshot({path:testInfo.outputPath(`home-flow-${section}-${size.width}.png`), animations:'disabled', style:'.site-header,.skip-link{visibility:hidden!important}'});
+      }
+    }
+    if (size.width === 390) {
+      await page.locator('#desk-membership .button').click();
+      await expect(page).toHaveURL(/\/desk\/$/);
+      await expect(page.locator('.desk-join').first()).toContainText('Join the TGI Operating Desk');
+      await page.goto('/#framework');
+      await expect(page.locator('#framework')).toBeInViewport();
+    }
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
     await expect(page.locator('.pathway-track a[href="desk/"]')).toContainText('TGI Operating Desk');
     await expect(page.locator('.case-metrics')).toHaveCount(0);
   }
@@ -560,6 +600,10 @@ test('homepage introduction remains readable without JavaScript',async({browser}
  await expect(page.locator('#stage-diagram')).toHaveAccessibleName('Start with the daily chart');
  await expect(page.locator('#stage-diagram .lesson-context')).toBeVisible();
  await expect(page.locator('#stage-caption')).toContainText('daily candles');
+ await expect(page.locator('#founder-story')).toBeVisible();
+ await expect(page.locator('#founder details, #founder summary')).toHaveCount(0);
+ await expect(page.locator('#desk-membership .button')).toHaveAttribute('href','desk/');
+ await expect(page.locator('#daily-zones [data-stage]')).toHaveCount(5);
  await context.close();
 });
 
@@ -803,7 +847,7 @@ test('mobile chart gestures and card rails keep navigation usable', async ({ pag
     await expect(page.locator('.resource-card').nth(1)).toBeFocused();
     await expect(page.locator('#resources-count')).toHaveText('02 / 08');
 
-    for (const prefix of ['principles', 'benefits', 'paths']) {
+    for (const prefix of ['benefits', 'paths']) {
       const track = page.locator(`#${prefix}-track`);
       await expect.poll(() => track.evaluate(el => el.scrollWidth > el.clientWidth)).toBe(true);
       await page.locator(`#${prefix}-next`).click();
@@ -816,14 +860,13 @@ test('mobile chart gestures and card rails keep navigation usable', async ({ pag
         return box.left >= viewport.left - 1 && box.right <= viewport.right + 1;
       });
       expect(lastCardFits).toBe(true);
-      if (prefix === 'principles') await expect(page.locator('#authority-explainer')).toContainText('A zone can fail');
       await track.focus();
       await page.keyboard.press('Home');
       await expect(page.locator(`#${prefix}-count`)).toHaveText('01 / 03');
       await page.keyboard.press('ArrowRight');
       await expect(page.locator(`#${prefix}-count`)).toHaveText('02 / 03');
       if (width === 390) {
-        const capture = prefix === 'principles' ? page.locator('.principle-rail') : prefix === 'benefits' ? page.locator('.briefing') : page.locator('.pathway');
+        const capture = prefix === 'benefits' ? page.locator('.briefing') : page.locator('.pathway');
         await capture.screenshot({ path: testInfo.outputPath(`mobile-swipe-${prefix}.png`), animations: 'disabled' });
       }
     }
@@ -831,7 +874,7 @@ test('mobile chart gestures and card rails keep navigation usable', async ({ pag
     await expect(page.locator('.hero-actions .button')).toHaveAttribute('href', 'newsletter/');
     await page.reload();
     await expect(page.locator('#hero-symbol')).toHaveText('DXY');
-    await expect(page.locator('#principles-count')).toHaveText('01 / 03');
+    await expect(page.locator('#stage-current')).toHaveText('01');
   }
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
