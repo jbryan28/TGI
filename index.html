@@ -14,8 +14,9 @@
     <meta property="og:description" content="Learn where to pay attention on the daily chart and how to plan your risk. Free weekly market updates from Jay Bryan." />
     <link rel="preload" href="assets/jay-bryan-founder.webp" as="image" type="image/webp" />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="home.css?v=20261020-section-order" />
+    <link rel="stylesheet" href="home.css?v=20261020-home-gif" />
     <script defer src="app.js?v=20261020-section-order"></script>
+    <script defer src="desk/desk-gif.js?v=20261011-positions"></script>
   </head>
   <body class="home-daily-zones">
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -232,7 +233,11 @@
             <a class="button button-gold" href="desk/">Explore the Operating Desk <span aria-hidden="true">→</span></a>
           </div>
           <figure class="desk-invite-image reveal">
-            <img src="assets/tgi-forex-portal-walkthrough-poster.webp" alt="Preview of the TGI Operating Desk member portal with market groups and instrument pages" width="960" height="660" loading="lazy" />
+            <div class="desk-gif-frame">
+              <img id="home-desk-gif" data-desk-gif data-desk-gif-src="assets/tgi-forex-portal-walkthrough.gif?v=20261011-positions" src="assets/tgi-forex-portal-walkthrough-poster.webp?v=20261011-positions" alt="TGI Operating Desk portal walkthrough: EURUSD Short, USDJPY Long and GBPAUD Short position previews with entry, stop and target areas. No live prices or current market analysis." width="960" height="660" loading="lazy" decoding="async" />
+              <button class="desk-gif-toggle" data-desk-gif-control type="button" aria-label="Play animation" aria-controls="home-desk-gif" hidden></button>
+            </div>
+            <p class="sr-only" data-desk-gif-status role="status" aria-live="polite"></p>
           </figure>
         </div>
       </section>
