@@ -570,7 +570,7 @@ test('five Daily Zones steps explain one setup with accessible charts', async ({
     { title: 'Mark Daily Zones', label: 'Daily Supply', caption: 'Daily Demand', layer: '.lesson-zone-labels' },
     { title: 'Watch how price reacts', label: 'Watch the close', caption: 'conditions in your plan', layer: '.lesson-reaction' },
     { title: 'Plan your risk before entering', label: 'Plan the loss before entry', caption: 'Stops may fill beyond', layer: '.lesson-risk-heading' },
-    { title: 'Review your trading decision', label: 'Outcome: stop reached', caption: 'losing outcome', layer: '.lesson-review' },
+    { title: 'Review your trading decision', label: 'Outcome: target reached', caption: 'twice the amount risked', layer: '.lesson-review' },
   ];
   for (const width of [1440, 390, 320]) {
     await page.setViewportSize({ width, height: 900 });
@@ -597,10 +597,14 @@ test('five Daily Zones steps explain one setup with accessible charts', async ({
         await expect(page.locator('.lesson-risk')).toBeVisible();
         // Horizontal SVG paths have zero-height boxes in Chromium and WebKit.
         // Verify the rendered stroke and parent visibility, then inspect the screenshot.
-        for (const line of ['.lesson-entry-line', '.lesson-stop-line']) {
+        for (const line of ['.lesson-entry-line', '.lesson-stop-line', '.lesson-target-line']) {
           await expect(page.locator(line)).toHaveCSS('stroke-width', '2px');
           expect(await page.locator(line).evaluate(path => path.getBBox().width)).toBeGreaterThan(90);
         }
+      }
+      if (index === 4) {
+        await expect(page.locator('.lesson-review').getByText('Example profit: +2R', { exact: true })).toBeVisible();
+        await expect(page.locator('.lesson-target-hit')).toBeVisible();
       }
       const layout = await page.locator('#stage-diagram').evaluate((svg) => {
         const bounds = svg.getBoundingClientRect();
