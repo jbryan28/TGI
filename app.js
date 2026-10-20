@@ -178,9 +178,9 @@
     {
       kicker: "Stage 05",
       title: "Review your trading decision",
-      captionTitle: "Judge the process as well as the result.",
-      caption: "Three more candles reveal a losing outcome: price reaches the stop. Review whether you followed the plan, then choose one thing to practice.",
-      description: "Three later daily candles are revealed. Price first rises, then falls through Daily Demand and reaches the planned stop-loss. A cross marks the stop being reached. The review checks the process even though the outcome was a loss.",
+      captionTitle: "Review the win against your plan.",
+      caption: "Example profit: +2R means twice the amount risked, before trading costs. Price rises to the planned target near Daily Supply. Review your entry, risk, and exit against the original plan.",
+      description: "Three later daily candles are revealed. Price rises from the entry to the planned profit target at Daily Supply. A green check marks the winning exit. The target is twice as far from entry as the stop-loss. The example result is plus 2R, or twice the amount risked, before trading costs. This is a hypothetical teaching outcome, not a real trading result.",
       points: ["Compare what happened with your original plan.", "Record whether you followed your rules.", "Choose one thing to practice next."],
     },
   ];

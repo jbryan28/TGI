@@ -68,12 +68,12 @@
 .lesson-focus {fill:rgba(145,199,173,.04);stroke:#b1ddc5;stroke-width:1.5}
 .lesson-risk-area rect {fill:rgba(178,79,67,.17)}
 .lesson-risk-area path {fill:none;stroke:#edaaa0;stroke-width:1.5}
-.lesson-entry-line {fill:none;stroke:#a5d4bc;stroke-width:2;stroke-dasharray:6 4}
+.lesson-entry-line,.lesson-target-line {fill:none;stroke:#a5d4bc;stroke-width:2;stroke-dasharray:6 4}
 .lesson-stop-line {fill:none;stroke:#edaaa0;stroke-width:2;stroke-dasharray:6 4}
 .lesson-entry-point {fill:#a5d4bc;stroke:#0c100e;stroke-width:2}
-.lesson-stop-hit {fill:#0c100e;stroke:#edaaa0;stroke-width:2}
-.lesson-stop-cross {fill:none;stroke:#edaaa0;stroke-width:2}
-.lesson-zones,.lesson-risk-area,.lesson-future,.lesson-context,.lesson-zone-labels,.lesson-reaction,.lesson-risk,.lesson-risk-heading,.lesson-review {display:none}
+.lesson-target-hit {fill:#0c100e;stroke:#a5d4bc;stroke-width:2}
+.lesson-target-check {fill:none;stroke:#a5d4bc;stroke-width:2}
+.lesson-zones,.lesson-risk-area,.lesson-future,.lesson-context,.lesson-zone-labels,.lesson-reaction,.lesson-risk,.lesson-risk-heading,.lesson-target,.lesson-review {display:none}
 .stage-diagram[data-step="0"] .lesson-context,
 .stage-diagram:not([data-step="0"]) .lesson-zones,
 .stage-diagram[data-step="1"] .lesson-zone-labels,
@@ -81,8 +81,10 @@
 .stage-diagram[data-step="3"] .lesson-risk-area,
 .stage-diagram[data-step="3"] .lesson-risk,
 .stage-diagram[data-step="3"] .lesson-risk-heading,
+.stage-diagram[data-step="3"] .lesson-target,
 .stage-diagram[data-step="4"] .lesson-future,
 .stage-diagram[data-step="4"] .lesson-risk,
+.stage-diagram[data-step="4"] .lesson-target,
 .stage-diagram[data-step="4"] .lesson-review {display:block}
 .lesson-caption {display:grid;gap:.45rem;min-height:6.5em;font-size:.95rem;line-height:1.6;color:#c9cdca}
 .lesson-caption strong {color:var(--ivory);font-weight:650}
