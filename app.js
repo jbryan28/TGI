@@ -304,13 +304,15 @@
     resourceCards.forEach((card, index) => card.classList.toggle("is-featured", index === activeResource));
     $("#resources-count").textContent = `${String(activeResource + 1).padStart(2, "0")} / ${String(resourceCards.length).padStart(2, "0")}`;
 
-    if (window.matchMedia("(max-width: 900px)").matches) {
-      const cardWidth = resourceCards[0].getBoundingClientRect().width;
-      const gap = parseFloat(getComputedStyle(resourceTrack).gap) || 16;
-      resourceTrack.style.transform = `translateX(-${activeResource * (cardWidth + gap)}px)`;
-    } else {
-      resourceTrack.style.transform = "translateX(0)";
-    }
+    const viewport = resourceTrack.parentElement;
+    viewport.classList.add("has-carousel-controls");
+    viewport.scrollLeft = 0;
+    const cardWidth = resourceCards[0].getBoundingClientRect().width;
+    const gap = parseFloat(getComputedStyle(resourceTrack).gap) || 16;
+    const maxOffset = Math.max(0, resourceTrack.scrollWidth - viewport.clientWidth);
+    const offset = Math.min(activeResource * (cardWidth + gap), maxOffset);
+    resourceTrack.style.transform = `translateX(-${offset}px)`;
+    $("#resources-count").setAttribute("aria-label", `Resource ${activeResource + 1} of ${resourceCards.length}`);
   };
 
   $("#resources-prev")?.addEventListener("click", () => {
@@ -321,6 +323,13 @@
     activeResource = (activeResource + 1) % resourceCards.length;
     renderResource();
   });
+  resourceCards.forEach((card, index) => {
+    card.addEventListener("focus", () => {
+      activeResource = index;
+      renderResource();
+    });
+  });
+  renderResource();
   window.addEventListener("resize", renderResource);
 
 })();
