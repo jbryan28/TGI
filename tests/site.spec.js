@@ -555,6 +555,19 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     await expect(page.locator('#desk-invite-title')).toHaveText('Get Jay’s Daily Zones.');
     await expect(page.locator('#desk-membership .button')).toHaveAttribute('href', 'desk/');
     await expect(page.locator('#desk-membership')).toContainText('$99/month');
+    const labelContrast = await page.locator('#desk-membership .eyebrow').evaluate(label => {
+      const luminance = color => {
+        const channels = color.match(/[\d.]+/g).slice(0, 3).map(value => {
+          const channel = Number(value) / 255;
+          return channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4;
+        });
+        return channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722;
+      };
+      const foreground = luminance(getComputedStyle(label).color);
+      const background = luminance(getComputedStyle(label.closest('section')).backgroundColor);
+      return (Math.max(foreground, background) + .05) / (Math.min(foreground, background) + .05);
+    });
+    expect(labelContrast).toBeGreaterThanOrEqual(4.5);
     await page.locator('#desk-membership').scrollIntoViewIfNeeded();
     await expect.poll(() => page.locator('#desk-membership img').evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
     await expect(page.locator('#founder-title')).toHaveText('Why Jay started TGI.');
