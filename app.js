@@ -87,7 +87,7 @@
         return;
       }
       const excluded = allowLinks ? "button,input,select,textarea" : "a,button,input,select,textarea";
-      if (event.target.closest(excluded)) return;
+      if (event.target.closest(excluded)) { start = null; return; }
       start = { x: event.clientX, y: event.clientY, id: event.pointerId };
     }, { passive: true });
     element.addEventListener("pointercancel", () => { start = null; });
@@ -100,6 +100,10 @@
       suppressClick = true;
       changeSlide(dx < 0 ? 1 : -1);
     }, { passive: true });
+    element.addEventListener("mousedown", (event) => {
+      // A touch swipe can emit a compatibility mouse event that refocuses the old link.
+      if (suppressClick) event.preventDefault();
+    }, true);
     element.addEventListener("click", (event) => {
       if (!suppressClick || event.detail === 0) return;
       suppressClick = false;

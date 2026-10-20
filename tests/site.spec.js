@@ -794,6 +794,8 @@ test('mobile chart gestures and card rails keep navigation usable', async ({ pag
 
     await swipe('.resource-window', -120);
     await expect(page.locator('#resources-count')).toHaveText('02 / 08');
+    const compatibilityFocusAllowed = await page.locator('.resource-card').first().evaluate(link => link.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, cancelable: true, detail: 1 })));
+    expect(compatibilityFocusAllowed).toBe(false);
     await swipe('.resource-window', 120);
     await expect(page.locator('#resources-count')).toHaveText('01 / 08');
     await page.locator('.resource-card').first().focus();
