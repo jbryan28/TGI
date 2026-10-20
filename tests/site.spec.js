@@ -538,6 +538,9 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     await expect(page.locator('.hero-market')).toContainText('Historical snapshot · Not live data');
     await page.screenshot({path:testInfo.outputPath(`daily-zones-home-${size.width}.png`)});
     await page.locator('.hero-market').screenshot({path:testInfo.outputPath(`daily-zones-chart-${size.width}.png`)});
+    await page.locator('[data-hero-market="GOLD"]').click();
+    await expect(page.locator('#hero-chart-image')).toHaveAttribute('src', 'assets/member-charts/gold-2026-10-18.webp');
+    await expect(page.locator('#hero-chart-caption')).toContainText('18 October 2026');
     await page.locator('.hero-actions .text-link').click();
     await expect(page).toHaveURL(/#daily-zones$/);
     await expect(page.locator('#framework-title')).toBeInViewport();
@@ -560,7 +563,7 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     await expect(page.locator('#founder details, #founder summary')).toHaveCount(0);
     if ([1440, 390].includes(size.width)) {
       for (const section of ['daily-zones', 'desk-membership', 'founder']) {
-        await page.locator(`#${section}`).screenshot({path:testInfo.outputPath(`home-flow-${section}-${size.width}.png`), animations:'disabled', style:'.site-header{visibility:hidden!important}'});
+        await page.locator(`#${section}`).screenshot({path:testInfo.outputPath(`home-flow-${section}-${size.width}.png`), animations:'disabled', style:'.site-header,.skip-link{visibility:hidden!important}'});
       }
     }
     if (size.width === 390) {
@@ -571,9 +574,6 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
       await expect(page.locator('#framework')).toBeInViewport();
     }
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
-    await page.locator('[data-hero-market="GOLD"]').click();
-    await expect(page.locator('#hero-chart-image')).toHaveAttribute('src', 'assets/member-charts/gold-2026-10-18.webp');
-    await expect(page.locator('#hero-chart-caption')).toContainText('18 October 2026');
     await expect(page.locator('.pathway-track a[href="desk/"]')).toContainText('TGI Operating Desk');
     await expect(page.locator('.case-metrics')).toHaveCount(0);
   }
