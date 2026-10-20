@@ -544,14 +544,25 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     await page.locator('.hero-actions .text-link').click();
     await expect(page).toHaveURL(/#daily-zones$/);
     await expect(page.locator('#framework-title')).toBeInViewport();
-    await expect(page.locator('#daily-zones .eyebrow').first()).toHaveText('What are Daily Zones?');
-    await expect(page.locator('#framework-title')).toHaveText('Here’s the Daily Zone Command™ method.');
+    await expect(page.locator('#framework-title')).toHaveText('What are Daily Zones?');
+    await expect(page.locator('#framework-title')).toHaveCSS('color', 'rgb(245, 242, 233)');
+    await expect(page.locator('.method-lead')).toHaveText('Here’s the Daily Zone Command™ method.');
+    await expect(page.locator('.method-lead')).toHaveCSS('color', 'rgb(224, 180, 89)');
+    const typeSizes = await page.locator('#daily-zones').evaluate(section => ({
+      heading: parseFloat(getComputedStyle(section.querySelector('h2')).fontSize),
+      subtext: parseFloat(getComputedStyle(section.querySelector('.method-lead')).fontSize),
+    }));
+    expect(typeSizes.heading).toBeGreaterThan(typeSizes.subtext * 1.4);
     await expect(page.locator('#framework')).toHaveText('From a marked zone to a trading plan.');
     await expect(page.locator('#daily-zones [data-stage]')).toHaveCount(5);
     await expect(page.locator('.authority, .principle-card, [data-principle]')).toHaveCount(0);
     await expect(page.locator('.operating-system')).toHaveCount(1);
-    const flow = await page.locator('#daily-zones').evaluate(section => [section.nextElementSibling.id, section.nextElementSibling.nextElementSibling.id]);
-    expect(flow).toEqual(['desk-membership', 'founder']);
+    const flow = await page.locator('main > section[id]').evaluateAll(sections => sections.slice(0, 5).map(section => section.id));
+    expect(flow).toEqual(['top', 'daily-zones', 'member-chart-review', 'desk-membership', 'founder']);
+    const reviewFollowsMethod = await page.locator('#daily-zones').evaluate(section => section.getBoundingClientRect().bottom <= document.querySelector('#member-chart-review').getBoundingClientRect().top + 1);
+    expect(reviewFollowsMethod).toBe(true);
+    await expect(page.locator('.hero .hero-market')).toHaveCount(0);
+    await expect(page.locator('#member-chart-review .published-chart')).toHaveCount(1);
     await expect(page.locator('#desk-invite-title')).toHaveText('Get Jay’s Daily Zones.');
     await expect(page.locator('#desk-membership .button')).toHaveAttribute('href', 'desk/');
     await expect(page.locator('#desk-membership')).toContainText('$99/month');
@@ -575,7 +586,7 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     await expect(page.locator('#founder-story')).toContainText('Jay started TGI to explain his Daily Zones approach');
     await expect(page.locator('#founder details, #founder summary')).toHaveCount(0);
     if ([1440, 390].includes(size.width)) {
-      for (const section of ['daily-zones', 'desk-membership', 'founder']) {
+      for (const section of ['daily-zones', 'member-chart-review', 'desk-membership', 'founder']) {
         await page.locator(`#${section}`).screenshot({path:testInfo.outputPath(`home-flow-${section}-${size.width}.png`), animations:'disabled', style:'.site-header,.skip-link{visibility:hidden!important}'});
       }
     }
