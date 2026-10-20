@@ -536,6 +536,9 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     await expect(page.locator('.hero-market')).toContainText('Example only · Not live data');
     await page.screenshot({path:testInfo.outputPath(`daily-zones-home-${size.width}.png`)});
     await page.locator('.hero-market').screenshot({path:testInfo.outputPath(`daily-zones-chart-${size.width}.png`)});
+    await page.locator('.hero-actions .text-link').click();
+    await expect(page).toHaveURL(/#daily-zones$/);
+    await expect(page.locator('#authority-title')).toBeInViewport();
     await page.getByRole('button',{name:'Daily Supply',exact:true}).click();
     await expect(page.locator('#authority-explainer')).toContainText('sellers previously pushed price lower');
     await page.getByRole('button',{name:'Plan your risk',exact:true}).click();
