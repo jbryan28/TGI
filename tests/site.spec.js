@@ -594,8 +594,13 @@ test('five Daily Zones steps explain one setup with accessible charts', async ({
       if (index < 4) await expect(page.locator('.lesson-future')).toBeHidden();
       else await expect(page.locator('.lesson-future')).toBeVisible();
       if (index >= 3) {
-        await expect(page.locator('.lesson-entry-line')).toBeVisible();
-        await expect(page.locator('.lesson-stop-line')).toBeVisible();
+        await expect(page.locator('.lesson-risk')).toBeVisible();
+        // Horizontal SVG paths have zero-height boxes in Chromium and WebKit.
+        // Verify the rendered stroke and parent visibility, then inspect the screenshot.
+        for (const line of ['.lesson-entry-line', '.lesson-stop-line']) {
+          await expect(page.locator(line)).toHaveCSS('stroke-width', '2px');
+          expect(await page.locator(line).evaluate(path => path.getBBox().width)).toBeGreaterThan(90);
+        }
       }
       const layout = await page.locator('#stage-diagram').evaluate((svg) => {
         const bounds = svg.getBoundingClientRect();
