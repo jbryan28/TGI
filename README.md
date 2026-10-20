@@ -5,8 +5,8 @@ Institutional market-intelligence homepage and interactive capital-review tools 
 ## Included
 
 - Interactive Market Pulse for DXY, NAS100, and Gold
-- Expandable founder story and selectable authority principles
-- Five-stage TGI Operating System explorer
+- Combined Daily Zones introduction and five-step Daily Zone Command™ method explorer
+- Operating Desk membership invitation followed by an always-visible founder story
 - Switchable Intelligence Briefing instruments
 - Dedicated `/newsletter/` conversion route with a three-desk issue explorer, one canonical signup location, Beehiiv-safe embed configuration, and a `/newsletter/welcome/` confirmation route
 - Dedicated `/membership/` route that separates the 46-item Capital Operator Core, recurring operating desk, and independent CDZA™ certification standard

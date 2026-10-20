@@ -34,7 +34,6 @@
 .home-daily-zones .briefing-benefits {grid-column:2;grid-row:1/4;min-width:0}
 .home-daily-zones .briefing-intro h2 {margin-bottom:1.5rem}
 .home-daily-zones .signal-stack {margin-bottom:0}
-.principle-rail {min-width:0}
 .mobile-swipe-nav,.mobile-swipe-hint {display:none}
 .home-daily-zones .mobile-card-rail:focus-visible {outline:2px solid var(--gold);outline-offset:4px}
 @media(max-width:900px) {
@@ -69,9 +68,27 @@
 .home-zone-key > div:first-child dt {color:var(--gold-bright)}
 .home-zone-key > div:nth-child(2) dt {color:#a4d0bb}
 .home-daily-zones .status-chips {font-size:.72rem;line-height:1.5}
-.home-daily-zones .authority-heading p {font-size:1.05rem;line-height:1.7}
-.home-daily-zones #authority-explainer {color:var(--gold-bright);min-height:5em}
-.home-daily-zones .principle-card b {font-size:1rem}
+/* One explanation and walkthrough, followed by the membership invitation. */
+.home-daily-zones .method-heading {display:block}
+.home-daily-zones .method-heading h2 {max-width:950px}
+.home-daily-zones .method-subtitle {margin:1.1rem 0 .8rem;font-size:clamp(1.15rem,2vw,1.6rem);line-height:1.4;color:var(--gold-bright);scroll-margin-top:calc(var(--header-height) + 1.5rem)}
+.home-daily-zones .method-description {max-width:65ch;margin:0;color:var(--muted);font-size:1rem;line-height:1.7}
+.home-daily-zones .desk-invite {padding:clamp(3rem,6vw,6rem) clamp(1.5rem,5vw,6rem);border-top:1px solid var(--line-light)}
+.desk-invite-inner {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);align-items:center;gap:clamp(2rem,4vw,4rem);max-width:var(--max-width);margin:auto}
+.desk-invite-copy h2 {margin-bottom:1rem;font-size:clamp(2.1rem,3.7vw,4rem)}
+.desk-invite-copy > p:not(.eyebrow) {max-width:52ch;font-size:1rem;line-height:1.7;color:var(--muted-dark)}
+.desk-invite-copy > .desk-invite-price {margin:1.2rem 0 .9rem;color:var(--text-dark);font-weight:650;font-size:1.15rem}
+.desk-invite-copy .button {font-size:.8rem;text-transform:none;letter-spacing:.02em}
+.desk-invite-image {min-width:0;margin:0}
+.desk-invite-image img {display:block;width:100%;height:auto;border:1px solid var(--line-light)}
+@media(max-width:900px) {
+ .desk-invite-inner {grid-template-columns:1fr}
+ .desk-invite-image {width:100%;max-width:760px}
+}
+@media(max-width:620px) {
+ .home-daily-zones .desk-invite {padding-left:1.15rem;padding-right:1.15rem}
+ .desk-invite-copy .button {width:100%;min-height:52px}
+}
 .home-daily-zones .stage-tabs button {font-size:.78rem;text-transform:none;letter-spacing:.01em;line-height:1.4}
 .home-daily-zones .stage-points,.home-daily-zones #stage-points {font-size:1rem;line-height:1.7}
 /* One continuous teaching setup: context, zones, reaction, risk, then review. */
@@ -177,10 +194,7 @@
  .home-daily-zones .market-pulse > span {font-size:.65rem}
  .home-daily-zones .market-pulse {width:100%}
  .home-daily-zones .segmented button {font-size:.7rem;min-height:44px}
- .home-daily-zones .authority-heading p {font-size:1rem}
  .home-daily-zones .stage-tabs button {min-width:145px;min-height:64px}
- .home-daily-zones .principle-card {min-height:100px}
- .home-daily-zones .principle-card b {font-size:.9rem}
  .home-daily-zones .cycle-pills button {min-height:44px}
  .home-daily-zones .resource-card {flex-basis:100%}
  .home-daily-zones .resource-book-cover,.home-daily-zones .resource-offer-image {height:260px}
