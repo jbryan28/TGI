@@ -1,6 +1,9 @@
 /* Homepage messaging and chart labels; other site pages keep their existing styling. */
 .home-daily-zones .reveal {opacity:1;transform:none}
-.home-daily-zones .hero {grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:clamp(2rem,4vw,5rem);padding-top:calc(var(--header-height) + 4rem)}
+.home-daily-zones .hero {display:block;min-height:0;padding-top:calc(var(--header-height) + 4rem);padding-bottom:4rem}
+.home-daily-zones .hero-copy {max-width:var(--max-width);margin:0 auto}
+.home-daily-zones .member-review {padding:clamp(2.5rem,5vw,5rem) clamp(1.5rem,5vw,6rem);border-top:1px solid var(--line-dark)}
+.home-daily-zones .member-review .hero-market {width:100%;max-width:1100px;margin:0 auto}
 .home-daily-zones .hero h1 {font-size:clamp(3rem,4.6vw,5.5rem);line-height:1.04;letter-spacing:-.04em}
 .home-daily-zones .hero h1 em {color:var(--gold-bright);font-style:normal}
 .home-daily-zones .hero-copy > .eyebrow {margin-bottom:1rem}
@@ -68,10 +71,11 @@
 .home-zone-key > div:first-child dt {color:var(--gold-bright)}
 .home-zone-key > div:nth-child(2) dt {color:#a4d0bb}
 .home-daily-zones .status-chips {font-size:.72rem;line-height:1.5}
-/* One explanation and walkthrough, followed by the membership invitation. */
+/* Explain the method before showing Jay’s published member charts. */
 .home-daily-zones .method-heading {display:block}
-.home-daily-zones .method-heading h2 {max-width:950px}
-.home-daily-zones .method-subtitle {margin:1.1rem 0 .8rem;font-size:clamp(1.15rem,2vw,1.6rem);line-height:1.4;color:var(--gold-bright);scroll-margin-top:calc(var(--header-height) + 1.5rem)}
+.home-daily-zones .method-heading h2 {max-width:950px;color:var(--text);font-size:clamp(2.2rem,4.5vw,4.7rem);line-height:1.12}
+.home-daily-zones .method-lead {margin:1rem 0 .45rem;color:var(--gold-bright);font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.5}
+.home-daily-zones .method-subtitle {margin:0 0 .9rem;font-size:1rem;line-height:1.5;color:var(--gold-bright);scroll-margin-top:calc(var(--header-height) + 1.5rem)}
 .home-daily-zones .method-description {max-width:65ch;margin:0;color:var(--muted);font-size:1rem;line-height:1.7}
 .home-daily-zones .desk-invite {padding:clamp(3rem,6vw,6rem) clamp(1.5rem,5vw,6rem);border-top:1px solid var(--line-light)}
 .desk-invite-inner {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);align-items:center;gap:clamp(2rem,4vw,4rem);max-width:var(--max-width);margin:auto}
@@ -175,15 +179,15 @@
 }
 .home-risk-note {max-width:1050px;margin:0 auto;padding:0 1.5rem 3rem;color:var(--muted);font-size:.85rem;line-height:1.7}
 @media(max-width:1180px) {
- .home-daily-zones .hero {grid-template-columns:1fr;padding-top:calc(var(--header-height) + 3rem)}
+ .home-daily-zones .hero {padding-top:calc(var(--header-height) + 3rem)}
  .home-daily-zones .hero-copy {max-width:760px}
- .home-daily-zones .hero-market {max-width:840px;width:100%}
 }
 @media(max-width:620px) {
  .home-daily-zones .stage-chart-wrap {padding:1rem .65rem}
  .stage-diagram text {font-size:30px}
  .stage-diagram .lesson-muted-label,.stage-diagram .lesson-small-label {font-size:28px}
- .home-daily-zones .hero {padding-top:calc(var(--header-height) + 2rem);padding-bottom:2.5rem;gap:2rem}
+ .home-daily-zones .hero {padding-top:calc(var(--header-height) + 2rem);padding-bottom:2.5rem}
+ .home-daily-zones .member-review {padding-left:1.15rem;padding-right:1.15rem}
  .home-daily-zones .hero h1 {font-size:clamp(2.2rem,10.5vw,3.3rem);line-height:1.06;margin-bottom:1.25rem}
  .home-daily-zones .hero-summary {font-size:1rem;line-height:1.65;margin-bottom:1.4rem}
  .home-daily-zones .hero-actions {gap:1rem}

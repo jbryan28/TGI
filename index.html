@@ -14,8 +14,8 @@
     <meta property="og:description" content="Learn where to pay attention on the daily chart and how to plan your risk. Free weekly market updates from Jay Bryan." />
     <link rel="preload" href="assets/jay-bryan-founder.webp" as="image" type="image/webp" />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="home.css?v=20261020-home-flow" />
-    <script defer src="app.js?v=20261020-home-flow"></script>
+    <link rel="stylesheet" href="home.css?v=20261020-section-order" />
+    <script defer src="app.js?v=20261020-section-order"></script>
   </head>
   <body class="home-daily-zones">
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -59,51 +59,13 @@
           <p class="trust-note"><span aria-hidden="true">◇</span> Free market updates. Chart explanations. Unsubscribe anytime.</p>
         </div>
 
-        <div class="hero-market reveal" aria-label="Daily Zones from Jay Bryan’s member chart reviews">
-          <div class="chart-heading">
-            <div>
-              <span id="hero-symbol">DXY</span> <span class="muted" id="hero-timeframe">Daily</span>
-              <small id="hero-regime">From Jay’s member chart review</small>
-            </div>
-            <div class="market-pulse">
-              <span>Choose a market</span>
-              <div class="segmented" role="tablist" aria-label="Member chart market">
-                <button class="is-active" type="button" role="tab" aria-selected="true" id="hero-tab-dxy" aria-controls="hero-chart-panel" tabindex="0" data-hero-market="DXY">DXY</button>
-                <button type="button" role="tab" aria-selected="false" id="hero-tab-nas100" aria-controls="hero-chart-panel" tabindex="-1" data-hero-market="NAS100">NAS100</button>
-                <button type="button" role="tab" aria-selected="false" id="hero-tab-gold" aria-controls="hero-chart-panel" tabindex="-1" data-hero-market="GOLD">Gold</button>
-                <button type="button" role="tab" aria-selected="false" id="hero-tab-usdjpy" aria-controls="hero-chart-panel" tabindex="-1" data-hero-market="USDJPY">USDJPY</button>
-              </div>
-            </div>
-          </div>
-
-          <figure class="published-chart" id="hero-chart-panel" role="tabpanel" aria-labelledby="hero-tab-dxy">
-            <a class="published-chart-link" id="hero-chart-open" href="assets/member-charts/dxy-2026-10-18.webp" target="_blank" rel="noopener" aria-label="Open DXY daily chart from 18 October 2026 at full size (opens in a new tab)">
-              <img class="published-chart-image" id="hero-chart-image" src="assets/member-charts/dxy-2026-10-18.webp" alt="Jay Bryan’s DXY daily chart review from 18 October 2026, with original candles and five marked Daily Zones. Historical snapshot." width="2048" height="1484" />
-              <span class="published-chart-action">Open full chart <span aria-hidden="true">↗</span></span>
-            </a>
-            <figcaption><span id="hero-chart-caption" aria-live="polite">DXY · Daily · 18 October 2026</span><span>Published member chart · Not live data.</span></figcaption>
-          </figure>
-
-
-          <div class="mobile-swipe-nav" aria-label="Market chart navigation"><span>Swipe to explore</span><button type="button" id="hero-market-prev" aria-label="Previous market chart">←</button><b id="hero-market-count" aria-live="polite">01 / 04</b><button type="button" id="hero-market-next" aria-label="Next market chart">→</button></div>
-          <dl class="home-zone-key">
-            <div><dt>Daily Zones</dt><dd>The marked price areas in this review.</dd></div>
-            <div><dt>Candles</dt><dd id="hero-candle-description">One day per candle in this chart.</dd></div>
-            <div><dt>Snapshot price</dt><dd>The quote recorded at the time of capture.</dd></div>
-          </dl>
-          <div class="status-chips" aria-label="Published chart information">
-            <span><b id="hero-status-regime">U.S. dollar index</b></span>
-            <span id="hero-status-timeframe">Daily</span>
-            <span>Historical snapshot · Not live data</span>
-          </div>
-        </div>
       </section>
 
       <section class="operating-system section-dark" id="daily-zones" aria-labelledby="framework-title">
         <div class="section-heading-inline method-heading">
           <div>
-            <p class="eyebrow">What are Daily Zones?</p>
-            <h2 id="framework-title">Here’s the Daily Zone Command™ method.</h2>
+            <h2 id="framework-title">What are Daily Zones?</h2>
+            <p class="method-lead">Here’s the Daily Zone Command™ method.</p>
             <p class="method-subtitle" id="framework">From a marked zone to a trading plan.</p>
             <p class="method-description">A zone marks a price area, rather than one exact price. It gives you a place to watch as you build a plan.</p>
           </div>
@@ -215,6 +177,47 @@
               <span><b id="stage-current">01</b> / 05</span>
               <button type="button" id="stage-next" aria-label="Next planning step">→</button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="member-review section-dark" id="member-chart-review" aria-labelledby="hero-regime">
+        <div class="hero-market reveal" aria-label="Daily Zones from Jay Bryan’s member chart reviews">
+          <div class="chart-heading">
+            <div>
+              <span id="hero-symbol">DXY</span> <span class="muted" id="hero-timeframe">Daily</span>
+              <small id="hero-regime">From Jay’s member chart review</small>
+            </div>
+            <div class="market-pulse">
+              <span>Choose a market</span>
+              <div class="segmented" role="tablist" aria-label="Member chart market">
+                <button class="is-active" type="button" role="tab" aria-selected="true" id="hero-tab-dxy" aria-controls="hero-chart-panel" tabindex="0" data-hero-market="DXY">DXY</button>
+                <button type="button" role="tab" aria-selected="false" id="hero-tab-nas100" aria-controls="hero-chart-panel" tabindex="-1" data-hero-market="NAS100">NAS100</button>
+                <button type="button" role="tab" aria-selected="false" id="hero-tab-gold" aria-controls="hero-chart-panel" tabindex="-1" data-hero-market="GOLD">Gold</button>
+                <button type="button" role="tab" aria-selected="false" id="hero-tab-usdjpy" aria-controls="hero-chart-panel" tabindex="-1" data-hero-market="USDJPY">USDJPY</button>
+              </div>
+            </div>
+          </div>
+
+          <figure class="published-chart" id="hero-chart-panel" role="tabpanel" aria-labelledby="hero-tab-dxy">
+            <a class="published-chart-link" id="hero-chart-open" href="assets/member-charts/dxy-2026-10-18.webp" target="_blank" rel="noopener" aria-label="Open DXY daily chart from 18 October 2026 at full size (opens in a new tab)">
+              <img class="published-chart-image" id="hero-chart-image" src="assets/member-charts/dxy-2026-10-18.webp" alt="Jay Bryan’s DXY daily chart review from 18 October 2026, with original candles and five marked Daily Zones. Historical snapshot." width="2048" height="1484" />
+              <span class="published-chart-action">Open full chart <span aria-hidden="true">↗</span></span>
+            </a>
+            <figcaption><span id="hero-chart-caption" aria-live="polite">DXY · Daily · 18 October 2026</span><span>Published member chart · Not live data.</span></figcaption>
+          </figure>
+
+
+          <div class="mobile-swipe-nav" aria-label="Market chart navigation"><span>Swipe to explore</span><button type="button" id="hero-market-prev" aria-label="Previous market chart">←</button><b id="hero-market-count" aria-live="polite">01 / 04</b><button type="button" id="hero-market-next" aria-label="Next market chart">→</button></div>
+          <dl class="home-zone-key">
+            <div><dt>Daily Zones</dt><dd>The marked price areas in this review.</dd></div>
+            <div><dt>Candles</dt><dd id="hero-candle-description">One day per candle in this chart.</dd></div>
+            <div><dt>Snapshot price</dt><dd>The quote recorded at the time of capture.</dd></div>
+          </dl>
+          <div class="status-chips" aria-label="Published chart information">
+            <span><b id="hero-status-regime">U.S. dollar index</b></span>
+            <span id="hero-status-timeframe">Daily</span>
+            <span>Historical snapshot · Not live data</span>
           </div>
         </div>
       </section>
