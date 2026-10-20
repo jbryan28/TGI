@@ -14,8 +14,8 @@
     <meta property="og:description" content="Learn where to pay attention on the daily chart and how to plan your risk. Free weekly market updates from Jay Bryan." />
     <link rel="preload" href="assets/jay-bryan-founder.webp" as="image" type="image/webp" />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="home.css?v=20261020-membercharts" />
-    <script defer src="app.js?v=20261020-membercharts"></script>
+    <link rel="stylesheet" href="home.css?v=20261020-stagecharts" />
+    <script defer src="app.js?v=20261020-stagecharts"></script>
   </head>
   <body class="home-daily-zones">
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -172,31 +172,96 @@
         </div>
 
         <div class="stage-tabs" role="tablist" aria-label="Daily Zones planning steps">
-          <button class="is-active" role="tab" type="button" aria-selected="true" aria-controls="stage-panel" data-stage="0"><span>01</span>Start with the daily chart</button>
-          <button role="tab" type="button" aria-selected="false" aria-controls="stage-panel" data-stage="1"><span>02</span>Mark Daily Zones</button>
-          <button role="tab" type="button" aria-selected="false" aria-controls="stage-panel" data-stage="2"><span>03</span>Watch the reaction</button>
-          <button role="tab" type="button" aria-selected="false" aria-controls="stage-panel" data-stage="3"><span>04</span>Set your risk</button>
-          <button role="tab" type="button" aria-selected="false" aria-controls="stage-panel" data-stage="4"><span>05</span>Review your decision</button>
+          <button class="is-active" id="stage-tab-0" role="tab" type="button" aria-selected="true" aria-controls="stage-panel" tabindex="0" data-stage="0"><span>01</span>Start with the daily chart</button>
+          <button id="stage-tab-1" role="tab" type="button" aria-selected="false" aria-controls="stage-panel" tabindex="-1" data-stage="1"><span>02</span>Mark Daily Zones</button>
+          <button id="stage-tab-2" role="tab" type="button" aria-selected="false" aria-controls="stage-panel" tabindex="-1" data-stage="2"><span>03</span>Watch the reaction</button>
+          <button id="stage-tab-3" role="tab" type="button" aria-selected="false" aria-controls="stage-panel" tabindex="-1" data-stage="3"><span>04</span>Set your risk</button>
+          <button id="stage-tab-4" role="tab" type="button" aria-selected="false" aria-controls="stage-panel" tabindex="-1" data-stage="4"><span>05</span>Review your decision</button>
         </div>
 
-        <div class="stage-panel" id="stage-panel" role="tabpanel" tabindex="0">
-          <div class="stage-chart-wrap">
-            <div class="mini-chart-title"><span id="stage-symbol">DXY DAILY</span><small id="stage-chart-label">A wider view of price</small></div>
-            <svg class="stage-chart" viewBox="0 0 720 330" role="img" aria-label="Example chart for the Daily Zones planning steps">
-              <g class="chart-grid">
-                <path d="M30 55H690M30 115H690M30 175H690M30 235H690M30 295H690" />
-                <path d="M105 25V305M225 25V305M345 25V305M465 25V305M585 25V305" />
+        <div class="stage-panel" id="stage-panel" role="tabpanel" aria-labelledby="stage-tab-0" tabindex="0">
+          <figure class="stage-chart-wrap">
+            <div class="lesson-chart-heading"><span>Daily chart</span><small>One setup · Five steps</small></div>
+            <svg class="stage-diagram" id="stage-diagram" data-step="0" viewBox="0 0 520 370" role="img" aria-labelledby="stage-chart-title" aria-describedby="stage-chart-desc">
+              <title id="stage-chart-title">Start with the daily chart</title>
+              <desc id="stage-chart-desc">Teaching chart. Sixteen daily candles show price rising, falling, and returning to an earlier low. Each candle represents one day. No real market prices or trade results are shown.</desc>
+              <g class="lesson-grid" aria-hidden="true"><path d="M24 64H496M24 124H496M24 184H496M24 244H496M24 304H496M64 54V316M160 54V316M256 54V316M352 54V316M448 54V316" /></g>
+              <g class="lesson-zones" aria-hidden="true">
+                <rect class="lesson-supply" x="24" y="64" width="472" height="52" rx="3" />
+                <rect class="lesson-demand" x="24" y="250" width="472" height="34" rx="3" />
               </g>
-              <path id="stage-area" class="chart-area" d="M35 245L75 210L115 220L155 160L195 190L235 120L275 145L315 105L355 165L395 185L435 215L475 190L515 235L555 230L595 255L635 220L680 225L680 305L35 305Z" />
-              <path id="stage-line" class="chart-line" d="M35 245L75 210L115 220L155 160L195 190L235 120L275 145L315 105L355 165L395 185L435 215L475 190L515 235L555 230L595 255L635 220L680 225" />
-              <g class="volume-bars" aria-hidden="true">
-                <path d="M40 305V282M62 305V290M84 305V274M106 305V294M128 305V270M150 305V286M172 305V262M194 305V278M216 305V246M238 305V270M260 305V254M282 305V282M304 305V265M326 305V288M348 305V272M370 305V290M392 305V260M414 305V282M436 305V268M458 305V292M480 305V274M502 305V250M524 305V280M546 305V288M568 305V270M590 305V260M612 305V282M634 305V274M656 305V254M678 305V267" />
+              <g class="lesson-risk-area" aria-hidden="true"><rect x="400" y="232" width="96" height="70" /><path d="M504 232V302M499 232H509M499 302H509" /></g>
+              <g class="lesson-candles" aria-hidden="true">
+                <g class="lesson-candle lesson-up"><path d="M40 215V266" /><rect x="34" y="230" width="12" height="20" rx="1" /></g>
+                <g class="lesson-candle lesson-up"><path d="M64 184V245" /><rect x="58" y="198" width="12" height="34" rx="1" /></g>
+                <g class="lesson-candle lesson-up"><path d="M88 143V211" /><rect x="82" y="153" width="12" height="47" rx="1" /></g>
+                <g class="lesson-candle lesson-up"><path d="M112 99V170" /><rect x="106" y="112" width="12" height="43" rx="1" /></g>
+                <g class="lesson-candle lesson-up"><path d="M136 69V126" /><rect x="130" y="83" width="12" height="31" rx="1" /></g>
+                <g class="lesson-candle lesson-down"><path d="M160 75V151" /><rect x="154" y="84" width="12" height="55" rx="1" /></g>
+                <g class="lesson-candle lesson-down"><path d="M184 127V195" /><rect x="178" y="138" width="12" height="44" rx="1" /></g>
+                <g class="lesson-candle lesson-down"><path d="M208 169V230" /><rect x="202" y="181" width="12" height="38" rx="1" /></g>
+                <g class="lesson-candle lesson-down"><path d="M232 211V271" /><rect x="226" y="218" width="12" height="34" rx="1" /></g>
+                <g class="lesson-candle lesson-up"><path d="M256 219V274" /><rect x="250" y="226" width="12" height="25" rx="1" /></g>
+                <g class="lesson-candle lesson-up"><path d="M280 183V235" /><rect x="274" y="192" width="12" height="35" rx="1" /></g>
+                <g class="lesson-candle lesson-up"><path d="M304 161V203" /><rect x="298" y="172" width="12" height="19" rx="1" /></g>
+                <g class="lesson-candle lesson-down"><path d="M328 166V221" /><rect x="322" y="174" width="12" height="36" rx="1" /></g>
+                <g class="lesson-candle lesson-down"><path d="M352 204V260" /><rect x="346" y="211" width="12" height="31" rx="1" /></g>
+                <g class="lesson-candle lesson-down"><path d="M376 235V282" /><rect x="370" y="242" width="12" height="18" rx="1" /></g>
+                <g class="lesson-candle lesson-up"><path d="M400 224V279" /><rect x="394" y="232" width="12" height="29" rx="1" /></g>
+              </g>
+              <g class="lesson-future" aria-hidden="true">
+                <g class="lesson-candle lesson-up"><path d="M424 208V246" /><rect x="418" y="216" width="12" height="17" rx="1" /></g>
+                <g class="lesson-candle lesson-down"><path d="M448 211V262" /><rect x="442" y="216" width="12" height="34" rx="1" /></g>
+                <g class="lesson-candle lesson-down"><path d="M472 244V306" /><rect x="466" y="250" width="12" height="36" rx="1" /></g>
+              </g>
+              <g class="lesson-context" aria-hidden="true">
+                <text x="24" y="32">One candle = one day</text>
+                <path class="lesson-guide" d="M358 38H400V212" />
+                <circle class="lesson-focus" cx="400" cy="251" r="34" />
+                <text class="lesson-muted-label" x="24" y="352">Earlier days → Later days</text>
+              </g>
+              <g class="lesson-zone-labels" aria-hidden="true">
+                <text class="lesson-gold-label" x="24" y="32">Daily Supply</text>
+                <text class="lesson-green-label" x="24" y="352">Daily Demand</text>
+                <path class="lesson-guide" d="M120 318V291" />
+              </g>
+              <g class="lesson-reaction" aria-hidden="true">
+                <text x="24" y="32">Wait for price to return</text>
+                <path class="lesson-guide" d="M374 80V221" />
+                <path class="lesson-arrow" d="M367 212L374 221L381 212" />
+                <circle class="lesson-focus" cx="400" cy="251" r="34" />
+                <path class="lesson-guide" d="M416 154H448V213L419 233" />
+                <text class="lesson-green-label" x="268" y="142">Watch the close</text>
+                <text class="lesson-green-label" x="24" y="352">Daily Demand</text>
+                <path class="lesson-guide" d="M120 318V291" />
+              </g>
+              <g class="lesson-risk" aria-hidden="true">
+                <path class="lesson-entry-line" d="M400 232H496" />
+                <path class="lesson-stop-line" d="M24 302H496" />
+                <circle class="lesson-entry-point" cx="400" cy="232" r="5" />
+                <text class="lesson-green-label" x="494" y="216" text-anchor="end">Entry</text>
+                <text class="lesson-loss-label" x="494" y="340" text-anchor="end">Stop-loss</text>
+              </g>
+              <g class="lesson-risk-heading" aria-hidden="true">
+                <text x="24" y="32">Plan the loss before entry</text>
+                <text class="lesson-green-label lesson-small-label" x="24" y="277">Daily Demand</text>
+              </g>
+              <g class="lesson-review" aria-hidden="true">
+                <text x="24" y="32">Outcome: stop reached</text>
+                <circle class="lesson-stop-hit" cx="472" cy="302" r="13" />
+                <path class="lesson-stop-cross" d="M466 296L478 308M478 296L466 308" />
+                <text class="lesson-muted-label" x="24" y="340">Review the process</text>
               </g>
             </svg>
-          </div>
+            <figcaption class="lesson-caption">
+              <strong id="stage-caption-title">Read the bigger picture.</strong>
+              <span id="stage-caption">Follow the daily candles to see where price rose, fell, and turned.</span>
+            </figcaption>
+            <p class="lesson-example-note">Teaching chart · Simplified prices, not live data.</p>
+          </figure>
           <div class="stage-copy">
             <p class="eyebrow" id="stage-kicker">Stage 01</p>
-            <h3 id="stage-title">Start with the daily chart</h3>
+            <h3 id="stage-title" aria-live="polite">Start with the daily chart</h3>
             <ul id="stage-points">
               <li>Each candle shows one day of price movement.</li>
               <li>Look for areas where price moved strongly.</li>

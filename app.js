@@ -65,14 +65,6 @@
     revealItems.forEach((item) => item.classList.add("is-visible"));
   }
 
-  const chartAreaPath = (linePath, bottom = 350) => {
-    const points = [...linePath.matchAll(/(?:M|L)(\d+)[ ,](\d+)/g)];
-    if (!points.length) return linePath;
-    const firstX = points[0][1];
-    const lastX = points.at(-1)[1];
-    return `${linePath}L${lastX} ${bottom}L${firstX} ${bottom}Z`;
-  };
-
   const activateTabs = (buttons, activeButton) => {
     buttons.forEach((button) => {
       const isActive = button === activeButton;
@@ -152,44 +144,44 @@
 
   const operatingStages = [
     {
-      symbol: "DXY DAILY",
       kicker: "Stage 01",
       title: "Start with the daily chart",
-      chartLabel: "A wider view of price",
+      captionTitle: "Read the bigger picture.",
+      caption: "Follow the daily candles to see where price rose, fell, and turned.",
+      description: "Sixteen daily candles show price rising, falling, and returning to an earlier low. Each candle represents one day.",
       points: ["Each candle shows one day of price movement.", "Look for areas where price moved strongly.", "Mark the areas you want to study."],
-      path: "M35 245L75 210L115 220L155 160L195 190L235 120L275 145L315 105L355 165L395 185L435 215L475 190L515 235L555 230L595 255L635 220L680 225",
     },
     {
-      symbol: "USDJPY DAILY",
       kicker: "Stage 02",
       title: "Mark Daily Zones",
-      chartLabel: "Find areas of past buying and selling",
+      captionTitle: "Mark areas, not exact prices.",
+      caption: "Gold marks Daily Supply, where price fell away. Green marks Daily Demand, where price rose away.",
+      description: "The same daily candles now have a gold Daily Supply area around an earlier high and a green Daily Demand area around an earlier low. Both zones cover an area rather than a single price.",
       points: ["Mark areas where buyers or sellers pushed price away.", "Treat each zone as an area, not one exact price.", "Watch what happens when price returns."],
-      path: "M35 190L75 178L115 205L155 185L195 202L235 182L275 206L315 186L355 208L395 188L435 205L475 180L515 198L555 175L595 194L635 170L680 182",
     },
     {
-      symbol: "GOLD 4H",
       kicker: "Stage 03",
       title: "Watch how price reacts",
-      chartLabel: "A zone is a place to watch",
+      captionTitle: "A touch is a reason to watch.",
+      caption: "Price returns to Daily Demand. The highlighted candle closes back above the zone; check the conditions in your plan before acting.",
+      description: "Price returns to the green Daily Demand area. An arrow marks the return and a circle highlights the next candle closing back above the zone. This reaction alone does not guarantee a valid entry or a winning trade.",
       points: ["Wait for price to reach an area you marked.", "Look for the entry conditions in your plan.", "A zone alone is not a reason to enter a trade."],
-      path: "M35 255L75 238L115 247L155 225L195 242L235 215L275 230L315 208L355 225L395 198L435 204L475 174L515 190L555 128L595 145L635 88L680 104",
     },
     {
-      symbol: "NAS100 1H",
       kicker: "Stage 04",
       title: "Plan your risk before entering",
-      chartLabel: "Know your planned exit if the idea is wrong",
+      captionTitle: "Know the risk before the trade.",
+      caption: "The shaded gap between the planned entry and stop-loss shows the price risk. Trade size sets the money at risk. Stops may fill beyond the planned price.",
+      description: "A planned entry is marked above Daily Demand. A stop-loss is marked below the zone, with the distance between entry and stop shaded to show planned price risk. Trade size determines the money at risk; the stop price is not a guaranteed fill.",
       points: ["Decide what would make your trade idea wrong.", "Use a stop-loss to plan your exit if price goes against you.", "Choose a trade size that fits your loss limit."],
-      path: "M35 250L75 230L115 240L155 205L195 218L235 184L275 198L315 160L355 174L395 138L435 152L475 118L515 132L555 102L595 120L635 92L680 110",
     },
     {
-      symbol: "USDJPY DAILY",
       kicker: "Stage 05",
       title: "Review your trading decision",
-      chartLabel: "Learn from the decision",
+      captionTitle: "Judge the process as well as the result.",
+      caption: "Three more candles reveal a losing outcome: price reaches the stop. Review whether you followed the plan, then choose one thing to practice.",
+      description: "Three later daily candles are revealed. Price first rises, then falls through Daily Demand and reaches the planned stop-loss. A cross marks the stop being reached. The review checks the process even though the outcome was a loss.",
       points: ["Compare what happened with your original plan.", "Record whether you followed your rules.", "Choose one thing to practice next."],
-      path: "M35 268L75 240L115 252L155 215L195 226L235 180L275 195L315 145L355 160L395 105L435 128L475 82L515 98L555 68L595 112L635 140L680 128",
     },
   ];
 
@@ -203,23 +195,45 @@
     const activeButton = stageButtons[activeStage];
 
     activateTabs(stageButtons, activeButton);
-    $("#stage-symbol").textContent = stage.symbol;
+    stageButtons.forEach(button => { button.tabIndex = button === activeButton ? 0 : -1; });
+    stagePanel.setAttribute("aria-labelledby", activeButton.id);
     $("#stage-kicker").textContent = stage.kicker;
     $("#stage-title").textContent = stage.title;
-    $("#stage-chart-label").textContent = stage.chartLabel;
+    $("#stage-diagram").dataset.step = String(activeStage);
+    $("#stage-chart-title").textContent = stage.title;
+    $("#stage-chart-desc").textContent = `Teaching chart. ${stage.description} No real market prices or trade results are shown.`;
+    $("#stage-caption-title").textContent = stage.captionTitle;
+    $("#stage-caption").textContent = stage.caption;
     $("#stage-current").textContent = String(activeStage + 1).padStart(2, "0");
-    $("#stage-line").setAttribute("d", stage.path);
-    $("#stage-area").setAttribute("d", chartAreaPath(stage.path, 305));
     $("#stage-points").innerHTML = stage.points.map((point) => `<li>${point}</li>`).join("");
+
+    // Reveal the selected step inside the horizontal tab strip without moving the page.
+    const strip = activeButton.parentElement;
+    const tabRect = activeButton.getBoundingClientRect();
+    const stripRect = strip.getBoundingClientRect();
+    if (tabRect.left < stripRect.left) strip.scrollLeft += tabRect.left - stripRect.left;
+    if (tabRect.right > stripRect.right) strip.scrollLeft += tabRect.right - stripRect.right;
 
     stagePanel.classList.remove("is-changing");
     requestAnimationFrame(() => stagePanel.classList.add("is-changing"));
     if (focusTab) activeButton.focus();
   };
 
-  stageButtons.forEach((button) => button.addEventListener("click", () => renderStage(Number(button.dataset.stage))));
-  $("#stage-prev")?.addEventListener("click", () => renderStage(activeStage - 1, true));
-  $("#stage-next")?.addEventListener("click", () => renderStage(activeStage + 1, true));
+  stageButtons.forEach((button, index) => {
+    button.addEventListener("click", () => renderStage(index));
+    button.addEventListener("keydown", (event) => {
+      let next;
+      if (event.key === "ArrowRight") next = index + 1;
+      if (event.key === "ArrowLeft") next = index - 1;
+      if (event.key === "Home") next = 0;
+      if (event.key === "End") next = stageButtons.length - 1;
+      if (next === undefined) return;
+      event.preventDefault();
+      renderStage(next, true);
+    });
+  });
+  $("#stage-prev")?.addEventListener("click", () => renderStage(activeStage - 1));
+  $("#stage-next")?.addEventListener("click", () => renderStage(activeStage + 1));
 
   bindPublishedCharts("[data-instrument]", "instrument", "briefing");
 

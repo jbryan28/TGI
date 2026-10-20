@@ -557,7 +557,90 @@ test('homepage introduction remains readable without JavaScript',async({browser}
  const page=await context.newPage();await page.goto('http://127.0.0.1:4173/');
  await expect(page.locator('h1')).toBeVisible();await expect(page.locator('.hero-copy')).toHaveCSS('opacity','1');
  await expect(page.locator('.home-zone-key')).toBeVisible();await expect(page.locator('.hero-actions .button')).toHaveAttribute('href','newsletter/');
+ await expect(page.locator('#stage-diagram')).toHaveAccessibleName('Start with the daily chart');
+ await expect(page.locator('#stage-diagram .lesson-context')).toBeVisible();
+ await expect(page.locator('#stage-caption')).toContainText('daily candles');
  await context.close();
+});
+
+test('five Daily Zones steps explain one setup with accessible charts', async ({ page }, testInfo) => {
+  const errors = captureErrors(page);
+  const lessons = [
+    { title: 'Start with the daily chart', label: 'One candle = one day', caption: 'daily candles', layer: '.lesson-context' },
+    { title: 'Mark Daily Zones', label: 'Daily Supply', caption: 'Daily Demand', layer: '.lesson-zone-labels' },
+    { title: 'Watch how price reacts', label: 'Watch the close', caption: 'conditions in your plan', layer: '.lesson-reaction' },
+    { title: 'Plan your risk before entering', label: 'Plan the loss before entry', caption: 'Stops may fill beyond', layer: '.lesson-risk-heading' },
+    { title: 'Review your trading decision', label: 'Outcome: stop reached', caption: 'losing outcome', layer: '.lesson-review' },
+  ];
+  for (const width of [1440, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/#framework');
+    const originalCandles = await page.locator('.lesson-candles').innerHTML();
+    for (const [index, lesson] of lessons.entries()) {
+      const tab = page.locator(`[data-stage="${index}"]`);
+      await tab.click();
+      await expect(tab).toHaveAttribute('aria-selected', 'true');
+      await expect(tab).toHaveAttribute('tabindex', '0');
+      await expect(page.locator('[data-stage][aria-selected="true"]')).toHaveCount(1);
+      await expect(page.locator('#stage-panel')).toHaveAttribute('aria-labelledby', `stage-tab-${index}`);
+      await expect(page.locator('#stage-title')).toHaveText(lesson.title);
+      await expect(page.locator('#stage-diagram')).toHaveAccessibleName(lesson.title);
+      await expect(page.locator('#stage-diagram')).toHaveAccessibleDescription(/Teaching chart.*No real market prices/);
+      await expect(page.locator('#stage-diagram').getByText(lesson.label, { exact: true })).toBeVisible();
+      await expect(page.locator(lesson.layer)).toBeVisible();
+      await expect(page.locator('#stage-caption')).toContainText(lesson.caption);
+      await expect(page.locator('.lesson-example-note')).toContainText('not live data');
+      expect(await page.locator('.lesson-candles').innerHTML()).toBe(originalCandles);
+      if (index < 4) await expect(page.locator('.lesson-future')).toBeHidden();
+      else await expect(page.locator('.lesson-future')).toBeVisible();
+      if (index >= 3) {
+        await expect(page.locator('.lesson-entry-line')).toBeVisible();
+        await expect(page.locator('.lesson-stop-line')).toBeVisible();
+      }
+      const layout = await page.locator('#stage-diagram').evaluate((svg) => {
+        const bounds = svg.getBoundingClientRect();
+        const visibleLabels = [...svg.querySelectorAll('text')].filter(label => label.getBoundingClientRect().width > 0);
+        return {
+          fits: bounds.left >= 0 && bounds.right <= innerWidth + 1 && document.documentElement.scrollWidth <= innerWidth + 1,
+          smallestLabel: Math.min(...visibleLabels.map(label => parseFloat(getComputedStyle(label).fontSize) * bounds.width / svg.viewBox.baseVal.width)),
+          labelsFit: visibleLabels.every(label => { const box = label.getBBox(); return box.x >= 0 && box.x + box.width <= 520; }),
+        };
+      });
+      expect(layout.fits).toBe(true);
+      expect(layout.smallestLabel).toBeGreaterThanOrEqual(13);
+      expect(layout.labelsFit).toBe(true);
+      if (width !== 320) {
+        await page.locator('.stage-chart-wrap').screenshot({ path: testInfo.outputPath(`lesson-${width}-${index + 1}.png`), animations: 'disabled' });
+      }
+    }
+    const lastTab = page.locator('[data-stage="4"]');
+    await lastTab.focus();
+    await page.keyboard.press('Home');
+    await expect(page.locator('[data-stage="0"]')).toBeFocused();
+    await page.keyboard.press('ArrowLeft');
+    await expect(lastTab).toBeFocused();
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator('[data-stage="0"]')).toBeFocused();
+    await page.keyboard.press('End');
+    await expect(lastTab).toBeFocused();
+    expect(await lastTab.evaluate(tab => {
+      const box = tab.getBoundingClientRect();
+      const strip = tab.parentElement.getBoundingClientRect();
+      return box.left >= strip.left - 1 && box.right <= strip.right + 1;
+    })).toBe(true);
+    await page.locator('#stage-next').click();
+    await expect(page.locator('#stage-current')).toHaveText('01');
+    await page.locator('#stage-next').click();
+    await expect(page.locator('#stage-current')).toHaveText('02');
+    await page.locator('#stage-prev').click();
+    await expect(page.locator('#stage-current')).toHaveText('01');
+    await page.reload();
+    await expect(page.locator('#stage-title')).toHaveText(lessons[0].title);
+  }
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.locator('[data-stage="2"]').click();
+  await expect(page.locator('.stage-chart-wrap')).toHaveCSS('animation-name', 'none');
+  expect(errors).toEqual([]);
 });
 
 test('resource carousel shows the offers and reaches every card', async ({ page }, testInfo) => {

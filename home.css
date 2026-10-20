@@ -44,6 +44,60 @@
 .home-daily-zones .principle-card b {font-size:1rem}
 .home-daily-zones .stage-tabs button {font-size:.78rem;text-transform:none;letter-spacing:.01em;line-height:1.4}
 .home-daily-zones .stage-points,.home-daily-zones #stage-points {font-size:1rem;line-height:1.7}
+/* One continuous teaching setup: context, zones, reaction, risk, then review. */
+.home-daily-zones .stage-panel {min-height:0;grid-template-columns:minmax(0,1.2fr) minmax(320px,.9fr)}
+.home-daily-zones .stage-chart-wrap {min-height:0;margin:0;padding:clamp(1rem,2.5vw,2rem);display:flex;flex-direction:column;justify-content:center}
+.lesson-chart-heading {display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.4rem;color:var(--ivory);font-size:.95rem;font-weight:650}
+.lesson-chart-heading small {color:var(--muted);font-size:.78rem;font-weight:400}
+.stage-diagram {display:block;width:100%;height:auto;margin:1.2rem 0 .35rem;overflow:visible}
+.stage-diagram text {fill:#f2eee5;font:600 24px var(--sans);letter-spacing:0}
+.stage-diagram .lesson-muted-label {fill:#bdc3bd;font-size:22px;font-weight:400}
+.stage-diagram .lesson-small-label {font-size:22px}
+.lesson-grid path {fill:none;stroke:rgba(242,238,229,.07);stroke-width:1}
+.lesson-candle {color:#d5b162}
+.lesson-candle.lesson-up {color:#91c7ad}
+.lesson-candle path {fill:none;stroke:currentColor;stroke-width:2}
+.lesson-candle rect {fill:currentColor}
+.lesson-supply {fill:rgba(201,154,61,.12);stroke:#c99a3d;stroke-width:1}
+.lesson-demand {fill:rgba(54,122,88,.24);stroke:#91c7ad;stroke-width:1}
+.stage-diagram .lesson-gold-label {fill:#dfbb6b}
+.stage-diagram .lesson-green-label {fill:#a5d4bc}
+.stage-diagram .lesson-loss-label {fill:#edaaa0}
+.lesson-guide,.lesson-arrow {fill:none;stroke:#bdc3bd;stroke-width:1.5}
+.lesson-guide {stroke-dasharray:4 4}
+.lesson-focus {fill:rgba(145,199,173,.04);stroke:#b1ddc5;stroke-width:1.5}
+.lesson-risk-area rect {fill:rgba(178,79,67,.17)}
+.lesson-risk-area path {fill:none;stroke:#edaaa0;stroke-width:1.5}
+.lesson-entry-line {fill:none;stroke:#a5d4bc;stroke-width:2;stroke-dasharray:6 4}
+.lesson-stop-line {fill:none;stroke:#edaaa0;stroke-width:2;stroke-dasharray:6 4}
+.lesson-entry-point {fill:#a5d4bc;stroke:#0c100e;stroke-width:2}
+.lesson-stop-hit {fill:#0c100e;stroke:#edaaa0;stroke-width:2}
+.lesson-stop-cross {fill:none;stroke:#edaaa0;stroke-width:2}
+.lesson-zones,.lesson-risk-area,.lesson-future,.lesson-context,.lesson-zone-labels,.lesson-reaction,.lesson-risk,.lesson-risk-heading,.lesson-review {display:none}
+.stage-diagram[data-step="0"] .lesson-context,
+.stage-diagram:not([data-step="0"]) .lesson-zones,
+.stage-diagram[data-step="1"] .lesson-zone-labels,
+.stage-diagram[data-step="2"] .lesson-reaction,
+.stage-diagram[data-step="3"] .lesson-risk-area,
+.stage-diagram[data-step="3"] .lesson-risk,
+.stage-diagram[data-step="3"] .lesson-risk-heading,
+.stage-diagram[data-step="4"] .lesson-future,
+.stage-diagram[data-step="4"] .lesson-risk,
+.stage-diagram[data-step="4"] .lesson-review {display:block}
+.lesson-caption {display:grid;gap:.45rem;min-height:6.5em;font-size:.95rem;line-height:1.6;color:#c9cdca}
+.lesson-caption strong {color:var(--ivory);font-weight:650}
+.lesson-example-note {margin:.9rem 0 0;padding-top:.8rem;border-top:1px solid var(--line-dark);color:var(--muted);font-size:.75rem;line-height:1.6}
+.home-daily-zones .stage-copy {padding:clamp(1.5rem,3vw,3rem)}
+.home-daily-zones .stage-copy h3 {font-size:clamp(1.8rem,2.7vw,2.7rem)}
+.home-daily-zones .stage-controls button {width:44px;height:44px}
+.home-daily-zones .stage-tabs button:focus-visible,.home-daily-zones .stage-panel:focus-visible {outline:2px solid var(--gold-bright);outline-offset:-3px}
+@media(max-width:900px) {
+ .home-daily-zones .stage-panel {grid-template-columns:1fr}
+ .lesson-caption {min-height:0}
+}
+@media(prefers-reduced-motion:reduce) {
+ .home-daily-zones .stage-panel.is-changing .stage-chart-wrap,.home-daily-zones .stage-panel.is-changing .stage-copy {animation:none}
+}
 .home-daily-zones .path-card p > span {font-size:.9rem;line-height:1.6}
 .home-daily-zones .path-card p > b {line-height:1.3}
 .home-daily-zones .signal-stack p b {font-size:.9rem;line-height:1.5}
@@ -76,6 +130,9 @@
  .home-daily-zones .hero-market {max-width:840px;width:100%}
 }
 @media(max-width:620px) {
+ .home-daily-zones .stage-chart-wrap {padding:1rem .65rem}
+ .stage-diagram text {font-size:30px}
+ .stage-diagram .lesson-muted-label,.stage-diagram .lesson-small-label {font-size:28px}
  .home-daily-zones .hero {padding-top:calc(var(--header-height) + 2rem);padding-bottom:2.5rem;gap:2rem}
  .home-daily-zones .hero h1 {font-size:clamp(2.2rem,10.5vw,3.3rem);line-height:1.06;margin-bottom:1.25rem}
  .home-daily-zones .hero-summary {font-size:1rem;line-height:1.65;margin-bottom:1.4rem}
