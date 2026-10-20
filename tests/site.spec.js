@@ -581,6 +581,14 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     expect(labelContrast).toBeGreaterThanOrEqual(4.5);
     await page.locator('#desk-membership').scrollIntoViewIfNeeded();
     await expect.poll(() => page.locator('#desk-membership img').evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
+    const portalGif = page.locator('#home-desk-gif');
+    await portalGif.scrollIntoViewIfNeeded();
+    await expect(portalGif).toHaveAttribute('src', 'assets/tgi-forex-portal-walkthrough.gif?v=20261011-positions');
+    await expect.poll(() => portalGif.evaluate(img => img.complete && img.naturalWidth === 960 && img.naturalHeight === 660), {timeout:15000}).toBe(true);
+    await page.getByRole('button', {name:'Stop animation', exact:true}).click();
+    await expect(portalGif).toHaveAttribute('src', 'assets/tgi-forex-portal-walkthrough-poster.webp?v=20261011-positions');
+    await page.getByRole('button', {name:'Play animation', exact:true}).click();
+    await expect(portalGif).toHaveAttribute('src', 'assets/tgi-forex-portal-walkthrough.gif?v=20261011-positions');
     await expect(page.locator('#founder-title')).toHaveText('Why Jay started TGI.');
     await expect(page.locator('#founder-story')).toBeVisible();
     await expect(page.locator('#founder-story')).toContainText('Jay started TGI to explain his Daily Zones approach');
@@ -603,19 +611,31 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
   }
 });
 
-test('homepage introduction remains readable without JavaScript',async({browser})=>{
- const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:844}});
- const page=await context.newPage();await page.goto('http://127.0.0.1:4173/');
- await expect(page.locator('h1')).toBeVisible();await expect(page.locator('.hero-copy')).toHaveCSS('opacity','1');
- await expect(page.locator('.home-zone-key')).toBeVisible();await expect(page.locator('.hero-actions .button')).toHaveAttribute('href','newsletter/');
- await expect(page.locator('#stage-diagram')).toHaveAccessibleName('Start with the daily chart');
- await expect(page.locator('#stage-diagram .lesson-context')).toBeVisible();
- await expect(page.locator('#stage-caption')).toContainText('daily candles');
- await expect(page.locator('#founder-story')).toBeVisible();
- await expect(page.locator('#founder details, #founder summary')).toHaveCount(0);
- await expect(page.locator('#desk-membership .button')).toHaveAttribute('href','desk/');
- await expect(page.locator('#daily-zones [data-stage]')).toHaveCount(5);
- await context.close();
+test('homepage stays readable with reduced motion or JavaScript disabled',async({browser})=>{
+ for (const options of [{reducedMotion:'reduce'},{javaScriptEnabled:false}]) {
+  const context=await browser.newContext({...options,viewport:{width:390,height:844}});
+  try {
+   const page=await context.newPage();await page.goto('http://127.0.0.1:4173/');
+   await expect(page.locator('h1')).toBeVisible();await expect(page.locator('.hero-copy')).toHaveCSS('opacity','1');
+   await expect(page.locator('.home-zone-key')).toBeVisible();await expect(page.locator('.hero-actions .button')).toHaveAttribute('href','newsletter/');
+   await expect(page.locator('#stage-diagram')).toHaveAccessibleName('Start with the daily chart');
+   await expect(page.locator('#stage-diagram .lesson-context')).toBeVisible();
+   await expect(page.locator('#stage-caption')).toContainText('daily candles');
+   await expect(page.locator('#founder-story')).toBeVisible();
+   await expect(page.locator('#founder details, #founder summary')).toHaveCount(0);
+   await expect(page.locator('#desk-membership .button')).toHaveAttribute('href','desk/');
+   await expect(page.locator('#daily-zones [data-stage]')).toHaveCount(5);
+   const gif=page.locator('#home-desk-gif');await gif.scrollIntoViewIfNeeded();
+   await expect(gif).toHaveAttribute('src','assets/tgi-forex-portal-walkthrough-poster.webp?v=20261011-positions');
+   if(options.javaScriptEnabled===false) await expect(page.locator('[data-desk-gif-control]')).toBeHidden();
+   else {
+    await page.getByRole('button',{name:'Play animation',exact:true}).click();
+    await expect(gif).toHaveAttribute('src','assets/tgi-forex-portal-walkthrough.gif?v=20261011-positions');
+    await page.getByRole('button',{name:'Stop animation',exact:true}).click();
+    await expect(gif).toHaveAttribute('src','assets/tgi-forex-portal-walkthrough-poster.webp?v=20261011-positions');
+   }
+  } finally {await context.close();}
+ }
 });
 
 test('five Daily Zones steps explain one setup with accessible charts', async ({ page }, testInfo) => {
