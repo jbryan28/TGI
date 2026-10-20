@@ -73,6 +73,106 @@
     });
   };
 
+  const mobileLayout = window.matchMedia("(max-width: 620px)");
+  const bindMobileSwipe = (element, changeSlide, allowLinks = false) => {
+    if (!element) return;
+    element.classList.add("mobile-gesture");
+    document.body.classList.add("has-mobile-swipes");
+    let start = null;
+    let suppressClick = false;
+    element.addEventListener("pointerdown", (event) => {
+      suppressClick = false;
+      if (!mobileLayout.matches || event.pointerType !== "touch" || !event.isPrimary) {
+        start = null;
+        return;
+      }
+      const excluded = allowLinks ? "button,input,select,textarea" : "a,button,input,select,textarea";
+      if (event.target.closest(excluded)) { start = null; return; }
+      start = { x: event.clientX, y: event.clientY, id: event.pointerId };
+    }, { passive: true });
+    element.addEventListener("pointercancel", () => { start = null; });
+    element.addEventListener("pointerup", (event) => {
+      if (!start || event.pointerId !== start.id) return;
+      const dx = event.clientX - start.x;
+      const dy = event.clientY - start.y;
+      start = null;
+      if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      suppressClick = true;
+      changeSlide(dx < 0 ? 1 : -1);
+    }, { passive: true });
+    element.addEventListener("mousedown", (event) => {
+      // A touch swipe can emit a compatibility mouse event that refocuses the old link.
+      if (suppressClick) event.preventDefault();
+    }, true);
+    element.addEventListener("click", (event) => {
+      if (!suppressClick || event.detail === 0) return;
+      suppressClick = false;
+      event.preventDefault();
+      event.stopPropagation();
+    }, true);
+  };
+
+  // Native scrolling keeps card rails usable without JavaScript or swipe gestures.
+  const bindMobileCards = (prefix, onSelect) => {
+    const track = $(`#${prefix}-track`);
+    if (!track) return;
+    const cards = $$(".mobile-swipe-card", track);
+    const previous = $(`#${prefix}-prev`);
+    const next = $(`#${prefix}-next`);
+    const count = $(`#${prefix}-count`);
+    let index = 0;
+    document.body.classList.add("has-mobile-swipes");
+    const update = (value) => {
+      index = Math.max(0, Math.min(cards.length - 1, value));
+      count.textContent = `${String(index + 1).padStart(2, "0")} / ${String(cards.length).padStart(2, "0")}`;
+      previous.disabled = index === 0;
+      next.disabled = index === cards.length - 1;
+      onSelect?.(cards[index]);
+    };
+    const move = (value) => {
+      update(value);
+      if (mobileLayout.matches) track.scrollTo({ left: cards[index].offsetLeft - cards[0].offsetLeft, behavior: "instant" });
+    };
+    previous.addEventListener("click", () => move(index - 1));
+    next.addEventListener("click", () => move(index + 1));
+    let scheduled = false;
+    track.addEventListener("scroll", () => {
+      if (scheduled || !mobileLayout.matches) return;
+      scheduled = true;
+      requestAnimationFrame(() => {
+        scheduled = false;
+        let nearest = 0;
+        let distance = Infinity;
+        cards.forEach((card, i) => {
+          const gap = Math.abs(card.offsetLeft - cards[0].offsetLeft - track.scrollLeft);
+          if (gap < distance) { nearest = i; distance = gap; }
+        });
+        update(nearest);
+      });
+    }, { passive: true });
+    cards.forEach((card, i) => {
+      card.addEventListener("focus", () => move(i));
+      if (onSelect) card.addEventListener("click", () => move(i));
+    });
+    track.addEventListener("keydown", (event) => {
+      if (!mobileLayout.matches) return;
+      let value;
+      if (event.key === "ArrowRight") value = index + 1;
+      if (event.key === "ArrowLeft") value = index - 1;
+      if (event.key === "Home") value = 0;
+      if (event.key === "End") value = cards.length - 1;
+      if (value === undefined) return;
+      event.preventDefault();
+      move(value);
+      if (event.target !== track) cards[index].focus();
+    });
+    window.addEventListener("resize", () => {
+      if (mobileLayout.matches) move(index);
+      else track.scrollLeft = 0;
+    });
+    move(0);
+  };
+
   const publishedCharts = {
     DXY: { name: "U.S. dollar index", timeframe: "Daily", date: "18 October 2026", src: "assets/member-charts/dxy-2026-10-18.webp", height: 1484, description: "original candles and five marked Daily Zones" },
     NAS100: { name: "U.S. stock index", timeframe: "Daily", date: "18 October 2026", src: "assets/member-charts/nas100-2026-10-18.webp", height: 1484, description: "original candles and four marked Daily Zones" },
@@ -107,8 +207,7 @@
         $("#hero-status-regime").textContent = chart.name;
         $("#hero-status-timeframe").textContent = chart.timeframe;
         $("#hero-candle-description").textContent = chart.timeframe === "Daily" ? "One day per candle in this chart." : "Four hours per candle in this chart.";
-      } else {
-        $("#briefing-symbol").textContent = `${symbol} · ${chart.timeframe}`;
+        $("#hero-market-count").textContent = `${String(buttons.indexOf(button) + 1).padStart(2, "0")} / 04`;
       }
     };
     buttons.forEach((button, index) => {
@@ -126,21 +225,28 @@
       });
     });
     render(buttons.find(button => button.getAttribute("aria-selected") === "true") || buttons[0]);
+    const move = (direction) => {
+      const current = buttons.findIndex(button => button.getAttribute("aria-selected") === "true");
+      render(buttons[(current + direction + buttons.length) % buttons.length]);
+    };
+    $("#hero-market-prev")?.addEventListener("click", () => move(-1));
+    $("#hero-market-next")?.addEventListener("click", () => move(1));
+    bindMobileSwipe(panel, move, true);
   };
   bindPublishedCharts("[data-hero-market]", "heroMarket", "hero");
 
   const principleButtons = $$("[data-principle]");
   const principleExplainer = $("#authority-explainer");
-  principleButtons.forEach((button) => {
-    button.addEventListener("click", () => {
+  bindMobileCards("principles", (button) => {
       principleButtons.forEach((item) => {
         const isActive = item === button;
         item.classList.toggle("is-active", isActive);
         item.setAttribute("aria-pressed", String(isActive));
       });
       principleExplainer.textContent = button.dataset.principle;
-    });
   });
+  bindMobileCards("benefits");
+  bindMobileCards("paths");
 
   const operatingStages = [
     {
@@ -235,7 +341,7 @@
   $("#stage-prev")?.addEventListener("click", () => renderStage(activeStage - 1));
   $("#stage-next")?.addEventListener("click", () => renderStage(activeStage + 1));
 
-  bindPublishedCharts("[data-instrument]", "instrument", "briefing");
+  bindMobileSwipe(stagePanel, (direction) => renderStage(activeStage + direction));
 
   const cycleStages = [
     { max: 24, name: "Sideways price", detail: "Price stays in a range", description: "Price may stay within a small area while buyers and sellers trade." },
@@ -260,7 +366,16 @@
       const isActive = index === stageIndex;
       button.classList.toggle("is-active", isActive);
       button.setAttribute("aria-selected", String(isActive));
+      button.tabIndex = isActive ? 0 : -1;
     });
+    $("#cycle-chart").setAttribute("aria-labelledby", cycleButtons[stageIndex].id);
+    $("#cycle-count").textContent = `${String(stageIndex + 1).padStart(2, "0")} / 04`;
+    const activeTab = cycleButtons[stageIndex];
+    const strip = activeTab.parentElement;
+    const box = activeTab.getBoundingClientRect();
+    const bounds = strip.getBoundingClientRect();
+    if (box.left < bounds.left) strip.scrollLeft += box.left - bounds.left;
+    if (box.right > bounds.right) strip.scrollLeft += box.right - bounds.right;
   };
 
   cycleScrubber?.addEventListener("input", (event) => renderCycle(event.target.value));
@@ -270,7 +385,27 @@
       cycleScrubber.value = value;
       renderCycle(value);
     });
+    button.addEventListener("keydown", (event) => {
+      const current = cycleButtons.indexOf(button);
+      let next;
+      if (event.key === "ArrowRight") next = (current + 1) % cycleButtons.length;
+      if (event.key === "ArrowLeft") next = (current - 1 + cycleButtons.length) % cycleButtons.length;
+      if (event.key === "Home") next = 0;
+      if (event.key === "End") next = cycleButtons.length - 1;
+      if (next === undefined) return;
+      event.preventDefault();
+      cycleButtons[next].click();
+      cycleButtons[next].focus();
+    });
   });
+  const moveCycle = (direction) => {
+    const current = cycleButtons.findIndex(button => button.getAttribute("aria-selected") === "true");
+    cycleButtons[(current + direction + cycleButtons.length) % cycleButtons.length].click();
+  };
+  $("#cycle-prev")?.addEventListener("click", () => moveCycle(-1));
+  $("#cycle-next")?.addEventListener("click", () => moveCycle(1));
+  bindMobileSwipe($("#cycle-chart"), moveCycle);
+  if (cycleScrubber) renderCycle(cycleScrubber.value);
 
   const caseSlider = $("#case-slider");
   caseSlider?.addEventListener("input", (event) => {
@@ -313,5 +448,21 @@
   });
   renderResource();
   window.addEventListener("resize", renderResource);
+  bindMobileSwipe(resourceTrack?.parentElement, (direction) => {
+    activeResource = (activeResource + direction + resourceCards.length) % resourceCards.length;
+    renderResource();
+  }, true);
+  resourceTrack?.addEventListener("keydown", (event) => {
+    let next;
+    if (event.key === "ArrowRight") next = (activeResource + 1) % resourceCards.length;
+    if (event.key === "ArrowLeft") next = (activeResource - 1 + resourceCards.length) % resourceCards.length;
+    if (event.key === "Home") next = 0;
+    if (event.key === "End") next = resourceCards.length - 1;
+    if (next === undefined) return;
+    event.preventDefault();
+    activeResource = next;
+    renderResource();
+    resourceCards[next].focus();
+  });
 
 })();

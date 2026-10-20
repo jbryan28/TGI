@@ -19,19 +19,49 @@
 .home-price-label {fill:#f2eee5;font-family:var(--sans);font-size:14px}
 .home-daily-zones .market-chart {display:block;min-height:0;height:auto;margin:1rem 0}
 .home-daily-zones .market-pulse {width:300px;max-width:100%}
-.home-daily-zones .segmented,.home-daily-zones .instrument-tabs {display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
-.home-daily-zones .segmented button,.home-daily-zones .instrument-tabs button {min-width:0;min-height:44px;padding:.7rem .35rem;font-size:.7rem;letter-spacing:.02em}
+.home-daily-zones .segmented {display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.home-daily-zones .segmented button {min-width:0;min-height:44px;padding:.7rem .35rem;font-size:.7rem;letter-spacing:.02em}
 .home-daily-zones .published-chart {min-width:0;margin:1rem 0}
 .home-daily-zones .published-chart-link {display:block;color:var(--gold-bright)}
 .home-daily-zones .published-chart-link:focus-visible {outline:2px solid var(--gold);outline-offset:4px}
 .home-daily-zones .published-chart-image {display:block;width:100%;height:auto;background:#080f15;border:1px solid var(--line-dark)}
 .home-daily-zones .published-chart-action {display:block;padding:.7rem 0;min-height:44px;font-size:.85rem;font-weight:600}
 .home-daily-zones .published-chart figcaption {display:grid;gap:.2rem;color:var(--muted);font-size:.8rem;line-height:1.6}
-.home-daily-zones .briefing-dashboard {align-self:start}
-.home-daily-zones .briefing-dashboard .published-chart-link {color:#765019}
-.home-daily-zones .briefing-dashboard .published-chart figcaption {color:var(--muted-dark)}
-.home-daily-zones .dashboard-chart-title {margin:1rem 0 0;font-size:.78rem;letter-spacing:.03em;align-items:center;flex-wrap:wrap}
-.home-daily-zones .dashboard-chart-title span {font-size:.68rem}
+.home-daily-zones .briefing {display:block;padding-top:clamp(2.5rem,5vw,5rem);padding-bottom:clamp(2.5rem,5vw,5rem)}
+.home-daily-zones .briefing-intro {max-width:var(--max-width);margin:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);column-gap:3rem;align-items:start}
+.home-daily-zones .briefing-intro > .eyebrow,.home-daily-zones .briefing-intro > h2,.home-daily-zones .briefing-intro > a {grid-column:1}
+.home-daily-zones .briefing-intro > a {justify-self:start}
+.home-daily-zones .briefing-benefits {grid-column:2;grid-row:1/4;min-width:0}
+.home-daily-zones .briefing-intro h2 {margin-bottom:1.5rem}
+.home-daily-zones .signal-stack {margin-bottom:0}
+.principle-rail {min-width:0}
+.mobile-swipe-nav,.mobile-swipe-hint {display:none}
+.home-daily-zones .mobile-card-rail:focus-visible {outline:2px solid var(--gold);outline-offset:4px}
+@media(max-width:900px) {
+ .home-daily-zones .briefing-intro {display:block}
+ .home-daily-zones .briefing-benefits {margin-bottom:1.5rem}
+}
+@media(max-width:620px) {
+ .home-daily-zones .mobile-gesture {touch-action:pan-y pinch-zoom}
+ .home-daily-zones .mobile-card-rail {position:relative;display:flex;gap:.75rem;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:thin;padding:.25rem 0 .7rem;min-width:0;max-width:100%;align-items:stretch}
+ .home-daily-zones .mobile-card-rail > .mobile-swipe-card {flex:0 0 calc(100% - 1.5rem);min-width:0;scroll-snap-align:start;scroll-snap-stop:always}
+ .home-daily-zones .path-connector {display:none}
+ .home-daily-zones .path-card {padding:1.1rem;gap:.75rem;grid-template-columns:auto minmax(0,1fr) auto}
+ .home-daily-zones .path-card:hover,.home-daily-zones .path-card:focus-visible {transform:none}
+ .home-daily-zones .path-card .path-icon {width:38px;height:38px;font-size:1.5rem}
+ .home-daily-zones .signal-stack > div {min-height:100px}
+ .has-mobile-swipes .mobile-swipe-nav {display:grid;grid-template-columns:minmax(0,1fr) 44px auto 44px;align-items:center;gap:.4rem;max-width:var(--max-width);margin:.7rem auto 1rem;color:var(--muted)}
+ .mobile-swipe-nav > span {font-size:.75rem;line-height:1.4}
+ .mobile-swipe-nav > b {font-size:.75rem;font-weight:500;white-space:nowrap}
+ .mobile-swipe-nav button {min-width:44px;min-height:44px;padding:.3rem;border:1px solid var(--line-dark);background:transparent;color:var(--ivory);font-size:1.2rem;cursor:pointer}
+ .mobile-swipe-nav button:disabled {opacity:.3;cursor:default}
+ .mobile-swipe-nav button:focus-visible {outline:2px solid var(--gold-bright);outline-offset:2px}
+ .section-light .mobile-swipe-nav {color:var(--muted-dark)}
+ .section-light .mobile-swipe-nav button {color:var(--text-dark);border-color:var(--line-light)}
+ .mobile-swipe-hint {display:block;max-width:var(--max-width);margin:0 auto .75rem;color:var(--muted);font-size:.8rem;line-height:1.5}
+ .home-daily-zones .cycle-pills {display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.5rem;padding-bottom:.5rem}
+ .home-daily-zones .cycle-pills button {flex:0 0 150px;scroll-snap-align:start}
+}
 .home-zone-key {margin:0;padding-top:1rem;border-top:1px solid var(--line-dark);display:grid;gap:.65rem}
 .home-zone-key > div {display:grid;grid-template-columns:125px minmax(0,1fr);gap:.6rem;align-items:start}
 .home-zone-key dt {font-size:14px;font-weight:650}
