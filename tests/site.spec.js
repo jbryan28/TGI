@@ -47,9 +47,9 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   await page.locator('[data-stage="2"]').click();
   await expect(page.locator("#stage-title")).toHaveText("Watch how price reacts");
 
-  await page.locator('[data-instrument="USDJPY"]').click();
-  await expect(page.locator("#briefing-price")).toHaveText("Historical snapshot");
-  await expect(page.locator("#briefing-symbol")).toHaveText("USDJPY · 4H");
+  await page.locator('[data-hero-market="USDJPY"]').click();
+  await expect(page.locator("#hero-timeframe")).toHaveText("4H");
+  await expect(page.locator(".briefing-dashboard")).toHaveCount(0);
 
   await page.locator("#cycle-scrubber").evaluate((element) => {
     element.value = "92";
@@ -700,7 +700,7 @@ test('resource carousel shows the offers and reaches every card', async ({ page 
   }
 });
 
-test('both chart sections show the original dated member charts', async ({ page }, testInfo) => {
+test('homepage shows the original dated member charts without duplication', async ({ page }, testInfo) => {
   const charts = [
     ['DXY', 'dxy-2026-10-18.webp', 'Daily', '18 October 2026', 1484],
     ['NAS100', 'nas100-2026-10-18.webp', 'Daily', '18 October 2026', 1484],
@@ -710,7 +710,9 @@ test('both chart sections show the original dated member charts', async ({ page 
   for (const size of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(size);
     await page.goto('/');
-    for (const [prefix, attribute] of [['hero', 'data-hero-market'], ['briefing', 'data-instrument']]) {
+    await expect(page.locator('.briefing-dashboard')).toHaveCount(0);
+    await expect(page.locator('.published-chart')).toHaveCount(1);
+    for (const [prefix, attribute] of [['hero', 'data-hero-market']]) {
       const panel = page.locator(`#${prefix}-chart-panel`);
       for (const [symbol, file, timeframe, date, height] of charts) {
         const tab = page.locator(`[${attribute}="${symbol}"]`);
@@ -745,4 +747,97 @@ test('both chart sections show the original dated member charts', async ({ page 
       await expect(page.locator(`#${prefix}-chart-caption`)).toContainText('DXY · Daily');
     }
   }
+});
+
+test('mobile chart gestures and card rails keep navigation usable', async ({ page }, testInfo) => {
+  test.setTimeout(60000);
+  const errors = captureErrors(page);
+  const swipe = async (selector, dx, dy = 0, pointerType = 'touch') => {
+    const target = page.locator(selector);
+    await target.dispatchEvent('pointerdown', { pointerId: 7, pointerType, isPrimary: true, clientX: 220, clientY: 220 });
+    await target.dispatchEvent('pointerup', { pointerId: 7, pointerType, isPrimary: true, clientX: 220 + dx, clientY: 220 + dy });
+  };
+  for (const width of [390, 320]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto('/');
+    await expect(page.locator('.published-chart')).toHaveCount(1);
+    await expect(page.locator('[data-instrument]')).toHaveCount(0);
+    await expect(page.locator('#hero-market-count')).toHaveText('01 / 04');
+    await swipe('#hero-chart-panel', -120);
+    await expect(page.locator('#hero-symbol')).toHaveText('NAS100');
+    const clickAllowed = await page.locator('#hero-chart-open').evaluate(link => link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, detail: 1 })));
+    expect(clickAllowed).toBe(false);
+    for (const [dx, dy, kind] of [[10, 150, 'touch'], [20, 0, 'touch'], [-120, 0, 'mouse']]) {
+      await swipe('#hero-chart-panel', dx, dy, kind);
+      await expect(page.locator('#hero-symbol')).toHaveText('NAS100');
+    }
+    await page.locator('#hero-market-next').click();
+    await expect(page.locator('#hero-symbol')).toHaveText('GOLD');
+    await swipe('#hero-chart-panel', 120);
+    await expect(page.locator('#hero-symbol')).toHaveText('NAS100');
+    await expect(page.locator('#hero-chart-open')).toHaveAttribute('target', '_blank');
+    await expect(page.locator('#hero-market-count')).toHaveText('02 / 04');
+
+    await swipe('#stage-panel', -120);
+    await expect(page.locator('#stage-title')).toHaveText('Mark Daily Zones');
+    await swipe('#stage-panel', 10, 140);
+    await expect(page.locator('#stage-current')).toHaveText('02');
+    await swipe('#stage-panel', 120);
+    await expect(page.locator('#stage-current')).toHaveText('01');
+    await swipe('#cycle-chart', -120);
+    await expect(page.locator('#cycle-tooltip span')).toHaveText('Pullback');
+    await expect(page.locator('#cycle-count')).toHaveText('04 / 04');
+    await page.locator('#cycle-prev').click();
+    await expect(page.locator('#cycle-tooltip span')).toHaveText('Strong move');
+    await swipe('#cycle-scrubber', -120);
+    await expect(page.locator('#cycle-tooltip span')).toHaveText('Strong move');
+
+    await swipe('.resource-window', -120);
+    await expect(page.locator('#resources-count')).toHaveText('02 / 08');
+    await swipe('.resource-window', 120);
+    await expect(page.locator('#resources-count')).toHaveText('01 / 08');
+    await page.locator('.resource-card').first().focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator('.resource-card').nth(1)).toBeFocused();
+    await expect(page.locator('#resources-count')).toHaveText('02 / 08');
+
+    for (const prefix of ['principles', 'benefits', 'paths']) {
+      const track = page.locator(`#${prefix}-track`);
+      await expect.poll(() => track.evaluate(el => el.scrollWidth > el.clientWidth)).toBe(true);
+      await page.locator(`#${prefix}-next`).click();
+      await expect(page.locator(`#${prefix}-count`)).toHaveText('02 / 03');
+      await track.evaluate(el => el.scrollTo({ left: el.scrollWidth, behavior: 'instant' }));
+      await expect(page.locator(`#${prefix}-count`)).toHaveText('03 / 03');
+      await expect(page.locator(`#${prefix}-next`)).toBeDisabled();
+      const lastCardFits = await track.locator('.mobile-swipe-card').last().evaluate(card => {
+        const box = card.getBoundingClientRect(), viewport = card.parentElement.getBoundingClientRect();
+        return box.left >= viewport.left - 1 && box.right <= viewport.right + 1;
+      });
+      expect(lastCardFits).toBe(true);
+      if (prefix === 'principles') await expect(page.locator('#authority-explainer')).toContainText('A zone can fail');
+      await track.focus();
+      await page.keyboard.press('Home');
+      await expect(page.locator(`#${prefix}-count`)).toHaveText('01 / 03');
+      await page.keyboard.press('ArrowRight');
+      await expect(page.locator(`#${prefix}-count`)).toHaveText('02 / 03');
+      if (width === 390) {
+        const capture = prefix === 'principles' ? page.locator('.principle-rail') : prefix === 'benefits' ? page.locator('.briefing') : page.locator('.pathway');
+        await capture.screenshot({ path: testInfo.outputPath(`mobile-swipe-${prefix}.png`), animations: 'disabled' });
+      }
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await expect(page.locator('.hero-actions .button')).toHaveAttribute('href', 'newsletter/');
+    await page.reload();
+    await expect(page.locator('#hero-symbol')).toHaveText('DXY');
+    await expect(page.locator('#principles-count')).toHaveText('01 / 03');
+  }
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  await swipe('#hero-chart-panel', -120);
+  await expect(page.locator('#hero-symbol')).toHaveText('DXY');
+  await expect(page.locator('#hero-market-next')).toBeHidden();
+  await page.locator('[data-hero-market="GOLD"]').click();
+  await expect(page.locator('#hero-symbol')).toHaveText('GOLD');
+  await page.locator('.briefing').screenshot({ path: testInfo.outputPath('briefing-desktop-without-duplicate.png'), animations: 'disabled' });
+  expect(errors).toEqual([]);
 });
