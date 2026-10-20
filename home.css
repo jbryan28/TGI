@@ -39,6 +39,8 @@
 .home-daily-zones .case-copy > .home-example-note {font-size:.85rem}
 .home-daily-zones .case-copy > .text-link {color:#765019}
 .home-daily-zones .resource-card p > span {font-size:.85rem;line-height:1.5}
+.home-daily-zones .resource-book-cover {min-height:0;height:280px;background:radial-gradient(circle at 50% 65%,rgba(40,124,91,.18),transparent 65%),#0b0e0b}
+.home-daily-zones .resource-book-cover img {position:absolute;inset:1rem;display:block;width:calc(100% - 2rem);max-width:100%;height:calc(100% - 2rem);object-fit:contain;filter:drop-shadow(0 12px 16px rgba(0,0,0,.45))}
 .home-risk-note {max-width:1050px;margin:0 auto;padding:0 1.5rem 3rem;color:var(--muted);font-size:.85rem;line-height:1.7}
 @media(max-width:1180px) {
  .home-daily-zones .hero {grid-template-columns:1fr;padding-top:calc(var(--header-height) + 3rem)}
@@ -62,4 +64,5 @@
  .home-daily-zones .principle-card {min-height:100px}
  .home-daily-zones .principle-card b {font-size:.9rem}
  .home-daily-zones .cycle-pills button {min-height:44px}
+ .home-daily-zones .resource-book-cover {height:320px}
 }
