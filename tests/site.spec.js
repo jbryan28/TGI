@@ -623,7 +623,7 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     if (size.width === 390) {
       await page.locator('#desk-membership .button').click();
       await expect(page).toHaveURL(/\/desk\/$/);
-      await expect(page.locator('.desk-join').first()).toContainText('Join the TGI Operating Desk');
+      await expect(page.locator('.desk-join').first()).toContainText('Join the Operating Desk');
       await page.goto('/#framework');
       await expect(page.locator('#framework')).toBeInViewport();
     }
