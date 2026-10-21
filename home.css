@@ -195,6 +195,9 @@
 .home-daily-zones .slideshow-arrow:hover,.home-daily-zones .slideshow-arrow:focus-visible {opacity:1;background:rgba(8,10,10,.72)}
 .home-daily-zones .slideshow-arrow:focus-visible {outline:2px solid var(--gold-bright);outline-offset:2px}
 .home-daily-zones .slideshow-arrow:disabled {opacity:.2;cursor:default}
+.home-daily-zones .section-light .slideshow-arrow {color:#765019;background:rgba(224,180,89,.13);opacity:.85}
+.home-daily-zones .section-light .slideshow-arrow:hover,.home-daily-zones .section-light .slideshow-arrow:focus-visible {opacity:1;background:rgba(224,180,89,.25);outline-color:#765019}
+.home-daily-zones .section-light .slideshow-arrow:disabled {opacity:.2}
 .home-daily-zones .slideshow-mobile-frame > .slideshow-arrow {display:none}
 .home-daily-zones .resource-window > .slideshow-arrow {top:138px}
 .home-daily-zones .resource-track {transition:none}
