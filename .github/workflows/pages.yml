@@ -33,6 +33,8 @@ jobs:
         run: bash scripts/build-desk-video.sh
       - name: Run static release gate
         run: npm run check
+      - name: Build Daily Zone Command sibling site
+        run: node scripts/build-dzc.mjs
       - name: Run cross-browser suite
         run: npm run test:e2e
       - name: Retain verified video assets

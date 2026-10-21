@@ -1,0 +1,29 @@
+/* Daily Zone Command identity; shared TGI layouts and interaction styles remain the source. */
+.brand-mark.dzc-mark {
+  display: block;
+  flex: 0 0 auto;
+  width: 54px;
+  height: 54px;
+  border: 0;
+}
+.brand-mark.dzc-mark img {display:block;width:100%;height:100%}
+.brand-name.dzc-wordmark {
+  display: block;
+  max-width: 146px;
+  color: #f5f1e7;
+  font: 400 17px/1.15 Georgia, "Times New Roman", serif;
+  letter-spacing: .015em;
+  text-transform: none;
+}
+.dzc-wordmark small {display:block;margin-top:5px;color:#d7af62;font:500 8px/1.2 Arial,sans-serif;letter-spacing:.15em;text-transform:uppercase}
+.site-footer .brand-mark.dzc-mark {width:42px;height:42px}
+.dzc-parent {display:block;margin-top:.5rem;color:var(--muted);font-size:.7rem;letter-spacing:.03em;text-transform:none}
+@media(max-width:1100px) {
+ .brand-name.dzc-wordmark {font-size:16px;max-width:132px}
+}
+@media(max-width:600px) {
+ .brand,.mentoring-brand {gap:.7rem}
+ .brand-mark.dzc-mark {width:46px;height:46px}
+ .brand-name.dzc-wordmark {font-size:16px;max-width:140px}
+ .dzc-wordmark small {font-size:8px;letter-spacing:.1em}
+}

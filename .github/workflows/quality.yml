@@ -25,6 +25,8 @@ jobs:
         run: bash scripts/build-desk-video.sh
       - name: Run static checks
         run: npm run check
+      - name: Build Daily Zone Command sibling site
+        run: node scripts/build-dzc.mjs
       - name: Run cross-browser tests
         run: npm run test:e2e
       - name: Upload browser report and screenshots
