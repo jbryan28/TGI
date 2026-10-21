@@ -48,7 +48,7 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   await expect(page.locator("#stage-title")).toHaveText("Watch how price reacts");
 
   await page.locator('[data-hero-market="USDJPY"]').click();
-  await expect(page.locator("#hero-timeframe")).toHaveText("4H");
+  await expect(page.locator("#hero-timeframe")).toHaveText("Daily");
   await expect(page.locator(".briefing-dashboard")).toHaveCount(0);
 
   await page.locator("#cycle-scrubber").evaluate((element) => {
@@ -964,7 +964,7 @@ test('homepage shows the original dated member charts without duplication', asyn
     ['DXY', 'dxy-2026-10-18.webp', 'Daily', '18 October 2026', 1484],
     ['NAS100', 'nas100-2026-10-18.webp', 'Daily', '18 October 2026', 1484],
     ['GOLD', 'gold-2026-10-18.webp', 'Daily', '18 October 2026', 1484],
-    ['USDJPY', 'usdjpy-4h-2026-10-12.webp', '4H', '12 October 2026', 1310],
+    ['USDJPY', 'usdjpy-daily-2026-10-21.webp', 'Daily', '21 October 2026', 1103],
   ];
   for (const size of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(size);

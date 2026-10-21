@@ -266,7 +266,7 @@
     DXY: { name: "U.S. dollar index", timeframe: "Daily", date: "18 October 2026", src: "assets/member-charts/dxy-2026-10-18.webp", height: 1484, description: "original candles and five marked Daily Zones" },
     NAS100: { name: "U.S. stock index", timeframe: "Daily", date: "18 October 2026", src: "assets/member-charts/nas100-2026-10-18.webp", height: 1484, description: "original candles and four marked Daily Zones" },
     GOLD: { name: "Gold", timeframe: "Daily", date: "18 October 2026", src: "assets/member-charts/gold-2026-10-18.webp", height: 1484, description: "original candles and five marked Daily Zones" },
-    USDJPY: { name: "U.S. dollar / Japanese yen", timeframe: "4H", date: "12 October 2026", src: "assets/member-charts/usdjpy-4h-2026-10-12.webp", height: 1310, description: "original candles, marked buy and completion areas, and a conditional projected path" },
+    USDJPY: { name: "U.S. dollar / Japanese yen", timeframe: "Daily", date: "21 October 2026", src: "assets/member-charts/usdjpy-daily-2026-10-21.webp", height: 1103, description: "original daily candles and five marked price zones" },
   };
 
   const bindPublishedCharts = (selector, dataKey, prefix) => {
