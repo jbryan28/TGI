@@ -12,7 +12,7 @@ Institutional market-intelligence homepage and interactive capital-review tools 
 - Dedicated `/membership/` route that separates the 46-item Capital Operator Core, recurring operating desk, and independent CDZA™ certification standard
 - Legacy `/member/` redirect for the route printed in *The Daily Zone Command*
 - Interactive Institutional Market Cycle scrubber
-- Automatic homepage slideshows with independent pause/play controls, mobile swipes, keyboard navigation, and reduced-motion support
+- Four-second homepage slideshows with fade transitions, translucent gold edge arrows, mobile swipes, keyboard navigation, and reduced-motion support
 - Responsive resource carousel
 - Weekly Capital Review at `/weekly-capital-review/` with autosave, export, print, and reset controls
 - CDZA™ Execution Standard at `/cdza/`, grounded in Chapter 24 of *The Daily Zone Command*, with an interactive Compression → Displacement → Zone → Authorization sequence
