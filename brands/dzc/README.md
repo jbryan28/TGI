@@ -4,4 +4,6 @@ This brand layer mirrors the maintained TraderGrowth website for DailyZoneComman
 
 Run `node scripts/build-dzc.mjs /absolute/empty/output` to prepare the static site. The default output is `dzc-preview/`, which is ignored by Git. The output excludes source specifications, tests, credentials, Git metadata, and CNAME.
 
+The DZC hero groups the headline on the left and supporting copy, CTAs, and trust note on the right. At 900px and below, the supporting content stacks after the headline in reading order.
+
 The private review Site is `appgprj_6ad8f0c9be348191bfce56715e129e33`, slug `daily-zone-command`. Its deployment source and manifest live in the associated Sites repository. Domain DNS and the public launch remain separate steps. TGI-branded illustrations and the existing Operating Desk walkthrough are retained source artwork, not newly rebranded media.
