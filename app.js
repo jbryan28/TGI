@@ -119,10 +119,11 @@
       announcements.forEach(element => element.setAttribute("aria-live", paused ? "polite" : "off"));
       if (running) timer = setTimeout(() => { advance(); sync(); }, 4000);
     };
-    root.addEventListener("pointerdown", () => { touching = true; sync(); }, {passive:true});
+    root.addEventListener("pointerdown", () => { touching = true; focused = false; sync(); }, {passive:true});
     ["pointerup", "pointercancel"].forEach(type => document.addEventListener(type, () => { touching = false; sync(); }, {passive:true}));
-    ["click", "input", "keydown", "wheel"].forEach(type => root.addEventListener(type, sync, {capture:true, passive:true}));
-    root.addEventListener("focusin", event => { focused = event.target.matches(":focus-visible"); sync(); });
+    ["click", "input", "wheel"].forEach(type => root.addEventListener(type, sync, {capture:true, passive:true}));
+    root.addEventListener("keydown", () => { focused = true; sync(); }, {capture:true, passive:true});
+    root.addEventListener("focusin", event => { focused = focused || event.target.matches(":focus-visible"); sync(); });
     root.addEventListener("focusout", event => { if (!root.contains(event.relatedTarget)) focused = false; sync(); });
     root.addEventListener("pointerenter", event => { if (event.pointerType === "mouse") { hovered = true; sync(); } });
     root.addEventListener("pointerleave", event => { if (event.pointerType === "mouse") { hovered = false; sync(); } });
