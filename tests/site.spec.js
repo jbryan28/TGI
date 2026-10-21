@@ -268,13 +268,16 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
     await page.goto("/desk/");
     await expect.poll(() => page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe("rgb(8, 10, 10)");
     await expect(page).toHaveTitle(/TGI Operating Desk Membership/);
+    await expect(page.getByRole("heading", {level:1})).toHaveText("Get Jay’s Daily Zones.");
     const join = page.locator(".desk-hero .desk-join");
     await expect(join).toHaveAttribute("href", "https://tradergrowthfx.thinkific.com/enroll/3775153?price_id=4732368");
     const box = await join.boundingBox();
     expect(box.y + box.height).toBeLessThanOrEqual(viewport.height);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
-    await expect(page.locator(".desk-grid article")).toHaveCount(6);
-    await expect(page.locator(".desk-lead")).toContainText("across 43 instruments");
+    await expect(page.locator(".desk-bundle-note")).toContainText("DZC course");
+    await expect(page.locator(".desk-bundle-note")).toContainText("Daily Zone Command™ PDF. All included");
+    await expect(page.locator(".desk-offer")).toContainText("$99");
+    await page.screenshot({ path: testInfo.outputPath(`desk-hero-${viewport.width}.png`) });
     const gif = page.locator('[data-desk-gif]');
     await gif.scrollIntoViewIfNeeded();
     await expect(gif).toHaveAttribute("src", "../assets/tgi-forex-portal-walkthrough.gif?v=20261011-positions");
@@ -297,15 +300,23 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
       /4.*Commodities.*Gold.*Silver.*WTI.*Brent/,
       /2.*Cryptocurrencies.*Bitcoin.*XRP/,
     ]);
-    await expect(page.locator(".desk-coverage-note")).toContainText("not every instrument receives a fresh review each day");
+    await expect(page.locator(".desk-coverage-note")).toContainText("not every market gets a new review each day");
     await page.getByText("How often is the Desk updated?", {exact:true}).click();
-    await expect(page.locator(".desk-faq details[open]")).toContainText("Weekly news announcements");
-    await expect(page.locator(".desk-faq details[open]")).toContainText("does not guarantee a new review of all 43 instruments every day");
+    await expect(page.locator(".desk-faq details[open]")).toContainText("Weekly market news");
+    await expect(page.locator(".desk-faq details[open]")).toContainText("Not every market gets a new review each day");
     await page.getByText("How often is the Desk updated?", {exact:true}).click();
+    await page.getByText("Are the DZC course and book included?", {exact:true}).click();
+    await expect(page.locator(".desk-faq details[open]")).toContainText("course and PDF edition of the book are included");
+    await expect(page.locator(".desk-faq details[open]")).toContainText("one-to-one mentoring are separate purchases");
+    await page.getByText("Are the DZC course and book included?", {exact:true}).click();
     await page.getByText("Can I cancel anytime?", {exact:true}).click();
     await expect(page.locator(".desk-faq details[open]")).toContainText("stop future monthly charges");
     await expect(page.locator(".desk-disclaimer")).toContainText("No profitability");
     await expect(page.locator(".desk-disclaimer")).toContainText("not included");
+    await expect(page.locator(".desk-pricing aside li")).toContainText(["Jay’s published Daily Zones", "Chart commentary and market scenarios", "Daily Zone Command™ course", "Daily Zone Command™ PDF", "Weekly news and selected trade reviews", "43 market pages and the historical archive"]);
+    await expect(page.locator(".desk-book-art img")).toHaveAttribute("src", "../assets/daily-zone-command-book-transparent.webp");
+    await prepareFullPageCapture(page);
+    await page.locator("#inside").screenshot({ path: testInfo.outputPath(`desk-included-${viewport.width}.png`) });
     await page.locator("header .brand").click();
     await page.waitForURL(/\/$/);
   }
@@ -612,7 +623,7 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     if (size.width === 390) {
       await page.locator('#desk-membership .button').click();
       await expect(page).toHaveURL(/\/desk\/$/);
-      await expect(page.locator('.desk-join').first()).toContainText('Join the TGI Operating Desk');
+      await expect(page.locator('.desk-join').first()).toContainText('Join the Operating Desk');
       await page.goto('/#framework');
       await expect(page.locator('#framework')).toBeInViewport();
     }
