@@ -267,8 +267,8 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
     await page.setViewportSize(viewport);
     await page.goto("/desk/");
     await expect.poll(() => page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe("rgb(8, 10, 10)");
-    await expect(page).toHaveTitle(/TGI Operating Desk Membership/);
-    await expect(page.getByRole("heading", {level:1})).toHaveText("Get Jay’s Daily Zones.");
+    await expect(page).toHaveTitle(/Jay’s Daily Zones Membership/);
+    await expect(page.getByRole("heading", {level:1})).toHaveText("Jay’s Daily Zones");
     const join = page.locator(".desk-hero .desk-join");
     await expect(join).toHaveAttribute("href", "https://tradergrowthfx.thinkific.com/enroll/3775153?price_id=4732368");
     const box = await join.boundingBox();
@@ -277,7 +277,7 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
     await expect(page.locator(".desk-bundle-note")).toContainText("DZC course");
     await expect(page.locator(".desk-bundle-note")).toContainText("Daily Zone Command™ PDF. All included");
     await expect(page.locator(".desk-offer")).toContainText("$99");
-    await page.screenshot({ path: testInfo.outputPath(`desk-hero-${viewport.width}.png`) });
+    await page.screenshot({ path: testInfo.outputPath(`desk-hero-${viewport.width}.png`), animations: "disabled" });
     const gif = page.locator('[data-desk-gif]');
     await gif.scrollIntoViewIfNeeded();
     await expect(gif).toHaveAttribute("src", "../assets/tgi-forex-portal-walkthrough.gif?v=20261011-positions");
@@ -301,10 +301,10 @@ test("Operating Desk offer has visible checkout, accurate scope and clear cancel
       /2.*Cryptocurrencies.*Bitcoin.*XRP/,
     ]);
     await expect(page.locator(".desk-coverage-note")).toContainText("not every market gets a new review each day");
-    await page.getByText("How often is the Desk updated?", {exact:true}).click();
+    await page.getByText("How often are the charts updated?", {exact:true}).click();
     await expect(page.locator(".desk-faq details[open]")).toContainText("Weekly market news");
     await expect(page.locator(".desk-faq details[open]")).toContainText("Not every market gets a new review each day");
-    await page.getByText("How often is the Desk updated?", {exact:true}).click();
+    await page.getByText("How often are the charts updated?", {exact:true}).click();
     await page.getByText("Are the DZC course and book included?", {exact:true}).click();
     await expect(page.locator(".desk-faq details[open]")).toContainText("course and PDF edition of the book are included");
     await expect(page.locator(".desk-faq details[open]")).toContainText("one-to-one mentoring are separate purchases");
@@ -374,7 +374,7 @@ test("Operating Desk stays readable with reduced motion or JavaScript disabled",
 test("legacy member route opens the Operating Desk", async ({ page }) => {
   await page.goto("/member/");
   await page.waitForURL(/\/desk\/$/);
-  await expect(page).toHaveTitle(/TGI Operating Desk/);
+  await expect(page).toHaveTitle(/Jay’s Daily Zones Membership/);
 });
 
 test("mobile navigation and responsive controls work", async ({ page }, testInfo) => {
@@ -623,12 +623,12 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     if (size.width === 390) {
       await page.locator('#desk-membership .button').click();
       await expect(page).toHaveURL(/\/desk\/$/);
-      await expect(page.locator('.desk-join').first()).toContainText('Join the Operating Desk');
+      await expect(page.locator('.desk-join').first()).toContainText('Join Jay’s Daily Zones');
       await page.goto('/#framework');
       await expect(page.locator('#framework')).toBeInViewport();
     }
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
-    await expect(page.locator('.pathway-track a[href="desk/"]')).toContainText('TGI Operating Desk');
+    await expect(page.locator('.pathway-track a[href="desk/"]')).toContainText('Jay’s Daily Zones');
     await expect(page.locator('.case-study, .case-metrics')).toHaveCount(0);
   }
 });

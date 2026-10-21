@@ -1,4 +1,6 @@
-# Daily Zones membership bundle — delivery handoff
+# Jay’s Daily Zones membership — delivery handoff
+
+The public membership name is **Jay’s Daily Zones**, with TGI as the parent brand. The existing `/desk/` route and checkout remain in use. Thinkific product names and the existing portal walkthrough’s on-screen Operating Desk labels have not been renamed by the website update.
 
 Owner-specified offer for `/desk/`: **$99 USD per month** for Jay’s published Daily Zones, chart commentary, market scenarios, the **Daily Zone Command™ course**, and the **book PDF**, plus existing weekly news, selected trade reviews, market pages, and archive. The website wording reflects these requested inclusions; this change does not configure Thinkific delivery.
 
