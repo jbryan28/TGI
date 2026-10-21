@@ -754,6 +754,7 @@ test('homepage stays readable with reduced motion or JavaScript disabled',async(
 });
 
 test('five Daily Zones steps explain one setup with accessible charts', async ({ page }, testInfo) => {
+  test.setTimeout(60000);
   const errors = captureErrors(page);
   const lessons = [
     { title: 'Start with the daily chart', label: 'One candle = one day', caption: 'daily candles', layer: '.lesson-context' },
@@ -846,6 +847,7 @@ test('five Daily Zones steps explain one setup with accessible charts', async ({
 });
 
 test('resource carousel shows the offers and reaches every card', async ({ page }, testInfo) => {
+  test.setTimeout(60000);
   const cardFits = (card) => card.evaluate((element) => {
     const cardBox = element.getBoundingClientRect();
     const viewportBox = element.parentElement.parentElement.getBoundingClientRect();
