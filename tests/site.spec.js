@@ -622,6 +622,60 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
   }
 });
 
+test('price behavior slides show distinct candles and keep notes below the controls', async ({ page }, testInfo) => {
+  test.setTimeout(60000);
+  const errors=captureErrors(page);
+  const names=['Sideways price','Move outside a range','Strong move','Pullback'];
+  for (const width of [1440,390,320]) {
+    await page.setViewportSize({width,height:900});
+    await page.goto('/');
+    const shapes=[];
+    for (let index=0;index<4;index++) {
+      const tab=page.locator(`#cycle-tab-${index}`);
+      await tab.evaluate(el=>el.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
+      await tab.click();
+      await expect(page.locator('#cycle-diagram')).toHaveAttribute('data-cycle-step',String(index));
+      await expect(page.locator('#cycle-diagram')).toHaveAccessibleName(`${names[index]}: candlestick example`);
+      await expect(page.locator('#cycle-diagram')).toHaveAccessibleDescription(/Teaching chart.*not live market data/);
+      const visible=page.locator(`[data-cycle-candles="${index}"]`);
+      await expect(visible).toBeVisible();
+      await expect(visible.locator('.cycle-candle')).toHaveCount(18);
+      for (let other=0;other<4;other++) if(other!==index) await expect(page.locator(`[data-cycle-candles="${other}"]`)).toBeHidden();
+      const geometry=await visible.evaluate(group=>{
+        const svg=group.ownerSVGElement, scale=svg.getBoundingClientRect().width/640;
+        const bodies=[...group.querySelectorAll('.cycle-candle rect')].map(body=>({x:Number(body.getAttribute('x')),y:Number(body.getAttribute('y')),height:Number(body.getAttribute('height')),width:Number(body.getAttribute('width'))}));
+        return {width:Math.min(...bodies.map(body=>body.width))*scale,inside:bodies.every(body=>body.x>=0&&body.x+body.width<=640&&body.y>=0&&body.y+body.height<=360),shape:bodies.map(body=>`${body.y}:${body.height}`).join(',')};
+      });
+      shapes.push(geometry.shape);
+      expect(geometry.width).toBeGreaterThanOrEqual(5);
+      expect(geometry.inside).toBe(true);
+      const layout=await page.evaluate(()=>{
+        const rect=selector=>document.querySelector(selector).getBoundingClientRect();
+        return {visual:rect('#cycle-visual').bottom,caption:rect('#cycle-tooltip').top,sliderBottom:rect('#cycle-scrubber').bottom,note:rect('.cycle-example-note').top,panel:rect('#cycle-chart').bottom,overflow:document.documentElement.scrollWidth>innerWidth};
+      });
+      expect(layout.caption).toBeGreaterThanOrEqual(layout.visual-1);
+      expect(layout.note).toBeGreaterThanOrEqual(layout.panel+8);
+      expect(layout.sliderBottom).toBeLessThanOrEqual(layout.note);
+      expect(layout.overflow).toBe(false);
+      if(width!==320) await page.locator('.market-cycle').screenshot({path:testInfo.outputPath(`cycle-candles-${width}-${index}.png`),animations:'disabled',style:'.site-header,.skip-link{visibility:hidden!important}'});
+    }
+    expect(new Set(shapes).size).toBe(4);
+    await page.locator('#cycle-tab-0').focus();
+    await page.keyboard.press('End');
+    await expect(page.locator('#cycle-diagram')).toHaveAttribute('data-cycle-step','3');
+    await page.locator('#cycle-next').click();
+    await expect(page.locator('#cycle-diagram')).toHaveAttribute('data-cycle-step','0');
+    await page.locator('#cycle-prev').click();
+    await expect(page.locator('#cycle-diagram')).toHaveAttribute('data-cycle-step','3');
+    await page.locator('#cycle-scrubber').focus();
+    await page.keyboard.press('Home');
+    await expect(page.locator('#cycle-diagram')).toHaveAttribute('data-cycle-step','0');
+    await page.keyboard.press('End');
+    await expect(page.locator('#cycle-diagram')).toHaveAttribute('data-cycle-step','3');
+  }
+  expect(errors).toEqual([]);
+});
+
 test('homepage slideshows advance in view and keep their layout stable', async ({ page }, testInfo) => {
   test.setTimeout(60000);
   const errors = captureErrors(page);
