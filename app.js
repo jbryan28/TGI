@@ -467,10 +467,10 @@
   document.fonts.ready.then(sizeLessons);
 
   const cycleStages = [
-    { max: 24, name: "Sideways price", detail: "Price stays in a range", description: "Price may stay within a small area while buyers and sellers trade." },
-    { max: 49, name: "Move outside a range", detail: "Watch the response", description: "Price may move beyond an earlier high or low. Watch what happens next." },
-    { max: 78, name: "Strong move", detail: "Price moves away", description: "Price can move away from a zone. Wait for your entry conditions." },
-    { max: 100, name: "Pullback", detail: "Price changes direction", description: "Price may move back toward an earlier area. Recheck your plan as conditions change." },
+    { max: 24, name: "Sideways price", detail: "Price stays in a range", chartDescription: "Alternating candles stay between the marked range high and range low, with no sustained move outside.", description: "Price may stay within a small area while buyers and sellers trade." },
+    { max: 49, name: "Move outside a range", detail: "Watch the response", chartDescription: "Candles first trade inside a marked range. Later candles close above its upper edge. Moving outside does not guarantee that the move will continue.", description: "Price may move beyond an earlier high or low. Watch what happens next." },
+    { max: 78, name: "Strong move", detail: "Price moves away", chartDescription: "Candles move higher away from an earlier range, with several higher closes.", description: "Price can move away from a zone. Wait for your entry conditions." },
+    { max: 100, name: "Pullback", detail: "Price changes direction", chartDescription: "After a strong rise, several gold candles move back down toward an earlier price area. A pullback does not guarantee a bounce.", description: "Price may move back toward an earlier area. Recheck your plan as conditions change." },
   ];
 
   const cycleScrubber = $("#cycle-scrubber");
@@ -481,7 +481,9 @@
     const stage = cycleStages.find((item) => position <= item.max) || cycleStages.at(-1);
     const stageIndex = cycleStages.indexOf(stage);
     $("#cycle-progress-fill").style.width = `${position}%`;
-    $("#cycle-tooltip").style.left = `${Math.max(5, Math.min(95, position))}%`;
+    $("#cycle-diagram").dataset.cycleStep = String(stageIndex);
+    $("#cycle-diagram-title").textContent = `${stage.name}: candlestick example`;
+    $("#cycle-diagram-desc").textContent = `Teaching chart. ${stage.chartDescription} Green candles close higher; gold candles close lower. Simplified prices, not live market data.`;
     $("#cycle-tooltip span").textContent = stage.name;
     $("#cycle-tooltip b").textContent = stage.detail;
     $("#cycle-description").textContent = stage.description;
@@ -529,7 +531,7 @@
   };
   $("#cycle-prev")?.addEventListener("click", () => moveCycle(-1));
   $("#cycle-next")?.addEventListener("click", () => moveCycle(1));
-  edgeArrows($("#cycle-chart"), "cycle");
+  edgeArrows($("#cycle-visual"), "cycle");
   bindMobileSwipe($("#cycle-chart"), moveCycle);
   if (cycleScrubber) renderCycle(cycleScrubber.value);
   bindSlideshow("cycle", cycleScrubber?.closest("section"), $("#cycle-chart"), () => moveCycle(1));

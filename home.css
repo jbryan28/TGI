@@ -190,7 +190,7 @@
 .home-daily-zones .slideshow-arrow {position:absolute;z-index:5;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:44px;height:64px;padding:10px;border:0;border-radius:3px;background:rgba(8,10,10,.24);color:#e0b459;cursor:pointer;touch-action:manipulation;opacity:.72;transition:opacity .2s,background .2s}
 .home-daily-zones .slideshow-arrow--prev {left:2px}
 .home-daily-zones .slideshow-arrow--next {right:2px}
-.home-daily-zones .slideshow-arrow svg {display:block;width:18px;height:32px;overflow:visible}
+.home-daily-zones .slideshow-arrow svg {display:block;width:18px;height:32px;min-height:0;overflow:visible}
 .home-daily-zones .slideshow-arrow path {fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .home-daily-zones .slideshow-arrow:hover,.home-daily-zones .slideshow-arrow:focus-visible {opacity:1;background:rgba(8,10,10,.72)}
 .home-daily-zones .slideshow-arrow:focus-visible {outline:2px solid var(--gold-bright);outline-offset:2px}
@@ -210,6 +210,38 @@
  .home-daily-zones .slideshow-arrow {transition:none}
 }
 .home-daily-zones #cycle-description {min-height:4.8em}
+/* Each price behavior gets its own teaching candles; captions stay in normal flow. */
+.home-daily-zones .cycle-chart {max-width:900px;padding-bottom:0}
+.home-daily-zones .cycle-visual {position:relative;min-width:0;border:1px solid var(--line-dark);background:radial-gradient(circle at 50% 50%,rgba(201,154,61,.04),transparent 70%)}
+.home-daily-zones .cycle-chart .cycle-candlestick-chart {display:block;width:100%;height:auto;min-height:0;aspect-ratio:16/9}
+.cycle-grid path {fill:none;stroke:rgba(242,238,229,.07);stroke-width:1}
+.cycle-range {fill:rgba(201,154,61,.08);stroke:rgba(224,180,89,.4);stroke-width:1}
+.cycle-range-edge {fill:none;stroke:#dfbb6b;stroke-width:1.5;stroke-dasharray:5 5}
+.cycle-candle {color:#d5b162}
+.cycle-candle-up {color:#91c7ad}
+.cycle-candle path {fill:none;stroke:currentColor;stroke-width:2}
+.cycle-candle rect {fill:currentColor}
+.cycle-candlestick-chart text {fill:#dfbb6b;font:500 28px var(--sans)}
+[data-cycle-candles] {display:none}
+[data-cycle-step="0"] [data-cycle-candles="0"],
+[data-cycle-step="1"] [data-cycle-candles="1"],
+[data-cycle-step="2"] [data-cycle-candles="2"],
+[data-cycle-step="3"] [data-cycle-candles="3"] {display:block}
+.home-daily-zones .cycle-tooltip {position:static;min-width:0;min-height:78px;margin:0;padding:.8rem 1rem;border:1px solid var(--line-dark);border-top:0;transform:none;background:transparent;transition:none}
+.home-daily-zones .cycle-tooltip::after {display:none}
+.home-daily-zones .cycle-tooltip span {color:var(--ivory);font-size:.9rem;letter-spacing:.02em;text-transform:none}
+.home-daily-zones .cycle-tooltip b {font:500 .95rem/1.5 var(--sans)}
+.cycle-candle-key {display:flex;flex-wrap:wrap;justify-content:center;gap:.35rem 1.2rem;margin:.8rem 0 .5rem;font-size:.8rem;line-height:1.5}
+.cycle-candle-key span:first-child {color:#a5d4bc}
+.cycle-candle-key span:last-child {color:#dfbb6b}
+.cycle-timeline {position:relative;min-height:44px;padding:8px 0}
+.home-daily-zones .cycle-progress {left:0;right:0;bottom:21px}
+.home-daily-zones #cycle-scrubber {position:relative;left:auto;right:auto;bottom:auto;display:block;width:100%;height:28px;margin:0;z-index:1;touch-action:pan-y}
+.cycle-example-note {max-width:900px;margin:.85rem auto 0;font-size:.8rem;line-height:1.6}
+@media(max-width:620px) {
+ .cycle-candlestick-chart text {font-size:32px}
+ .home-daily-zones .cycle-pills {margin-bottom:1rem}
+}
 .home-daily-zones :is(.stage-tabs button,.segmented button,.cycle-pills button) {scroll-margin-block:calc(var(--header-height) + 1rem) 1rem}
 @media(max-width:1180px) {
  .home-daily-zones .hero {padding-top:calc(var(--header-height) + 3rem)}
