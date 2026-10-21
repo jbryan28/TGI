@@ -76,55 +76,85 @@
   const mobileLayout = window.matchMedia("(max-width: 620px)");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  // Each slideshow has its own clock. Reading or interacting stops it until Play.
-  const bindSlideshow = (name, root, viewport, advance, interval = 8000, mobileOnly = false) => {
-    const toggle = $(`[data-slideshow-toggle="${name}"]`);
-    if (!root || !viewport || !toggle) return;
-    let paused = reducedMotion.matches;
+  const fadeTasks = new WeakMap();
+  const fadeSlide = (element, change) => {
+    if (!element || reducedMotion.matches) { change(); return; }
+    const previous = fadeTasks.get(element) || Promise.resolve();
+    const task = previous.catch(() => {}).then(async () => {
+      if (reducedMotion.matches) { change(); return; }
+      const out = element.animate([{opacity:1}, {opacity:0}], {duration:160, fill:"forwards", easing:"ease-in"});
+      await out.finished;
+      change();
+      out.cancel();
+      const incoming = element.animate([{opacity:0}, {opacity:1}], {duration:240, easing:"ease-out"});
+      await incoming.finished;
+    });
+    fadeTasks.set(element, task);
+    task.finally(() => { if (fadeTasks.get(element) === task) fadeTasks.delete(element); });
+  };
+  const fadeRenderer = (element, render) => {
+    let initial = true;
+    return (...args) => {
+      if (initial) { initial = false; render(...args); }
+      else fadeSlide(element, () => render(...args));
+    };
+  };
+
+  // Four seconds between advances; interaction gives the reader a fresh interval.
+  const bindSlideshow = (name, root, viewport, advance, mobileOnly = false) => {
+    if (!root || !viewport) return;
     let visible = false;
     let hovered = false;
+    let touching = false;
+    let focused = false;
     let timer;
+    root.dataset.slideshow = name;
     const announcements = $$("[aria-live]", root);
     const sync = () => {
       clearTimeout(timer);
       const enabled = !mobileOnly || mobileLayout.matches;
+      const paused = reducedMotion.matches || touching || focused;
       const running = enabled && !paused && visible && !hovered && !document.hidden;
       root.dataset.slideshowState = !enabled ? "static" : paused ? "paused" : running ? "playing" : "waiting";
-      toggle.hidden = !enabled;
-      toggle.textContent = paused ? "Play slideshow" : "Pause slideshow";
-      toggle.setAttribute("aria-label", `${paused ? "Play" : "Pause"} ${toggle.dataset.slideshowLabel} slideshow`);
       announcements.forEach(element => element.setAttribute("aria-live", paused ? "polite" : "off"));
-      if (running) timer = setTimeout(() => { advance(); sync(); }, interval);
+      if (running) timer = setTimeout(() => { advance(); sync(); }, 4000);
     };
-    const pause = (event) => {
-      if (toggle.contains(event.target)) return;
-      paused = true;
-      sync();
-    };
-    toggle.addEventListener("click", () => { paused = !paused; sync(); });
-    ["pointerdown", "click", "keydown", "focusin", "input", "wheel"].forEach(type => {
-      root.addEventListener(type, pause, { capture: true, passive: true });
-    });
-    root.addEventListener("pointerenter", event => {
-      if (event.pointerType !== "mouse") return;
-      hovered = true;
-      sync();
-    });
-    root.addEventListener("pointerleave", event => {
-      if (event.pointerType !== "mouse") return;
-      hovered = false;
-      sync();
-    });
+    root.addEventListener("pointerdown", () => { touching = true; sync(); }, {passive:true});
+    ["pointerup", "pointercancel"].forEach(type => document.addEventListener(type, () => { touching = false; sync(); }, {passive:true}));
+    ["click", "input", "keydown", "wheel"].forEach(type => root.addEventListener(type, sync, {capture:true, passive:true}));
+    root.addEventListener("focusin", event => { focused = event.target.matches(":focus-visible"); sync(); });
+    root.addEventListener("focusout", event => { if (!root.contains(event.relatedTarget)) focused = false; sync(); });
+    root.addEventListener("pointerenter", event => { if (event.pointerType === "mouse") { hovered = true; sync(); } });
+    root.addEventListener("pointerleave", event => { if (event.pointerType === "mouse") { hovered = false; sync(); } });
     document.addEventListener("visibilitychange", sync);
     mobileLayout.addEventListener("change", sync);
-    reducedMotion.addEventListener("change", () => { paused = reducedMotion.matches; sync(); });
+    reducedMotion.addEventListener("change", sync);
     if ("IntersectionObserver" in window) {
       new IntersectionObserver(entries => {
         visible = entries[0].isIntersecting && entries[0].intersectionRatio >= .15;
         sync();
-      }, { threshold: [0, .15] }).observe(viewport);
+      }, {threshold:[0,.15]}).observe(viewport);
     }
     sync();
+  };
+
+  const edgeArrows = (element, prefix, mobileOnly = false, wrap = false) => {
+    if (!element) return;
+    let frame = element;
+    if (wrap) {
+      frame = document.createElement("div");
+      element.before(frame);
+      frame.appendChild(element);
+    }
+    frame.classList.add("slideshow-frame");
+    if (mobileOnly) frame.classList.add("slideshow-mobile-frame");
+    ["prev", "next"].forEach((direction, index) => {
+      const button = $(`#${prefix}-${direction}`);
+      if (!button) return;
+      button.classList.add("slideshow-arrow", `slideshow-arrow--${direction}`);
+      button.innerHTML = `<svg viewBox="0 0 24 40" aria-hidden="true"><path d="${index ? "M5 4L19 20L5 36" : "M19 4L5 20L19 36"}"/></svg>`;
+      frame.appendChild(button);
+    });
   };
 
   const bindMobileSwipe = (element, changeSlide, allowLinks = false) => {
@@ -182,9 +212,12 @@
       next.disabled = index === cards.length - 1;
       onSelect?.(cards[index]);
     };
-    const move = (value) => {
+    const move = (value, animate = true) => {
+      const change = () => {
       update(value);
       if (mobileLayout.matches) track.scrollTo({ left: cards[index].offsetLeft - cards[0].offsetLeft, behavior: "instant" });
+      };
+      if (animate) fadeSlide(track, change); else change();
     };
     previous.addEventListener("click", () => move(index - 1));
     next.addEventListener("click", () => move(index + 1));
@@ -220,11 +253,12 @@
       if (event.target !== track) cards[index].focus();
     });
     window.addEventListener("resize", () => {
-      if (mobileLayout.matches) move(index);
+      if (mobileLayout.matches) move(index, false);
       else track.scrollLeft = 0;
     });
-    move(0);
-    bindSlideshow(prefix, track.parentElement, track, () => move((index + 1) % cards.length), 8000, true);
+    edgeArrows(track, prefix, true, true);
+    move(0, false);
+    bindSlideshow(prefix, track.closest(".briefing-benefits, section"), track, () => move((index + 1) % cards.length), true);
   };
 
   const publishedCharts = {
@@ -241,7 +275,7 @@
     const link = $(`#${prefix}-chart-open`);
     const panel = $(`#${prefix}-chart-panel`);
     const caption = $(`#${prefix}-chart-caption`);
-    const render = (button) => {
+    const render = fadeRenderer(panel, (button) => {
       const symbol = button.dataset[dataKey];
       const chart = publishedCharts[symbol];
       if (!chart) return;
@@ -252,6 +286,7 @@
       image.height = chart.height;
       image.alt = `Jay Bryan’s ${symbol} ${chart.timeframe} chart review from ${chart.date}, with ${chart.description}. Historical snapshot.`;
       link.href = chart.src;
+      $("#hero-chart-full").href = chart.src;
       link.setAttribute("aria-label", `Open ${symbol} ${chart.timeframe} chart from ${chart.date} at full size (opens in a new tab)`);
       panel.setAttribute("aria-labelledby", button.id);
       caption.textContent = `${symbol} · ${chart.timeframe} · ${chart.date}`;
@@ -263,7 +298,7 @@
         $("#hero-candle-description").textContent = chart.timeframe === "Daily" ? "One day per candle in this chart." : "Four hours per candle in this chart.";
         $("#hero-market-count").textContent = `${String(buttons.indexOf(button) + 1).padStart(2, "0")} / 04`;
       }
-    };
+    });
     buttons.forEach((button, index) => {
       button.addEventListener("click", () => render(button));
       button.addEventListener("keydown", (event) => {
@@ -279,14 +314,16 @@
       });
     });
     render(buttons.find(button => button.getAttribute("aria-selected") === "true") || buttons[0]);
+    Object.values(publishedCharts).forEach(chart => { const preload = new Image(); preload.src = chart.src; });
     const move = (direction) => {
       const current = buttons.findIndex(button => button.getAttribute("aria-selected") === "true");
       render(buttons[(current + direction + buttons.length) % buttons.length]);
     };
     $("#hero-market-prev")?.addEventListener("click", () => move(-1));
     $("#hero-market-next")?.addEventListener("click", () => move(1));
+    edgeArrows($(".published-chart-media", panel), "hero-market");
     bindMobileSwipe(panel, move, true);
-    bindSlideshow("charts", panel.closest("section"), panel, () => move(1), 10000);
+    bindSlideshow("charts", panel.closest("section"), panel, () => move(1));
   };
   bindPublishedCharts("[data-hero-market]", "heroMarket", "hero");
 
@@ -340,7 +377,7 @@
   const stageButtons = $$("[data-stage]");
   const stagePanel = $("#stage-panel");
 
-  const renderStage = (index, focusTab = false) => {
+  const renderStage = fadeRenderer(stagePanel, (index, focusTab = false) => {
     activeStage = (index + operatingStages.length) % operatingStages.length;
     const stage = operatingStages[activeStage];
     const activeButton = stageButtons[activeStage];
@@ -365,10 +402,9 @@
     if (tabRect.left < stripRect.left) strip.scrollLeft += tabRect.left - stripRect.left;
     if (tabRect.right > stripRect.right) strip.scrollLeft += tabRect.right - stripRect.right;
 
-    stagePanel.classList.remove("is-changing");
-    requestAnimationFrame(() => stagePanel.classList.add("is-changing"));
     if (focusTab) activeButton.focus();
-  };
+  });
+  if (stagePanel) renderStage(0);
 
   stageButtons.forEach((button, index) => {
     button.addEventListener("click", () => renderStage(index));
@@ -386,8 +422,9 @@
   $("#stage-prev")?.addEventListener("click", () => renderStage(activeStage - 1));
   $("#stage-next")?.addEventListener("click", () => renderStage(activeStage + 1));
 
+  edgeArrows($("#stage-diagram"), "stage", false, true);
   bindMobileSwipe(stagePanel, (direction) => renderStage(activeStage + direction));
-  bindSlideshow("steps", stagePanel?.closest("section"), stagePanel, () => renderStage(activeStage + 1), 12000);
+  bindSlideshow("steps", stagePanel?.closest("section"), stagePanel, () => renderStage(activeStage + 1));
 
   // Reserve the tallest lesson at this width so automatic changes do not move the page.
   const sizeLessons = () => {
@@ -468,7 +505,7 @@
     button.addEventListener("click", () => {
       const value = button.dataset.cycleStage;
       cycleScrubber.value = value;
-      renderCycle(value);
+      fadeSlide($("#cycle-chart"), () => renderCycle(value));
     });
     button.addEventListener("keydown", (event) => {
       const current = cycleButtons.indexOf(button);
@@ -487,10 +524,11 @@
     const current = cycleButtons.findIndex(button => button.getAttribute("aria-selected") === "true");
     const value = cycleButtons[(current + direction + cycleButtons.length) % cycleButtons.length].dataset.cycleStage;
     cycleScrubber.value = value;
-    renderCycle(value);
+    fadeSlide($("#cycle-chart"), () => renderCycle(value));
   };
   $("#cycle-prev")?.addEventListener("click", () => moveCycle(-1));
   $("#cycle-next")?.addEventListener("click", () => moveCycle(1));
+  edgeArrows($("#cycle-chart"), "cycle");
   bindMobileSwipe($("#cycle-chart"), moveCycle);
   if (cycleScrubber) renderCycle(cycleScrubber.value);
   bindSlideshow("cycle", cycleScrubber?.closest("section"), $("#cycle-chart"), () => moveCycle(1));
@@ -499,7 +537,7 @@
   const resourceCards = resourceTrack ? $$(".resource-card", resourceTrack) : [];
   let activeResource = 0;
 
-  const renderResource = () => {
+  const renderResource = fadeRenderer(resourceTrack, () => {
     if (!resourceTrack || !resourceCards.length) return;
     resourceCards.forEach((card, index) => card.classList.toggle("is-featured", index === activeResource));
     $("#resources-count").textContent = `${String(activeResource + 1).padStart(2, "0")} / ${String(resourceCards.length).padStart(2, "0")}`;
@@ -513,7 +551,7 @@
     const offset = Math.min(activeResource * (cardWidth + gap), maxOffset);
     resourceTrack.style.transform = `translateX(-${offset}px)`;
     $("#resources-count").setAttribute("aria-label", `Resource ${activeResource + 1} of ${resourceCards.length}`);
-  };
+  });
 
   $("#resources-prev")?.addEventListener("click", () => {
     activeResource = (activeResource - 1 + resourceCards.length) % resourceCards.length;
@@ -529,6 +567,7 @@
       renderResource();
     });
   });
+  edgeArrows(resourceTrack?.parentElement, "resources");
   renderResource();
   window.addEventListener("resize", renderResource);
   bindMobileSwipe(resourceTrack?.parentElement, (direction) => {

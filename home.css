@@ -186,14 +186,26 @@
 .home-daily-zones .credential-chips {margin-bottom:0}
 .home-daily-zones .mobile-swipe-nav {margin-bottom:0}
 .home-daily-zones .published-chart-media {display:grid;align-items:center;aspect-ratio:2048/1484;background:#080f15}
-.home-daily-zones .slideshow-toolbar {display:none;max-width:var(--max-width);margin:0 auto .75rem;justify-content:flex-end}
-.home-daily-zones .slideshow-toolbar:has(> button:not([hidden])) {display:flex}
-.home-daily-zones [data-slideshow-toggle] {min-height:44px;min-width:130px;padding:.5rem .8rem;border:1px solid var(--line-dark);background:transparent;color:var(--gold-bright);font:500 .75rem/1.4 var(--sans);cursor:pointer;touch-action:manipulation}
-.home-daily-zones [data-slideshow-toggle][hidden] {display:none}
-.home-daily-zones [data-slideshow-toggle]:hover {background:var(--gold-faint)}
-.home-daily-zones [data-slideshow-toggle]:focus-visible {outline:2px solid var(--gold-bright);outline-offset:3px}
-.home-daily-zones .section-light [data-slideshow-toggle] {border-color:var(--line-light);color:#765019}
-.home-daily-zones .section-light [data-slideshow-toggle]:focus-visible {outline-color:#765019}
+.home-daily-zones .slideshow-frame {position:relative;min-width:0}
+.home-daily-zones .slideshow-arrow {position:absolute;z-index:5;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:44px;height:64px;padding:10px;border:0;border-radius:3px;background:rgba(8,10,10,.24);color:#e0b459;cursor:pointer;touch-action:manipulation;opacity:.72;transition:opacity .2s,background .2s}
+.home-daily-zones .slideshow-arrow--prev {left:2px}
+.home-daily-zones .slideshow-arrow--next {right:2px}
+.home-daily-zones .slideshow-arrow svg {display:block;width:18px;height:32px;overflow:visible}
+.home-daily-zones .slideshow-arrow path {fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.home-daily-zones .slideshow-arrow:hover,.home-daily-zones .slideshow-arrow:focus-visible {opacity:1;background:rgba(8,10,10,.72)}
+.home-daily-zones .slideshow-arrow:focus-visible {outline:2px solid var(--gold-bright);outline-offset:2px}
+.home-daily-zones .slideshow-arrow:disabled {opacity:.2;cursor:default}
+.home-daily-zones .slideshow-mobile-frame > .slideshow-arrow {display:none}
+.home-daily-zones .resource-window > .slideshow-arrow {top:138px}
+.home-daily-zones .resource-track {transition:none}
+@media(max-width:620px) {
+ .home-daily-zones .slideshow-mobile-frame > .slideshow-arrow {display:grid}
+ .home-daily-zones .mobile-swipe-nav {grid-template-columns:1fr auto}
+ .home-daily-zones .slideshow-mobile-frame .mobile-swipe-card {padding-left:2.7rem;padding-right:2.7rem}
+}
+@media(prefers-reduced-motion:reduce) {
+ .home-daily-zones .slideshow-arrow {transition:none}
+}
 .home-daily-zones #cycle-description {min-height:4.8em}
 .home-daily-zones :is(.stage-tabs button,.segmented button,.cycle-pills button) {scroll-margin-block:calc(var(--header-height) + 1rem) 1rem}
 @media(max-width:1180px) {

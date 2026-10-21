@@ -14,8 +14,8 @@
     <meta property="og:description" content="Learn where to pay attention on the daily chart and how to plan your risk. Free weekly market updates from Jay Bryan." />
     <link rel="preload" href="assets/jay-bryan-founder.webp" as="image" type="image/webp" />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="home.css?v=20261021-slideshows" />
-    <script defer src="app.js?v=20261021-slideshows"></script>
+    <link rel="stylesheet" href="home.css?v=20261021-fade-arrows" />
+    <script defer src="app.js?v=20261021-fade-arrows"></script>
     <script defer src="desk/desk-gif.js?v=20261011-positions"></script>
   </head>
   <body class="home-daily-zones">
@@ -73,7 +73,6 @@
         </div>
 
         <p class="mobile-swipe-hint">Swipe the chart to explore the five steps.</p>
-        <div class="slideshow-toolbar"><button type="button" data-slideshow-toggle="steps" data-slideshow-label="planning steps" aria-controls="stage-panel" hidden>Pause slideshow</button></div>
         <div class="stage-tabs" role="tablist" aria-label="Daily Zones planning steps">
           <button class="is-active" id="stage-tab-0" role="tab" type="button" aria-selected="true" aria-controls="stage-panel" tabindex="0" data-stage="0"><span>01</span>Start with the daily chart</button>
           <button id="stage-tab-1" role="tab" type="button" aria-selected="false" aria-controls="stage-panel" tabindex="-1" data-stage="1"><span>02</span>Mark Daily Zones</button>
@@ -185,7 +184,6 @@
 
       <section class="member-review section-dark" id="member-chart-review" aria-labelledby="hero-regime">
         <div class="hero-market reveal" aria-label="Daily Zones from Jay Bryan’s member chart reviews">
-          <div class="slideshow-toolbar"><button type="button" data-slideshow-toggle="charts" data-slideshow-label="member charts" aria-controls="hero-chart-panel" hidden>Pause slideshow</button></div>
           <div class="chart-heading">
             <div>
               <span id="hero-symbol">DXY</span> <span class="muted" id="hero-timeframe">Daily</span>
@@ -203,10 +201,10 @@
           </div>
 
           <figure class="published-chart" id="hero-chart-panel" role="tabpanel" aria-labelledby="hero-tab-dxy">
-            <a class="published-chart-link" id="hero-chart-open" href="assets/member-charts/dxy-2026-10-18.webp" target="_blank" rel="noopener" aria-label="Open DXY daily chart from 18 October 2026 at full size (opens in a new tab)">
-              <span class="published-chart-media"><img class="published-chart-image" id="hero-chart-image" src="assets/member-charts/dxy-2026-10-18.webp" alt="Jay Bryan’s DXY daily chart review from 18 October 2026, with original candles and five marked Daily Zones. Historical snapshot." width="2048" height="1484" /></span>
-              <span class="published-chart-action">Open full chart <span aria-hidden="true">↗</span></span>
-            </a>
+            <div class="published-chart-media">
+              <a class="published-chart-link" id="hero-chart-open" href="assets/member-charts/dxy-2026-10-18.webp" target="_blank" rel="noopener" aria-label="Open DXY daily chart from 18 October 2026 at full size (opens in a new tab)"><img class="published-chart-image" id="hero-chart-image" src="assets/member-charts/dxy-2026-10-18.webp" alt="Jay Bryan’s DXY daily chart review from 18 October 2026, with original candles and five marked Daily Zones. Historical snapshot." width="2048" height="1484" /></a>
+            </div>
+            <a class="published-chart-action" id="hero-chart-full" href="assets/member-charts/dxy-2026-10-18.webp" target="_blank" rel="noopener">Open full chart <span aria-hidden="true">↗</span></a>
             <figcaption><span id="hero-chart-caption" aria-live="polite">DXY · Daily · 18 October 2026</span><span>Published member chart · Not live data.</span></figcaption>
           </figure>
 
@@ -284,7 +282,6 @@
           <p class="eyebrow">Your free weekly market update</p>
           <h2 id="briefing-title">Intelligence Briefing</h2>
           <div class="briefing-benefits">
-          <div class="slideshow-toolbar slideshow-mobile"><button type="button" data-slideshow-toggle="benefits" data-slideshow-label="briefing benefits" aria-controls="benefits-track" hidden>Pause slideshow</button></div>
           <div class="signal-stack mobile-card-rail" id="benefits-track" tabindex="0" role="group" aria-label="Weekly briefing benefits">
             <div class="mobile-swipe-card"><span aria-hidden="true">◉</span><p><small>Economic news</small><b id="signal-regime">News that could move the market</b></p></div>
             <div class="mobile-swipe-card"><span aria-hidden="true">↗</span><p><small>Daily Zones &amp; charts</small><b id="signal-bias">Key price areas and chart explanations</b></p></div>
@@ -303,7 +300,6 @@
           <p class="eyebrow">Choose your starting point</p>
           <h2 id="pathway-title">Follow the updates. Learn the method. Study the charts.</h2>
         </div>
-        <div class="slideshow-toolbar slideshow-mobile"><button type="button" data-slideshow-toggle="paths" data-slideshow-label="learning paths" aria-controls="paths-track" hidden>Pause slideshow</button></div>
         <div class="pathway-track mobile-card-rail reveal" id="paths-track" tabindex="0" role="group" aria-label="Ways to learn Daily Zones">
           <a class="path-card mobile-swipe-card" href="newsletter/"><span class="path-icon" aria-hidden="true">◉</span><p><small>Start free</small><b>Weekly updates</b><span>Follow Jay’s market updates and chart explanations.</span></p><i aria-hidden="true">→</i></a>
           <span class="path-connector" aria-hidden="true"></span>
@@ -319,7 +315,6 @@
           <div><p class="eyebrow">Watching price at a zone</p><h2 id="cycle-title">Price can react in different ways.</h2></div>
           <p id="cycle-description">Price can move away from a zone. Wait for your entry conditions.</p>
         </div>
-        <div class="slideshow-toolbar"><button type="button" data-slideshow-toggle="cycle" data-slideshow-label="price scenarios" aria-controls="cycle-chart" hidden>Pause slideshow</button></div>
         <div class="cycle-pills" role="tablist" aria-label="Example price behavior">
           <button type="button" id="cycle-tab-0" role="tab" aria-controls="cycle-chart" aria-selected="false" tabindex="-1" data-cycle-stage="12">Sideways price</button>
           <button type="button" id="cycle-tab-1" role="tab" aria-controls="cycle-chart" aria-selected="false" tabindex="-1" data-cycle-stage="38">Move outside a range</button>
@@ -352,7 +347,6 @@
           </div>
         </div>
         <p class="mobile-swipe-hint">Swipe through the resources, or use the arrows.</p>
-        <div class="slideshow-toolbar"><button type="button" data-slideshow-toggle="resources" data-slideshow-label="resources" aria-controls="resource-track" hidden>Pause slideshow</button></div>
         <div class="resource-window reveal" role="group" aria-label="Study resources">
           <div class="resource-track" id="resource-track">
             <a class="resource-card is-featured" href="dzc/">
