@@ -57,11 +57,7 @@ test("homepage interactions remain functional", async ({ page }, testInfo) => {
   });
   await expect(page.locator("#cycle-tooltip span")).toHaveText("Pullback");
 
-  await page.locator("#case-slider").evaluate((element) => {
-    element.value = "72";
-    element.dispatchEvent(new Event("input", { bubbles: true }));
-  });
-  await expect(page.locator("#case-comparison")).toHaveAttribute("style", /72%/);
+  await expect(page.locator('.case-study, #case-slider')).toHaveCount(0);
 
   await expect(page.locator("#founder-story")).toBeVisible();
   await expect(page.locator("#founder details, #founder summary")).toHaveCount(0);
@@ -561,6 +557,21 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     expect(flow).toEqual(['top', 'daily-zones', 'member-chart-review', 'desk-membership', 'founder']);
     const reviewFollowsMethod = await page.locator('#daily-zones').evaluate(section => section.getBoundingClientRect().bottom <= document.querySelector('#member-chart-review').getBoundingClientRect().top + 1);
     expect(reviewFollowsMethod).toBe(true);
+    if (size.width <= 390) {
+      const gaps = await page.evaluate(() => {
+        const box = selector => document.querySelector(selector).getBoundingClientRect();
+        return [
+          box('#daily-zones').bottom - box('#stage-panel').bottom,
+          box('#member-chart-review .hero-market').top - box('#member-chart-review').top,
+          box('#founder').bottom - box('#founder .credential-chips').bottom,
+          box('#resources').bottom - box('.resource-window').bottom,
+          box('#briefing-signup > div').top - box('#briefing-signup').top,
+        ];
+      });
+      expect(Math.min(...gaps)).toBeGreaterThanOrEqual(24);
+      expect(Math.max(...gaps)).toBeLessThanOrEqual(48);
+      expect(Math.max(...gaps) - Math.min(...gaps)).toBeLessThanOrEqual(2);
+    }
     await expect(page.locator('.hero .hero-market')).toHaveCount(0);
     await expect(page.locator('#member-chart-review .published-chart')).toHaveCount(1);
     await expect(page.locator('#desk-invite-title')).toHaveText('Get Jay’s Daily Zones.');
@@ -607,8 +618,103 @@ test("homepage introduces Daily Zones clearly on desktop and mobile", async ({ p
     }
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
     await expect(page.locator('.pathway-track a[href="desk/"]')).toContainText('TGI Operating Desk');
-    await expect(page.locator('.case-metrics')).toHaveCount(0);
+    await expect(page.locator('.case-study, .case-metrics')).toHaveCount(0);
   }
+});
+
+test('homepage slideshows advance in view and keep their layout stable', async ({ page }, testInfo) => {
+  test.setTimeout(60000);
+  const errors = captureErrors(page);
+  await page.clock.install();
+  const shows = [
+    { name:'steps', root:'#daily-zones', view:'#stage-panel', value:'#stage-current', initial:'01', next:'02', wait:13000 },
+    { name:'charts', root:'#member-chart-review', view:'#hero-chart-panel', value:'#hero-symbol', initial:'DXY', next:'NAS100', wait:11000 },
+    { name:'benefits', root:'.briefing-benefits', view:'#benefits-track', value:'#benefits-count', initial:'01 / 03', next:'02 / 03', wait:9000, mobile:true },
+    { name:'paths', root:'.pathway', view:'#paths-track', value:'#paths-count', initial:'01 / 03', next:'02 / 03', wait:9000, mobile:true },
+    { name:'cycle', root:'.market-cycle', view:'#cycle-chart', value:'#cycle-count', initial:'03 / 04', next:'04 / 04', wait:9000 },
+    { name:'resources', root:'#resources', view:'.resource-window', value:'#resources-count', initial:'01 / 08', next:'02 / 08', wait:9000 },
+  ];
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({width, height:900});
+    for (const show of shows) {
+      await page.goto('/');
+      await page.mouse.move(0, 0);
+      const root = page.locator(show.root);
+      const view = page.locator(show.view);
+      const value = page.locator(show.value);
+      const control = page.locator(`[data-slideshow-toggle="${show.name}"]`);
+      await view.scrollIntoViewIfNeeded();
+      if (show.mobile && width > 620) {
+        await expect(root).toHaveAttribute('data-slideshow-state', 'static');
+        await expect(control).toBeHidden();
+        await page.clock.fastForward(show.wait);
+        await expect(value).toHaveText(show.initial);
+        continue;
+      }
+      await expect(root).toHaveAttribute('data-slideshow-state', 'playing');
+      await expect(control).toHaveAccessibleName(/^Pause .* slideshow$/);
+      const before = await root.boundingBox();
+      await page.clock.fastForward(show.wait);
+      await expect(value).toHaveText(show.next);
+      const after = await root.boundingBox();
+      expect(Math.abs(after.height - before.height)).toBeLessThanOrEqual(2);
+      await page.evaluate(() => scrollTo(0, 0));
+      await expect(root).toHaveAttribute('data-slideshow-state', 'waiting');
+      await page.clock.fastForward(show.wait * 3);
+      await expect(value).toHaveText(show.next);
+    }
+  }
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/#resources');
+  await page.locator('#resources').screenshot({path:testInfo.outputPath('automatic-resources-390.png'), animations:'disabled', style:'.site-header,.skip-link{visibility:hidden!important}'});
+  expect(errors).toEqual([]);
+});
+
+test('slideshow pause, touch, focus and reduced motion preserve reading control', async ({ page }) => {
+  await page.setViewportSize({width:390,height:844});
+  await page.clock.install();
+  await page.goto('/');
+  const root = page.locator('#daily-zones');
+  const panel = page.locator('#stage-panel');
+  const control = page.locator('[data-slideshow-toggle="steps"]');
+  const current = page.locator('#stage-current');
+  await panel.scrollIntoViewIfNeeded();
+  await page.mouse.move(0,0);
+  await expect(root).toHaveAttribute('data-slideshow-state','playing');
+  await panel.dispatchEvent('pointerdown',{pointerId:8,pointerType:'touch',isPrimary:true,clientX:220,clientY:220});
+  await panel.dispatchEvent('pointerup',{pointerId:8,pointerType:'touch',isPrimary:true,clientX:100,clientY:220});
+  await expect(current).toHaveText('02');
+  await expect(control).toHaveAccessibleName('Play planning steps slideshow');
+  await expect(page.locator('#stage-title')).toHaveAttribute('aria-live','polite');
+  await page.clock.fastForward(30000);
+  await expect(current).toHaveText('02');
+  await control.click();
+  await panel.scrollIntoViewIfNeeded();
+  await page.mouse.move(0,0);
+  await expect(root).toHaveAttribute('data-slideshow-state','playing');
+  await page.clock.fastForward(13000);
+  await expect(current).toHaveText('03');
+  await control.click();
+  await expect(root).toHaveAttribute('data-slideshow-state','paused');
+  await page.clock.fastForward(26000);
+  await expect(current).toHaveText('03');
+  await control.click();
+  await panel.focus();
+  await expect(root).toHaveAttribute('data-slideshow-state','paused');
+  await page.clock.fastForward(26000);
+  await expect(current).toHaveText('03');
+  await page.locator('#stage-tab-0').focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(current).toHaveText('02');
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await page.reload();
+  await panel.scrollIntoViewIfNeeded();
+  await expect(root).toHaveAttribute('data-slideshow-state','paused');
+  await expect(control).toHaveAccessibleName('Play planning steps slideshow');
+  await page.clock.fastForward(30000);
+  await expect(current).toHaveText('01');
+  await page.locator('#stage-next').click();
+  await expect(current).toHaveText('02');
 });
 
 test('homepage stays readable with reduced motion or JavaScript disabled',async({browser})=>{
@@ -653,6 +759,9 @@ test('five Daily Zones steps explain one setup with accessible charts', async ({
     const originalCandles = await page.locator('.lesson-candles').innerHTML();
     for (const [index, lesson] of lessons.entries()) {
       const tab = page.locator(`[data-stage="${index}"]`);
+      // A chart screenshot scrolls the tabs above the fixed header. Center them
+      // instantly before the next real click so Safari does not click mid-scroll.
+      await tab.evaluate(element => element.scrollIntoView({block:'center', inline:'nearest', behavior:'instant'}));
       await tab.click();
       await expect(tab).toHaveAttribute('aria-selected', 'true');
       await expect(tab).toHaveAttribute('tabindex', '0');
@@ -762,6 +871,8 @@ test('resource carousel shows the offers and reaches every card', async ({ page 
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     }
     await page.getByRole('button', { name: 'Next resource', exact: true }).focus();
+    await page.keyboard.press('Tab');
+    await expect(page.locator('[data-slideshow-toggle="resources"]')).toBeFocused();
     await page.keyboard.press('Tab');
     await expect(cards.nth(0)).toBeFocused();
     await page.keyboard.press('Tab');

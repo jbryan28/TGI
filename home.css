@@ -1,4 +1,5 @@
 /* Homepage messaging and chart labels; other site pages keep their existing styling. */
+.home-daily-zones {--home-section-space:clamp(2rem,4.5vw,4.5rem)}
 .home-daily-zones .reveal {opacity:1;transform:none}
 .home-daily-zones .hero {display:block;min-height:0;padding-top:calc(var(--header-height) + 4rem);padding-bottom:4rem}
 .home-daily-zones .hero-copy {max-width:var(--max-width);margin:0 auto}
@@ -161,14 +162,12 @@
 .home-daily-zones .signal-stack p b {font-size:.9rem;line-height:1.5}
 .home-daily-zones .cycle-pills button {text-transform:none;font-size:.8rem}
 .home-example-note {font-size:.85rem;line-height:1.6;color:var(--muted);margin-top:1.2rem}
-.home-daily-zones .case-copy > p {font-size:1rem;line-height:1.7;color:var(--muted-dark)}
-.home-daily-zones .case-copy > .home-example-note {font-size:.85rem}
-.home-daily-zones .case-copy > .text-link {color:#765019}
 .home-daily-zones .resource-window {overflow:auto;padding:.5rem 0}
 .home-daily-zones .resource-window.has-carousel-controls {overflow:hidden}
-.home-daily-zones .resource-track {display:flex;align-items:flex-start;gap:1.2rem}
+.home-daily-zones .resource-track {display:flex;align-items:stretch;gap:1.2rem}
 .home-daily-zones .resource-track:focus-within {transition:none}
-.home-daily-zones .resource-card {flex:0 0 calc((100% - 2.4rem)/3);min-width:0;height:auto}
+.home-daily-zones .resource-card {display:flex;flex-direction:column;flex:0 0 calc((100% - 2.4rem)/3);min-width:0;height:auto}
+.home-daily-zones .resource-card > div {flex-shrink:0}
 .home-daily-zones .resource-card small {font-size:.68rem;line-height:1.5}
 .home-daily-zones .resource-card p > span {font-size:.85rem;line-height:1.5}
 .home-daily-zones .resource-book-cover,.home-daily-zones .resource-offer-image {position:relative;min-height:0;height:260px;overflow:hidden;background:radial-gradient(circle at 50% 65%,rgba(40,124,91,.18),transparent 65%),#0b0e0b;border-bottom:1px solid var(--line-dark)}
@@ -182,6 +181,21 @@
  .home-daily-zones .resource-card {flex-basis:calc((100% - 1rem)/2)}
 }
 .home-risk-note {max-width:1050px;margin:0 auto;padding:0 1.5rem 3rem;color:var(--muted);font-size:.85rem;line-height:1.7}
+/* A consistent space on either side of section boundaries, without leftover card margins. */
+.home-daily-zones :is(.operating-system,.member-review,.desk-invite,.founder-copy,.briefing,.pathway,.market-cycle,.resources,.briefing-signup) {padding-block:var(--home-section-space)}
+.home-daily-zones .credential-chips {margin-bottom:0}
+.home-daily-zones .mobile-swipe-nav {margin-bottom:0}
+.home-daily-zones .published-chart-media {display:grid;align-items:center;aspect-ratio:2048/1484;background:#080f15}
+.home-daily-zones .slideshow-toolbar {display:none;max-width:var(--max-width);margin:0 auto .75rem;justify-content:flex-end}
+.home-daily-zones .slideshow-toolbar:has(> button:not([hidden])) {display:flex}
+.home-daily-zones [data-slideshow-toggle] {min-height:44px;min-width:130px;padding:.5rem .8rem;border:1px solid var(--line-dark);background:transparent;color:var(--gold-bright);font:500 .75rem/1.4 var(--sans);cursor:pointer;touch-action:manipulation}
+.home-daily-zones [data-slideshow-toggle][hidden] {display:none}
+.home-daily-zones [data-slideshow-toggle]:hover {background:var(--gold-faint)}
+.home-daily-zones [data-slideshow-toggle]:focus-visible {outline:2px solid var(--gold-bright);outline-offset:3px}
+.home-daily-zones .section-light [data-slideshow-toggle] {border-color:var(--line-light);color:#765019}
+.home-daily-zones .section-light [data-slideshow-toggle]:focus-visible {outline-color:#765019}
+.home-daily-zones #cycle-description {min-height:4.8em}
+.home-daily-zones :is(.stage-tabs button,.segmented button,.cycle-pills button) {scroll-margin-block:calc(var(--header-height) + 1rem) 1rem}
 @media(max-width:1180px) {
  .home-daily-zones .hero {padding-top:calc(var(--header-height) + 3rem)}
  .home-daily-zones .hero-copy {max-width:760px}

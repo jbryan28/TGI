@@ -74,6 +74,59 @@
   };
 
   const mobileLayout = window.matchMedia("(max-width: 620px)");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  // Each slideshow has its own clock. Reading or interacting stops it until Play.
+  const bindSlideshow = (name, root, viewport, advance, interval = 8000, mobileOnly = false) => {
+    const toggle = $(`[data-slideshow-toggle="${name}"]`);
+    if (!root || !viewport || !toggle) return;
+    let paused = reducedMotion.matches;
+    let visible = false;
+    let hovered = false;
+    let timer;
+    const announcements = $$("[aria-live]", root);
+    const sync = () => {
+      clearTimeout(timer);
+      const enabled = !mobileOnly || mobileLayout.matches;
+      const running = enabled && !paused && visible && !hovered && !document.hidden;
+      root.dataset.slideshowState = !enabled ? "static" : paused ? "paused" : running ? "playing" : "waiting";
+      toggle.hidden = !enabled;
+      toggle.textContent = paused ? "Play slideshow" : "Pause slideshow";
+      toggle.setAttribute("aria-label", `${paused ? "Play" : "Pause"} ${toggle.dataset.slideshowLabel} slideshow`);
+      announcements.forEach(element => element.setAttribute("aria-live", paused ? "polite" : "off"));
+      if (running) timer = setTimeout(() => { advance(); sync(); }, interval);
+    };
+    const pause = (event) => {
+      if (toggle.contains(event.target)) return;
+      paused = true;
+      sync();
+    };
+    toggle.addEventListener("click", () => { paused = !paused; sync(); });
+    ["pointerdown", "click", "keydown", "focusin", "input", "wheel"].forEach(type => {
+      root.addEventListener(type, pause, { capture: true, passive: true });
+    });
+    root.addEventListener("pointerenter", event => {
+      if (event.pointerType !== "mouse") return;
+      hovered = true;
+      sync();
+    });
+    root.addEventListener("pointerleave", event => {
+      if (event.pointerType !== "mouse") return;
+      hovered = false;
+      sync();
+    });
+    document.addEventListener("visibilitychange", sync);
+    mobileLayout.addEventListener("change", sync);
+    reducedMotion.addEventListener("change", () => { paused = reducedMotion.matches; sync(); });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(entries => {
+        visible = entries[0].isIntersecting && entries[0].intersectionRatio >= .15;
+        sync();
+      }, { threshold: [0, .15] }).observe(viewport);
+    }
+    sync();
+  };
+
   const bindMobileSwipe = (element, changeSlide, allowLinks = false) => {
     if (!element) return;
     element.classList.add("mobile-gesture");
@@ -171,6 +224,7 @@
       else track.scrollLeft = 0;
     });
     move(0);
+    bindSlideshow(prefix, track.parentElement, track, () => move((index + 1) % cards.length), 8000, true);
   };
 
   const publishedCharts = {
@@ -232,6 +286,7 @@
     $("#hero-market-prev")?.addEventListener("click", () => move(-1));
     $("#hero-market-next")?.addEventListener("click", () => move(1));
     bindMobileSwipe(panel, move, true);
+    bindSlideshow("charts", panel.closest("section"), panel, () => move(1), 10000);
   };
   bindPublishedCharts("[data-hero-market]", "heroMarket", "hero");
 
@@ -332,6 +387,46 @@
   $("#stage-next")?.addEventListener("click", () => renderStage(activeStage + 1));
 
   bindMobileSwipe(stagePanel, (direction) => renderStage(activeStage + direction));
+  bindSlideshow("steps", stagePanel?.closest("section"), stagePanel, () => renderStage(activeStage + 1), 12000);
+
+  // Reserve the tallest lesson at this width so automatic changes do not move the page.
+  const sizeLessons = () => {
+    if (!stagePanel) return;
+    const sample = stagePanel.cloneNode(true);
+    const title = $("#stage-title", sample);
+    const points = $("#stage-points", sample);
+    const captionTitle = $("#stage-caption-title", sample);
+    const caption = $("#stage-caption", sample);
+    const figure = $(".stage-chart-wrap", sample);
+    const copy = $(".stage-copy", sample);
+    sample.removeAttribute("id");
+    $$("[id]", sample).forEach(element => element.removeAttribute("id"));
+    sample.classList.remove("is-changing");
+    sample.setAttribute("aria-hidden", "true");
+    sample.inert = true;
+    sample.style.cssText = `position:fixed;left:-10000px;top:0;visibility:hidden;width:${stagePanel.getBoundingClientRect().width}px;pointer-events:none`;
+    figure.style.minHeight = copy.style.minHeight = "0";
+    stagePanel.parentElement.appendChild(sample);
+    let figureHeight = 0;
+    let copyHeight = 0;
+    operatingStages.forEach(stage => {
+      title.textContent = stage.title;
+      points.innerHTML = stage.points.map(point => `<li>${point}</li>`).join("");
+      captionTitle.textContent = stage.captionTitle;
+      caption.textContent = stage.caption;
+      figureHeight = Math.max(figureHeight, figure.getBoundingClientRect().height);
+      copyHeight = Math.max(copyHeight, copy.getBoundingClientRect().height);
+    });
+    sample.remove();
+    $(".stage-chart-wrap", stagePanel).style.minHeight = `${Math.ceil(figureHeight)}px`;
+    $(".stage-copy", stagePanel).style.minHeight = `${Math.ceil(copyHeight)}px`;
+  };
+  let lessonResize;
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(lessonResize);
+    lessonResize = requestAnimationFrame(sizeLessons);
+  });
+  document.fonts.ready.then(sizeLessons);
 
   const cycleStages = [
     { max: 24, name: "Sideways price", detail: "Price stays in a range", description: "Price may stay within a small area while buyers and sellers trade." },
@@ -390,17 +485,15 @@
   });
   const moveCycle = (direction) => {
     const current = cycleButtons.findIndex(button => button.getAttribute("aria-selected") === "true");
-    cycleButtons[(current + direction + cycleButtons.length) % cycleButtons.length].click();
+    const value = cycleButtons[(current + direction + cycleButtons.length) % cycleButtons.length].dataset.cycleStage;
+    cycleScrubber.value = value;
+    renderCycle(value);
   };
   $("#cycle-prev")?.addEventListener("click", () => moveCycle(-1));
   $("#cycle-next")?.addEventListener("click", () => moveCycle(1));
   bindMobileSwipe($("#cycle-chart"), moveCycle);
   if (cycleScrubber) renderCycle(cycleScrubber.value);
-
-  const caseSlider = $("#case-slider");
-  caseSlider?.addEventListener("input", (event) => {
-    $("#case-comparison").style.setProperty("--position", `${event.target.value}%`);
-  });
+  bindSlideshow("cycle", cycleScrubber?.closest("section"), $("#cycle-chart"), () => moveCycle(1));
 
   const resourceTrack = $("#resource-track");
   const resourceCards = resourceTrack ? $$(".resource-card", resourceTrack) : [];
@@ -453,6 +546,10 @@
     activeResource = next;
     renderResource();
     resourceCards[next].focus();
+  });
+  bindSlideshow("resources", resourceTrack?.closest("section"), resourceTrack?.parentElement, () => {
+    activeResource = (activeResource + 1) % resourceCards.length;
+    renderResource();
   });
 
 })();
