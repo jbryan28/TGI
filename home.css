@@ -195,6 +195,7 @@
 .home-daily-zones .section-light [data-slideshow-toggle] {border-color:var(--line-light);color:#765019}
 .home-daily-zones .section-light [data-slideshow-toggle]:focus-visible {outline-color:#765019}
 .home-daily-zones #cycle-description {min-height:4.8em}
+.home-daily-zones :is(.stage-tabs button,.segmented button,.cycle-pills button) {scroll-margin-block:calc(var(--header-height) + 1rem) 1rem}
 @media(max-width:1180px) {
  .home-daily-zones .hero {padding-top:calc(var(--header-height) + 3rem)}
  .home-daily-zones .hero-copy {max-width:760px}

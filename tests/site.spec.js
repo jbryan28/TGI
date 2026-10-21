@@ -759,6 +759,9 @@ test('five Daily Zones steps explain one setup with accessible charts', async ({
     const originalCandles = await page.locator('.lesson-candles').innerHTML();
     for (const [index, lesson] of lessons.entries()) {
       const tab = page.locator(`[data-stage="${index}"]`);
+      // A chart screenshot scrolls the tabs above the fixed header. Center them
+      // instantly before the next real click so Safari does not click mid-scroll.
+      await tab.evaluate(element => element.scrollIntoView({block:'center', inline:'nearest', behavior:'instant'}));
       await tab.click();
       await expect(tab).toHaveAttribute('aria-selected', 'true');
       await expect(tab).toHaveAttribute('tabindex', '0');
