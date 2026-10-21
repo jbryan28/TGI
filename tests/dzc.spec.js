@@ -25,7 +25,7 @@ test("DZC sibling homepage preserves charts and controls with its own responsive
   await page.locator("#stage-next").click();
   await expect(page.locator("#stage-title")).toHaveText("Mark Daily Zones");
   await page.locator('[data-hero-market="USDJPY"]').click();
-  await expect(page.locator("#hero-timeframe")).toHaveText("4H");
+  await expect(page.locator("#hero-timeframe")).toHaveText("Daily");
   await expect(page.locator("#desk-membership")).toContainText("DZC course");
   await expect(page.locator("#desk-membership")).toContainText("$99/month");
   await expect(page.locator("#founder-story")).toBeVisible();
