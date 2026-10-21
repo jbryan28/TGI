@@ -59,7 +59,7 @@ for(const size of sizes) {
   await cta.focus();await cta.press('Enter');expect(await page.evaluate(()=>window.mentoringEmailClicked)).toBe(href);
   await cta.blur();await page.evaluate(()=>window.scrollTo(0,0));
   await page.screenshot({path:testInfo.outputPath(`mentoring-confirmed-${size.width}.png`),fullPage:true});
-  await page.getByRole('link',{name:'Return to Operating Desk'}).click();await expect(page).toHaveURL(/\/desk\/$/);
+  await page.getByRole('link',{name:'Return to Jay’s Daily Zones'}).click();await expect(page).toHaveURL(/\/desk\/$/);
   expect(errors).toEqual([]);
  });
 }
