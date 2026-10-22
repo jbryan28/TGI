@@ -29,8 +29,80 @@ test("DZC sibling homepage preserves charts and controls with its own responsive
   await expect(page.locator("#desk-membership")).toContainText("DZC course");
   await expect(page.locator("#desk-membership")).toContainText("$99/month");
   await expect(page.locator("#founder-story")).toBeVisible();
+  await expect(page.locator("#founder-title")).toHaveText("Why Jay started DZC");
+  await expect(page.locator("#founder-story")).toContainText("Jay created Daily Zone Command™ to explain his Daily Zones approach");
   await expect(page.locator(".resource-card")).toHaveCount(8);
   expect(errors).toEqual([]);
+});
+
+test("DZC mobile page stays aligned while its sliders and vertical navigation work", async ({ browser, browserName }, testInfo) => {
+  test.setTimeout(60000);
+  for (const width of [320, 393, 430]) {
+    const context = await browser.newContext({
+      viewport: { width, height: 852 },
+      screen: { width, height: 852 },
+      deviceScaleFactor: 2,
+      hasTouch: true,
+      isMobile: browserName !== "firefox",
+      reducedMotion: "reduce",
+    });
+    const page = await context.newPage();
+    try {
+      await page.goto("/dzc-preview/");
+      const aligned = async () => page.evaluate(() => ({
+        x: window.scrollX,
+        width: document.documentElement.scrollWidth,
+        viewport: innerWidth,
+        sectionsFit: [...document.querySelectorAll("main > section")].every(section => {
+          const box = section.getBoundingClientRect();
+          return box.left >= -1 && box.right <= innerWidth + 1;
+        }),
+      }));
+      const swipe = async selector => {
+        const target = page.locator(selector);
+        await target.dispatchEvent("pointerdown", { pointerId: 7, pointerType: "touch", isPrimary: true, clientX: 250, clientY: 300 });
+        await target.dispatchEvent("pointerup", { pointerId: 7, pointerType: "touch", isPrimary: true, clientX: 130, clientY: 300 });
+      };
+      for (const section of ["#daily-zones", "#member-chart-review", "#founder", "#resources"]) {
+        await page.locator(section).scrollIntoViewIfNeeded();
+        await page.evaluate(() => window.scrollBy({ left: 240, top: 0, behavior: "instant" }));
+        const layout = await aligned();
+        expect(layout.x).toBe(0);
+        expect(layout.width).toBeLessThanOrEqual(layout.viewport);
+        expect(layout.sectionsFit).toBe(true);
+      }
+      await swipe("#stage-panel");
+      await expect(page.locator("#stage-current")).toHaveText("02");
+      const strip = page.locator(".stage-tabs");
+      await strip.evaluate(el => el.scrollTo({ left: el.scrollWidth, behavior: "instant" }));
+      expect(await strip.evaluate(el => el.scrollLeft)).toBeGreaterThan(0);
+      await swipe("#hero-chart-panel");
+      await expect(page.locator("#hero-symbol")).toHaveText("NAS100");
+      await page.locator("#resources-next").click();
+      await expect(page.locator("#resources-count")).toHaveText("02 / 08");
+      expect((await aligned()).x).toBe(0);
+
+      await page.locator("#founder-title").scrollIntoViewIfNeeded();
+      expect(await page.evaluate(() => scrollY)).toBeGreaterThan(100);
+      const header = await page.locator(".site-header").evaluate(el => {
+        const brand = el.querySelector(".brand").getBoundingClientRect();
+        const toggle = el.querySelector(".nav-toggle").getBoundingClientRect();
+        return { left: brand.left, brandRight: brand.right, toggleLeft: toggle.left, right: toggle.right, viewport: innerWidth };
+      });
+      expect(header.left).toBeGreaterThanOrEqual(0);
+      expect(header.brandRight).toBeLessThanOrEqual(header.toggleLeft);
+      expect(header.right).toBeLessThanOrEqual(header.viewport);
+      await page.screenshot({ path: testInfo.outputPath(`dzc-founder-mobile-${width}.png`), animations: "disabled" });
+      await page.getByRole("button", { name: "Open navigation" }).click();
+      await expect(page.locator("#site-nav")).toBeVisible();
+      await page.locator('#site-nav a[href="#daily-zones"]').click();
+      await expect(page.locator("#framework-title")).toBeInViewport();
+      await expect(page.locator("#site-nav")).not.toBeVisible();
+      expect((await aligned()).x).toBe(0);
+    } finally {
+      await context.close();
+    }
+  }
 });
 
 test("DZC book, membership and mentoring load directly and preserve external transactions", async ({ page }, testInfo) => {

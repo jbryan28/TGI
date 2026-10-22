@@ -6,4 +6,6 @@ Run `node scripts/build-dzc.mjs /absolute/empty/output` to prepare the static si
 
 The DZC hero groups the headline on the left and supporting copy, CTAs, and trust note on the right. At 900px and below, the supporting content stacks after the headline in reading order.
 
-The private review Site is `appgprj_6ad8f0c9be348191bfce56715e129e33`, slug `daily-zone-command`. Its deployment source and manifest live in the associated Sites repository. Domain DNS and the public launch remain separate steps. TGI-branded illustrations and the existing Operating Desk walkthrough are retained source artwork, not newly rebranded media.
+The DZC document clips horizontal overflow and contains sideways overscroll. Mobile header columns and homepage grid children can shrink to the screen width, while the existing slider rails keep their own horizontal scrolling and touch controls. The founder section reads “Why Jay started DZC” with matching introductory copy.
+
+The public Site is `appgprj_6ad8f0c9be348191bfce56715e129e33`, slug `daily-zone-command`, at https://dailyzonecommand.com. Its deployment source and manifest live in the associated Sites repository. Preserve the public audience and custom domain on updates. TGI-branded illustrations and the existing Operating Desk walkthrough are retained source artwork, not newly rebranded media.
