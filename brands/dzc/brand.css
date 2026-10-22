@@ -1,4 +1,11 @@
 /* Daily Zone Command identity; shared TGI layouts and interaction styles remain the source. */
+/* Keep the document anchored; individual carousels retain their own horizontal scroll. */
+html, body {overflow-x:clip;overscroll-behavior-x:none}
+body {min-width:0;max-width:100%}
+.home-daily-zones main,
+.home-daily-zones main > section,
+.home-daily-zones :is(.hero-copy,.founder-copy,.stage-panel,.stage-chart-wrap,.stage-copy) {min-width:0}
+.home-daily-zones :is(.stage-tabs,.cycle-pills,.mobile-card-rail) {max-width:100%;overscroll-behavior-x:contain}
 .brand-mark.dzc-mark {
   display: block;
   flex: 0 0 auto;
@@ -30,6 +37,8 @@
 .home-daily-zones .dzc-hero-details .hero-summary {margin-top:0}
 .home-daily-zones .dzc-hero-details .hero-actions {gap:1.25rem 1.5rem}
 @media(max-width:900px) {
+ .site-header {grid-template-columns:minmax(0,1fr) auto;column-gap:1rem}
+ .site-header .brand {min-width:0;max-width:100%}
  .home-daily-zones .hero-copy {grid-template-columns:minmax(0,1fr);gap:1.75rem}
 }
 @media(max-width:1100px) {

@@ -45,7 +45,7 @@ for (const relative of copied.filter((name) => name.endsWith(".html"))) {
   // established destinations. Only this site's metadata receives the new domain.
   html = html.replace(/<(?:link|meta)\b[^>]*(?:rel="canonical"|property="og:(?:url|image)")[^>]*>/g,
     (tag) => tag.replace(/https:\/\/www\.tradergrowth\.com/g, "https://dailyzonecommand.com"));
-  html = html.replace(/<\/head>/, `<link rel="icon" type="image/svg+xml" href="${asset}dzc-mark.svg" />\n<link rel="stylesheet" href="${asset}brand.css?v=20261021-hero-columns" />\n</head>`);
+  html = html.replace(/<\/head>/, `<link rel="icon" type="image/svg+xml" href="${asset}dzc-mark.svg" />\n<link rel="stylesheet" href="${asset}brand.css?v=20261021-mobile-width" />\n</head>`);
   if (relative === "index.html") {
     const hero = /(<div class="hero-copy reveal">)([\s\S]*?)(<p class="hero-summary">[\s\S]*?<p class="trust-note">[\s\S]*?<\/p>)(\s*<\/div>)/;
     if (!hero.test(html)) throw new Error("The DZC hero content could not be grouped.");
@@ -53,6 +53,8 @@ for (const relative of copied.filter((name) => name.endsWith(".html"))) {
     html = html.replace('<p class="eyebrow">Trader Growth Institute</p>', '<p class="eyebrow">Daily Zone Command™ · By Jay Bryan</p>');
     html = html.replace('content="Understand Daily Zones with Trader Growth Institute.', 'content="Understand Daily Zones with Daily Zone Command.');
     html = html.replace("<p>TraderGrowth.com</p>", '<p>DailyZoneCommand.com<span class="dzc-parent">A Trader Growth Institute brand</span></p>');
+    html = html.replace('<h2 id="founder-title">Why Jay started TGI.</h2>', '<h2 id="founder-title">Why Jay started DZC</h2>');
+    html = html.replace('Jay started TGI to explain his Daily Zones approach', 'Jay created Daily Zone Command™ to explain his Daily Zones approach');
     html = html.replace("<title>Daily Zones &amp; Daily Zone Command™ | Daily Zone Command™</title>", "<title>Daily Zone Command™ | Daily Zones with Jay Bryan</title>");
   }
   fs.writeFileSync(file, html);
